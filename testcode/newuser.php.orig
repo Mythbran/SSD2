@@ -1,0 +1,491 @@
+<!-- **************************************** *
+ * New User webpage on demo site 	      	  *
+ * developed by Matthew D'Angelo 	          *
+ * This is where someone will make a new user *
+ * Users will enter uname, email, fAddr, pNum *
+ * and bio All stripped for excess whitespace * 
+ * Regex is used			                  *
+ *  - uName most be composed of alphabetic    *
+ *  - email is form username@domain.tld	      * 
+ *  - username can contain alphanumeric dots  * 
+ *       & Dashes. Domain must only contain   * 
+ *      alphanumeric and dashes 	          * 
+ *      tld must contain characters and dots  * 
+ *  - Phone number must be a NA # with format * 
+ *      1234567890, 123.456.7890, 	          *  
+ *      123-456-7890(123) 456-7890. 10 # long * 
+ *  - Postal code must be canadian style      * 
+ *      A1B 2C3 & A1B2C3 		              * 
+ * Using other validation techiques 	      * 
+ *  - bio fields must be stripped of code     * 
+ *	HTML CSS JS special characters            * 
+ *  - bio field stripped of SQL keywords      * 
+ *	INSERT UPDATE DELETE		              * 
+ * Strip any # and -- character sequence      * 
+ * Pass should request and store info 	      *  
+ * ****************************************** -->
+<?php 
+	//print_r($_POST);
+	if($_POST){
+		//Validation things 
+
+
+		$errors = array(); // array to hold errors
+
+		//username validation 
+		if(empty($_POST['uname'])){
+			$errors['uname001'] = "Username cannot be empty";
+		}
+	# uName validation = ereg("[A-Za-z]{1,25}")
+		if(egrep('[A-Za-z]{1,25}', ($_POST['uName']))){
+			$errors['uname002'] = "Username must be between 1-25 characters and contain only alphabetic characters";
+		}
+
+		//email validation
+		if(empty($_POST['email'])){
+			$errors['email001'] = "Email cannot be empty";
+		}
+                
+                //more email stuff
+                //shud sanitize/validate email
+                        $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+                        if (filter_var($email, FILTER_VALIDATE_EMAIL)){
+                            $errors['email002'] = "Invalid email";
+                        }
+
+		//Street Number Validation 
+		if(empty($_POST['snum'])){
+			$errors['snum001'] = "Street Number cannot be empty";
+		}
+                
+                //valid number from 1 to 999
+                if(preg_match("[0-9]{1,3}", ($_POST['snum']), $matches)){
+			$errors['snum002'] = "Not a valid street number";
+		}
+                
+
+		//Street Name Validation 
+		if(empty($_POST['sname'])){//if empty
+			$errors['sname001'] = "Street Name cannot be empty";
+		}
+                
+                if(preg_match("[A-Za-z\s]{1,25}", ($_POST['sname']), $matches)){//added white spaces
+			$errors['sname002'] = "Street name must be between 1-25 characters and contain only alphabetic characters";
+		}
+	
+		//City Validation 
+		if(empty($_POST['city'])){
+			$errors['city001'] = "City cannot be empty";
+		}
+                
+                //not too sure bout this. you said u might make a whitelist???
+
+		//Province Validation NOT WORKING MIGHT MAKE A WHITELIST 
+		if(empty($_POST['province'])){
+			$errors['province001'] = "Province cannot be empty";
+		}
+
+		//Postal Code Validation 
+		if(empty($_POST['pnode'])){
+			$errors['pcode001'] = "Postal Code cannot be empty";
+		}
+
+		//Phone Number Validation 
+		if(empty($_POST['pnum'])){
+			$errors['pnum001'] = "Phone Number cannot be empty";
+		}
+
+                //valid phone number 
+                if(preg_match("[[\d\()-.]]{10}", ($_POST['snum']), $matches)){//working on it rn
+                    //only valid ones go thru
+			$errors['pnum002'] = "Not a valid phone number";
+		}
+                
+		if(count($errors) == 0){
+			header("Location: /enterUser.php");
+			exit();
+		}
+	
+	}
+?>
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <style>
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+            }
+        </style>
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Assignment 1</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right" role="form">
+            <div class="form-group">
+              <input type="text" placeholder="Email" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="password" placeholder="Password" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">Sign in</button>
+          </form>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h1>New User Creation</h1>
+        </div>
+    </div>
+
+	<?php /* having issues with validation here
+		// going to rewrite the code in html and see what happens... 
+
+	echo "<form form name= 'newUser' action='' method='post'";
+	echo "<br>";
+	echo "<br>";
+
+	#username form 
+	echo "&nbsp;&nbsp; Username: <input type = 'text' id='uName'>";
+
+	#printing username validation 
+	if(isset($errors['uname001'])) echo $errors['uname001'];#empty
+	# uName validation = ereg("[A-Za-z]{1,25}")
+
+
+	#email form
+	echo "&nbsp;&nbsp;Email Address: <input type = 'email' id='email'>";
+	#email validation 
+	if(isset($errors['email001'])) echo $errors['email001'];#empty
+	#Validation for email = ereg("[A-Za-z0-9\.\-]{1,64}+@[A-Za-z0-9\-]{1,188}+\.[A-Za-z\.]{1,9}")
+
+
+	echo "<br>";
+	echo "<br>";
+
+	
+	##Street Number Form
+	echo "&nbsp;&nbsp;Street Number: <input type = 'text' id='sNum'>";
+	##Street Number Validation 
+	if(isset($errors['snum001'])) echo $errors['snum001'];#empty
+
+
+	#Street Name Form
+	echo "&nbsp;&nbsp;Street Name: <input type = 'text' id='sName'>";
+	#Street Name Validation 
+	if(isset($errors['sname001'])) echo $errors['sname001'];#empty
+
+
+
+	echo "<br>";
+	echo "<br>";
+
+	#city form
+	echo "&nbsp;&nbsp;City: <input type = 'text' id='city'>";
+	#city validation 
+	if(isset($errors['city001'])) echo $errors['city001'];
+
+	
+	#provice form
+	echo "&nbsp;&nbsp;Province: <select name='province' id='province'>
+		<option value=''>--Select--</option>
+		<option value='AB'>Alberta</option>
+		<option value='BC'>British Columbia</option>
+		<option value='MN'>Manitoba</option>
+		<option value='NB'>New Brunswick</option>
+		<option value='NF'>Newfoundland & labrador</option>
+		<option value='NT'>Northwest Territories</option>
+		<option value='NS'>Nova Scotia</option>
+		<option value='NV'>Nunavut</option>
+		<option value='ON'>Ontario</option>
+		<option value='PI'>Prince Edward Island</option>
+		<option value='QB'>Quebec</option>
+		<option value='SK'>Saskatchewan</option>
+		<option value='YK'>Yukon</option>
+		</select>";
+	#province validation 
+	if(isset($errors['provice001'])) echo $errors['province001'];
+
+
+	echo "<br>";
+	echo "<br>";	
+
+	#Postal Code Form
+	echo "&nbsp;&nbsp;Postal Code: <input type = 'text' id='pCode'>";
+	#postal code validation 
+	if(isset($errors['pcode001'])) echo $errors['pcode001'];
+
+
+	#Phone Number Form
+	echo "&nbsp;&nbsp;Phone Number: <input type = 'tel' id='pNum'>";
+	#Phone Number Validation
+	if(isset($errors['pnum001'])) echo $errors['pnum001'];
+	
+	#pNum validation = ereg ("\(?[0-9]{3}[\.\-\)]?[0-9]{3}[\.\-]?[0-9]{4}
+
+
+	echo "<br>";
+	echo "<br>";
+
+	#bio form
+	echo "&nbsp;&nbsp;Bio: <textarea name='bio' rows='5' cols='40'></textarea>";
+	#bio validation & sanitation	
+	
+	echo "<br>";
+	echo "<br>";
+
+	#buttons
+	echo "&nbsp;&nbsp;<input type='submit' name='submit' value='Submit'>";
+	echo "&nbsp;&nbsp;<input type='reset' name='reset' value='Reset'>";
+
+	echo "</form>";
+	*/
+	?>
+	<!-- User Form --> 
+	<form method="post" target="" id="uform">
+		<!-- Username Form --> 
+		<p>
+<<<<<<< HEAD
+		<label for="uName">Username: *</label>
+		<input type="text" name="uName" id="uName" value="<?php if(isset($_POST['uName'])); echo $_POST['uName']?>"/>
+=======
+		<label for="uname">Username: </label>
+		<input type="text" name="uname" id="uname"/>
+>>>>>>> ac08c4c559926db160822ed328154761b1b5fe9b
+		<!-- Username Validation -->
+		<?php
+			if(isset($errors['uname001'])) echo $errors['uname001'];#empty
+
+			if(isset($errors['uname002'])) echo $errors['uname002'];#A-Za-z 1-25 length
+
+                        #shud strip of slashes & tags
+                        
+
+
+		?>
+
+		<!-- email Form -->
+		<label for="email"> eMail: *</label>
+		<input type="text" name="email" id="email"value="<?php if(isset($_POST['email'])); echo $_POST['email']?>"/>
+		<?php
+			if(isset($errors['email001'])){
+                            echo $errors['email001'];#empty
+                        }
+                        
+                        if(isset($errors['email002'])){
+                            echo $errors['email002'];#invalid
+                        }
+		?>
+		</p>	
+
+		<p> 
+		<!-- Street Number Form --> 
+<<<<<<< HEAD
+		<label for="sNum"> Street Number: *</label>
+		<input type="text" name="sNum" id="sNum"value="<?php if(isset($_POST['sNum'])); echo $_POST['sNum']?>"/>
+=======
+		<label for="sNum"> Street Number: </label>
+		<input type="text" name="snum" id="snum"/>
+>>>>>>> ac08c4c559926db160822ed328154761b1b5fe9b
+		<?php
+			if(isset($errors['snum001'])) echo $errors['snum001'];#empty
+if(isset($errors['snum002'])) echo $errors['snum002'];#empty
+
+
+		?>
+
+
+
+		<!-- Street Name Form --> 
+<<<<<<< HEAD
+		<label for="sName"> Street Name: *</label>
+		<input type="text" name="sName" id="sName"value="<?php if(isset($_POST['sName'])); echo $_POST['sName']?>"/>
+=======
+		<label for="sName"> Street Name: </label>
+		<input type="text" name="sname" id="sname"/>
+>>>>>>> ac08c4c559926db160822ed328154761b1b5fe9b
+		<?php
+			if(isset($errors['sname001'])) echo $errors['sname001'];#empty
+
+
+
+		?>
+		</p> 
+
+		<p> 
+		<!-- City Form --> 
+		<label for="city"> City: *</label>
+		<input type="text" name="city" id="city"value="<?php if(isset($_POST['city'])); echo $_POST['city']?>"/>
+		<?php
+			if(isset($errors['city001'])) echo $errors['city001'];#empty
+
+
+
+		?>
+
+
+		<!-- Province Form -->
+<<<<<<< HEAD
+		<label for="province"> Province: *</label>
+		<select name="province" id="province">
+		<option value="">--Select--</option>
+		<option value="AB">Alberta</option>
+		<option value="BC">British Columbia</option>
+		<option value="MN">Manitoba</option>
+		<option value="NB">New Brunswick</option>
+		<option value="NF">Newfoundland & labrador</option>
+		<option value="NT">Northwest Territories</option>
+		<option value="NS">Nova Scotia</option>
+		<option value="NV">Nunavut</option>
+		<option value="ON">Ontario</option>
+		<option value="PI">Prince Edward Island</option>
+		<option value="QB">Quebec</option>
+		<option value="SK">Saskatchewan</option>
+		<option value="YK">Yukon</option>
+=======
+		<label for="province"> Province: </label>
+		<select name="province" id="province" form="uform">
+		<option value=''>--Select--</option>
+		<option value='AB'>Alberta</option>
+		<option value='BC'>British Columbia</option>
+		<option value='MN'>Manitoba</option>
+		<option value='NB'>New Brunswick</option>
+		<option value='NF'>Newfoundland & labrador</option>
+		<option value='NT'>Northwest Territories</option>
+		<option value='NS'>Nova Scotia</option>
+		<option value='NV'>Nunavut</option>
+		<option value='ON'>Ontario</option>
+		<option value='PI'>Prince Edward Island</option>
+		<option value='QB'>Quebec</option>
+		<option value='SK'>Saskatchewan</option>
+		<option value='YK'>Yukon</option>
+>>>>>>> ac08c4c559926db160822ed328154761b1b5fe9b
+		</select>	
+		<?php
+			if(isset($errors['province001'])) echo $errors['province001'];#empty
+
+
+
+		?>
+
+
+		</p> 
+
+		<p> 
+		<!-- Postal Code Form --> 
+<<<<<<< HEAD
+		<label for="pCode"> Postal Code: *</label>
+		<input type="text" name="pCode" id="pCode"value="<?php if(isset($_POST['pCode'])); echo $_POST['pCode']?>"/>
+=======
+		<label for="pCode"> Postal Code: </label>
+		<input type="text" name="pcode" id="pcode"/>
+>>>>>>> ac08c4c559926db160822ed328154761b1b5fe9b
+		<?php
+			if(isset($errors['pcode001'])) echo $errors['pcode001'];#empty
+
+
+
+		?>
+
+
+
+		<!-- Phone Number Form --> 
+<<<<<<< HEAD
+		<label for="pNum"> Phone Number: *</label>
+		<input type="text" name="pNum" id="pNum"value="<?php if(isset($_POST['pNum'])); echo $_POST['pNum']?>"/>
+=======
+		<label for="pNum"> Phone Number: </label>
+		<input type="text" name="pnum" id="pnum"/>
+>>>>>>> ac08c4c559926db160822ed328154761b1b5fe9b
+		<?php
+			if(isset($errors['pnum001'])) echo $errors['pnum001'];#empty
+if(isset($errors['pnum002'])) echo $errors['pnum002'];#empty
+
+
+		?>
+		</p> 
+
+		<p>
+		<label for="bio"> Bio: </label> 
+		<textarea name="bio" rows="5" cols="20"></textarea>
+		
+
+		</p>
+
+		
+		<input type="submit" value="submit"/>
+		<input type="reset" value="reset"/>
+	</form>
+
+
+<!-- Province Form --
+		<label for="province"> Province: </label>
+		<select name="sName" id="sName" form="uform">
+		<option value=''>--Select--</option>
+		<option value='AB'>Alberta</option>
+		<option value='BC'>British Columbia</option>
+		<option value='MN'>Manitoba</option>
+		<option value='NB'>New Brunswick</option>
+		<option value='NF'>Newfoundland & labrador</option>
+		<option value='NT'>Northwest Territories</option>
+		<option value='NS'>Nova Scotia</option>
+		<option value='NV'>Nunavut</option>
+		<option value='ON'>Ontario</option>
+		<option value='PI'>Prince Edward Island</option>
+		<option value='QB'>Quebec</option>
+		<option value='SK'>Saskatchewan</option>
+		<option value='YK'>Yukon</option>
+		</select>	
+		<?php
+			if(isset($errors['province001'])) echo $errors['province001'];#empty
+
+
+
+		?>-->
+	
+
+
+      <hr>
+
+      <footer>
+        <p>&copy; D'AngeloTrudge 2018</p>
+      </footer>
+    </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+
+        <script src="js/vendor/bootstrap.min.js"></script>
+
+        <script src="js/main.js"></script>
+    </body>
+</html>

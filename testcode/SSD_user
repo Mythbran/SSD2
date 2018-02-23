@@ -1,0 +1,13 @@
+CREATE TABLE users(
+uid oid NOT NULL,
+uName text NOT NULL,
+email text NOT NULL,
+sName text NOT NULL,
+sNum text NOT NULL,
+city text NOT NULL,
+province text NOT NULL,
+pCode text NOT NULL,
+pNum text NOT NULL,
+bio text NOT NULL,
+PRIMARY KEY (uid)
+);
