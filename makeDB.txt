@@ -1,1 +1,19 @@
-dsf
+CREATE TABLE users(
+uid SERIAL NOT NULL,
+uname text NOT NULL,
+pass varchar NOT NULL,
+email text NOT NULL,
+sname text NOT NULL,
+snum text NOT NULL,
+city text NOT NULL,
+province text NOT NULL,
+pcode text NOT NULL,
+pnum text NOT NULL,
+bio text NOT NULL,
+admin BOOLEAN NOT NULL DEFAULT FALSE,
+PRIMARY KEY (uid, uname, email)
+);
+
+db: ssd2
+table: users
+users: ssdinsert, ssdselect with connect and respective premissions
