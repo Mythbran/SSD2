@@ -2,9 +2,8 @@
 modified version of list user
 selects from based on user name
 need to make a session variable to use to pull from DB
-going to try to do profile editing on this page
-going to have fields hidden until a link is clicked
-modifying empty validation to skip updating field
+throws data to editProfile.php
+table still not working
 -->
 
 <?php
@@ -46,10 +45,10 @@ if($_POST){
         }
 
         if(count($errors) == 0){
-                    header("Location: /editProfile.php");
+            header("Location: /editProfile.php");
 
-                    exit();
-                }
+            exit();
+        }
     }
     ?>
 
@@ -124,44 +123,42 @@ if($_POST){
 
                     <!--
                         Profile pic goes here
+
                     -->
-<!--
+
                     <table>     
+                        <tr><!--table header-->
+                           <th><h4> Username       </h4></th>
+                           <th><h4> Email          </h4></th>
+                           <th><h4> Address        </h4></th>
+                           <th><h4> City           </h4></th>
+                           <th><h4> Postal Code    </h4></th>
+                           <th><h4> Phone Number   </h4></th>
+                           <th><h4> Bio            </h4></th>
+                       </tr>          
 
+                       <tr>     
+                        <?php
 
-                        <tr>
-                         <th><h4> Username       </h4></th>
-                         <th><h4> Email          </h4></th>
-                         <th><h4> Address        </h4></th>
-                         <th><h4> City           </h4></th>
-                         <th><h4> Postal Code    </h4></th>
-                         <th><h4> Phone Number   </h4></th>
-                         <th><h4> Bio            </h4></th>
-                         </tr>          
-
-                         <tr>      -->
-                            <?php
-                        /*
-                //debugging stuff???
+                        //debugging stuff - printing in text box for some reason
                         ini_set('display_errors', 'On');
                         error_reporting(E_ALL);
 
-                    //database connection
+                        //database connection
                         $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=select") 
                         or die ("connection refused");
 
-                        $stmtVal = 'tjon';
+                        //$stmtVal = 'tjon';
 
-                    $pre = pg_prepare($conn, "SELECT", 'SELECT (uname, email, sname, snum, city, province, pcode, pnum, bio) FROM users WHERE uname = $1');//test variable
+                    $pre = pg_prepare($conn, "SELECT", 'SELECT (uname, email, sname, snum, city, province, pcode, pnum, bio) FROM users');
 
-                    // $rtn = pg_execute($conn, "SELECT", $stmtVal) or die(echo "pg_last_error($conn)");
 
-                   
-                
+               // $rtn = pg_execute($conn, "SELECT", stmtVal) or die(echo "<h1>WRONG</h1>");
+                 //PROBLEM IS RIGHT HERE ^^^^^^^^^
 
-                     $rtn = pg_query($conn, 'SELECT (uname, email, sname, snum, city, province, pcode, pnum, bio) FROM users WHERE uname = tjon');//test variable
+                 //    $rtn = pg_query($conn, 'SELECT (uname, email, sname, snum, city, province, pcode, pnum, bio) FROM users LIMIT 1');//test variable*/
                     
-                       $data = pg_fetch_assoc($rtn);
+                     // $data = pg_fetch_assoc($rtn);
 
 
                         /*
@@ -172,7 +169,7 @@ if($_POST){
                         echo "<td><h5>" . $data['pcode'] .    "</h5></td>";
                         echo "<td><h5>" . $data['pnum'] .     "</h5></td>";
                         echo "<td><h5>" . $data['bio']   .    "</h5></td>";
-                      
+
                         echo $data['uname'];
                         echo $data['email'];
                         echo $data['snum'];
@@ -181,52 +178,63 @@ if($_POST){
                         echo $data['pcode'];
                         echo $data['pnum'];
                         echo $data['bio'];
-                    
-                    
+                */
 
-                pg_close($conn);   
-                */                            
-                ?>
-          <!--  </tr>
-          </table> -->
-          <h3>Profile Options</h3>
-          <div>
-            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="pform">
 
-                <p>
-                    <label for="pic"> Upload Profile Picture: </label>
-                    <input type="file" name="pic" id="pic" value="<?php if(isset($_POST['pic'])); echo $_POST['pic']?>"/>
-                </p>
-            
-            <p>
-                <!-- email Form -->
-                <h4>Change Email</h4>
-                <label for="email"> Email: </label>
-                <input type="text" placeholder="Email" name="email" id="email"value="<?php if(isset($_POST['email'])); echo $_POST['email']?>"/>
-                <label for="email_1"> Re-Enter: </label>
-                <input type="text" placeholder="Email" name="email_1" id="email_1"value=""/>
-                <span class="errors"> * <?php
-                if(isset($errors['email001'])){
-                echo $errors['email001'];#empty
-            }
+                        pg_close($conn);   
 
-            if(isset($errors['email002'])){
-                echo $errors['email002'];#invalid
-            }
+                        ?>
+                    </tr>
+                </table> 
 
-            ?></span>
-        </p>
+                <h3>Profile Options</h3>
+                <div>
+                    <!-- user pic form-->
+                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="picform">
+                        <p>
+                            <label for="pic"> Upload Profile Picture: </label>
+                            <input type="file" name="pic" id="pic" value="<?php if(isset($_POST['pic'])); echo $_POST['pic']?>"/>
+                        </p>
+                        <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
+                        <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
+                    </form>
 
-        <p>
-            <h4>Change Password</h4>
+                    <p>
+                        <!-- email Form -->
+                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="eform">
+                            <h4>Change Email</h4>
+                            <label for="email"> Email: </label>
+                            <input type="text" placeholder="Email" name="email" id="email" value="<?php if(isset($_POST['email'])); echo $_POST['email']?>"/>
 
-            <!-- Password Form --> 
+                            <label for="email_1"> Re-Enter: </label>
+                            <input type="text" placeholder="Email" name="email_1" id="email_1" value=""/>
+                            <span class="errors"> * <?php
+                            if(isset($errors['email001'])){
+                                echo $errors['email001'];#empty
+                            }
 
+                            if(isset($errors['email002'])){
+                                echo $errors['email002'];#invalid
+                            }
+
+                            ?></span>
+                    </p>
+                    <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
+                    <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
+                         </form>
+
+    <p>
+        <h4>Change Password</h4>
+        <!-- Password Form --> 
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="pswdform">
+        
             <label for="pass">Password: </label>
             <input type="password" placeholder="Password" onfocus="this.value=''" name="pass" id="pass" value="<?php if(isset($_POST['pass'])); echo $_POST['pass']; ?>"/>
+
             <label for="passCheck">Re-enter Password: </label>
             <input type="password" placeholder="Password" onfocus="this.value=''" name="passCheck" id="passCheck" value="<?php if(isset($_POST['passCheck'])); echo $_POST['passCheck']; ?>
             "/>
+
             <!-- Password Validation -->
             <span class="errors"> * <?php
             if(isset($errors['pass001'])) echo $errors['pass001'];#empty
@@ -238,22 +246,22 @@ if($_POST){
                ?></span>
            </p>
            <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
-            <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
-</form>
-          
-            
-        </div>
+           <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
+       </form>
 
-        <hr>
 
-        <footer>
-            <p>&copy; D'AngeloTrudge 2018</p>
-        </footer>
-    </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+   </div>
 
-    <script src="js/vendor/bootstrap.min.js"></script>
+   <hr>
 
-    <script src="js/main.js"></script>
+   <footer>
+    <p>&copy; D'AngeloTrudge 2018</p>
+</footer>
+</div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+
+<script src="js/vendor/bootstrap.min.js"></script>
+
+<script src="js/main.js"></script>
 </body>
 </html>

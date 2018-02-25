@@ -168,7 +168,6 @@ if($_POST){
         				<span class="icon-bar"></span>
         			</button>
         			<a class="navbar-brand" href="/">Home</a>
-        			<a class="navbar-brand" href="/SSD1">SSD1</a>
         		</div>
         		<div id="navbar" class="navbar-collapse collapse">
         			<form class="navbar-form navbar-right" role="form">
