@@ -2,42 +2,89 @@
 modified version of list user
 selects from based on user name
 need to make a session variable to use to pull from DB
-need to research adding a user profile pic
+going to try to do profile editing on this page
+going to have fields hidden until a link is clicked
+modifying empty validation to skip updating field
 -->
 
+<?php
+if($_POST){
 
-<!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
-<head>
-    <meta charset="utf-8">
-    <meta https-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+    session_start();
 
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <style>
-    body {
-        padding-top: 50px;
-        padding-bottom: 20px;
+    $_SESSION['pass'] = $_POST['pass'];
+    $_SESSION['email'] = $_POST['email'];
+    $_SESSION['pic'] = $_POST['pic'];
+    
+        //Validation things 
+
+
+        $errors = array(); // array to hold errors
+
+//Password validation goes here
+        if(empty($_POST['pass'])){//empty
+            $errors['pass001'] = "Password is required";
+        }
+
+        if(!preg_match("/^[[a-zA-Z\d\\!@#$%^&*()-_<>]{8,12}$/", $_POST["pass"])){//password requirements 
+            $errors['pass002'] = "Min 8, Max 12, numbers, letters, special chars";//not fully done
+        }
+
+        if(!($_POST["pass"] == $_POST["passCheck"])){//makes sure password was entered correctly
+            $errors['pass003'] = "Password do not match";
+
+        }
+
+        //email validation
+        if(empty($_POST['email'])){
+            $errors['email001'] = "Email is requred";
+        }
+
+        //Email Formatting Validation
+        if(!preg_match("/^([A-Za-z0-9\.\-]{1,64})[@]([A-Za-z0-9\-]{1,188}\.)([A-Za-z\.]{1,9})$/", $_POST["email"])){
+            $errors['email002'] = "Valid email is required";
+        }
+
+        if(count($errors) == 0){
+            header("Location: /editProfile.php");
+
+            exit();
+        }
     }
-    table, td, tr{
-        border: 1px solid black;
-        width:500px;
-    }
-    th, td {
-       padding: 15px;
-       text-align: left;
-   }
-</style>
-<link rel="stylesheet" href="css/bootstrap-theme.min.css">
-<link rel="stylesheet" href="css/main.css">
+    ?>
 
-<script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    <!doctype html>
+    <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+    <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+    <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+    <!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta https-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <style>
+        body {
+            padding-top: 50px;
+            padding-bottom: 20px;
+        }
+        table, td, tr{
+            border: 1px solid black;
+            width:500px;
+        }
+        th, td {
+         padding: 15px;
+         text-align: left;
+     }
+ </style>
+ <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+ <link rel="stylesheet" href="css/main.css">
+
+ <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 </head>
 <body>
         <!--[if lt IE 8]>
@@ -78,63 +125,142 @@ need to research adding a user profile pic
                     <!--
                         Profile pic goes here
                     -->
+<!--
+                    <table>     
 
-                    <table>                   
-                        <?php
+
+                        <tr>
+                         <th><h4> Username       </h4></th>
+                         <th><h4> Email          </h4></th>
+                         <th><h4> Address        </h4></th>
+                         <th><h4> City           </h4></th>
+                         <th><h4> Postal Code    </h4></th>
+                         <th><h4> Phone Number   </h4></th>
+                         <th><h4> Bio            </h4></th>
+                         </tr>          
+
+                         <tr>      -->
+                            <?php
+                        /*
                 //debugging stuff???
                         ini_set('display_errors', 'On');
                         error_reporting(E_ALL);
+
                     //database connection
-                        $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=select") or die ("connection refused");
+                        $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=select") 
+                        or die ("connection refused");
 
                         $stmtVal = 'tjon';
-/*
-                    $data = pg_prepare($conn, "SELECT", 'SELECT (uname, pass, email, sname, snum, city, province, pcode, pnum, bio) FROM users WHERE uname = $1');//test variable
 
-                     $rtn = pg_execute($conn, "SELECT", $stmtVal) or die(echo pg_last_error($conn));
+                    $pre = pg_prepare($conn, "SELECT", 'SELECT (uname, email, sname, snum, city, province, pcode, pnum, bio) FROM users WHERE uname = $1');//test variable
 
-                     $data = pg_fetch_assoc($rtn);
-                   */
+                    // $rtn = pg_execute($conn, "SELECT", $stmtVal) or die(echo "pg_last_error($conn)");
+
+                   
+                
 
                      $rtn = pg_query($conn, 'SELECT (uname, email, sname, snum, city, province, pcode, pnum, bio) FROM users WHERE uname = tjon');//test variable
                     
-                       while ($data = pg_fetch_assoc($rtn)) {
-                        echo"<tr>";
-                        echo "<td><h4> Username       </h4></td>";
-                        echo "<td><h4> Email          </h4></td>";
-                        echo "<td><h4> Address        </h4></td>";
-                        echo "<td><h4> City           </h4></td>";
-                        echo "<td><h4> Postal Code    </h4></td>";
-                        echo "<td><h4> Phone Number   </h4></td>";
-                        echo "<td><h4> Bio            </h4></td>";
-                        echo "</tr>";                     
+                       $data = pg_fetch_assoc($rtn);
 
-                        echo"<tr>";
+
+                        /*
                         echo "<td><h5>" . $data['uname'] .    "</h5></td>";
                         echo "<td><h5>" . $data['email'] .    "</h5></td>";
-                        echo "<td><h5>" . $data['snum']  . " " . $rtn['sname'] . "</h5></td>";//". . "     
+                        echo "<td><h5>" . $data['snum']  . " " . $data['sname'] . "</h5></td>";   
                         echo "<td><h5>" . $data['city'] . ", " . $data['province'] . "</h5></td>";
                         echo "<td><h5>" . $data['pcode'] .    "</h5></td>";
                         echo "<td><h5>" . $data['pnum'] .     "</h5></td>";
                         echo "<td><h5>" . $data['bio']   .    "</h5></td>";
-                        echo"</tr>"; 
-                    }
+                      
+                        echo $data['uname'];
+                        echo $data['email'];
+                        echo $data['snum'];
+                        echo $data['sname'];
+                        echo $data['city'] . ", " . echo $data['province'];
+                        echo $data['pcode'];
+                        echo $data['pnum'];
+                        echo $data['bio'];
+                    
                     
 
-                pg_close($conn);                               
+                pg_close($conn);   
+                */                            
                 ?>
-            </table>
+          <!--  </tr>
+          </table> -->
+          <h3>Profile Options</h3>
+          <div>
+            <!-- user pic form-->
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="pform">
+                <p>
+                    <label for="pic"> Upload Profile Picture: </label>
+                    <input type="file" name="pic" id="pic" value="<?php if(isset($_POST['pic'])); echo $_POST['pic']?>"/>
+                </p>
+                <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
+                <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
+            </form>
 
-            <hr>
+            <p>
+                <!-- email Form -->
+                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="pform">
+                    <h4>Change Email</h4>
+                    <label for="email"> Email: </label>
+                    <input type="text" placeholder="Email" name="email" id="email"value="<?php if(isset($_POST['email'])); echo $_POST['email']?>"/>
+                    <label for="email_1"> Re-Enter: </label>
+                    <input type="text" placeholder="Email" name="email_1" id="email_1"value=""/>
+                    <span class="errors"> * <?php
+                    if(isset($errors['email001'])){
+                echo $errors['email001'];#empty
+            }
 
-            <footer>
-                <p>&copy; D'AngeloTrudge 2018</p>
-            </footer>
-        </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+            if(isset($errors['email002'])){
+                echo $errors['email002'];#invalid
+            }
 
-        <script src="js/vendor/bootstrap.min.js"></script>
+            ?></span>
+        </p>
+        <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
+        <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
+    </form>
 
-        <script src="js/main.js"></script>
-    </body>
-    </html>
+    <p>
+        <h4>Change Password</h4>
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="pform">
+            <!-- Password Form --> 
+
+            <label for="pass">Password: </label>
+            <input type="password" placeholder="Password" onfocus="this.value=''" name="pass" id="pass" value="<?php if(isset($_POST['pass'])); echo $_POST['pass']; ?>"/>
+            <label for="passCheck">Re-enter Password: </label>
+            <input type="password" placeholder="Password" onfocus="this.value=''" name="passCheck" id="passCheck" value="<?php if(isset($_POST['passCheck'])); echo $_POST['passCheck']; ?>
+            "/>
+            <!-- Password Validation -->
+            <span class="errors"> * <?php
+            if(isset($errors['pass001'])) echo $errors['pass001'];#empty
+
+            if(isset($errors['pass002'])) echo $errors['pass002'];#should echo password requirements  
+
+               if(isset($errors['pass003'])) echo $errors['pass003'];#makes sure that passwords match
+
+               ?></span>
+           </p>
+           <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
+           <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
+       </form>
+
+
+   </div>
+
+   <hr>
+
+   <footer>
+    <p>&copy; D'AngeloTrudge 2018</p>
+</footer>
+</div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+
+<script src="js/vendor/bootstrap.min.js"></script>
+
+<script src="js/main.js"></script>
+</body>
+</html>
