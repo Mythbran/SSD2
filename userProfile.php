@@ -2,51 +2,52 @@
 modified version of list user
 selects from based on user name
 need to make a session variable to use to pull from DB
-throws data to editProfile.php
-table still not working
+trying to do everything on this pg again....
+we'll see how this goes.....
 -->
 
 <?php
 if($_POST){
-
     session_start();
+   $errors = array(); // array to hold errors
 
-    $_SESSION['pass'] = $_POST['pass'];
-    $_SESSION['email'] = $_POST['email'];
-    $_SESSION['pic'] = $_POST['pic'];
-    
+   $_SESSION['pic'] = $_POST['pic'];
+   $_SESSION['email'] = $_POST['email'];
+   $_SESSION['pass'] = $_POST['pass'];
         //Validation things 
+   
+
+           //pic validation
+   if(empty($_POST['pic'])){
+    $errors['pic001'] = "Picture is required";
+}
+
+        //email validation
+if(empty($_POST['email'])){
+    $errors['email001'] = "Email is required";
+}
+        //Email Formatting Validation
+if(!preg_match("/^([A-Za-z0-9\.\-]{1,64})[@]([A-Za-z0-9\-]{1,188}\.)([A-Za-z\.]{1,9})$/", $_POST["email"])){
+    $errors['email002'] = "Valid email is required";
+}
 
 
-        $errors = array(); // array to hold errors
 
-//Password validation goes here
+        //Password validation goes here
         if(empty($_POST['pass'])){//empty
             $errors['pass001'] = "Password is required";
         }
-
         if(!preg_match("/^[[a-zA-Z\d\\!@#$%^&*()-_<>]{8,12}$/", $_POST["pass"])){//password requirements 
             $errors['pass002'] = "Min 8, Max 12, numbers, letters, special chars";//not fully done
         }
-
         if(!($_POST["pass"] == $_POST["passCheck"])){//makes sure password was entered correctly
             $errors['pass003'] = "Password do not match";
-
         }
-
-        //email validation
-        if(empty($_POST['email'])){
-            $errors['email001'] = "Email is requred";
-        }
-
-        //Email Formatting Validation
-        if(!preg_match("/^([A-Za-z0-9\.\-]{1,64})[@]([A-Za-z0-9\-]{1,188}\.)([A-Za-z\.]{1,9})$/", $_POST["email"])){
-            $errors['email002'] = "Valid email is required";
-        }
+        
+        
 
         if(count($errors) == 0){
             header("Location: /editProfile.php");
-
             exit();
         }
     }
@@ -139,7 +140,7 @@ if($_POST){
 
                        <tr>     
                         <?php
-
+/*
                         //debugging stuff - printing in text box for some reason
                         ini_set('display_errors', 'On');
                         error_reporting(E_ALL);
@@ -148,21 +149,19 @@ if($_POST){
                         $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=select") 
                         or die ("connection refused");
 
-                        //$stmtVal = 'tjon';
+                        $stmtVal = array("tjon");
 
-                    $pre = pg_prepare($conn, "SELECT", 'SELECT (uname, email, sname, snum, city, province, pcode, pnum, bio) FROM users');
+                        $pre = pg_prepare($conn, "SELECT", 'SELECT (uname, email, sname, snum, city, province, pcode, pnum, bio) FROM users WHERE uname = $1');
 
 
-               // $rtn = pg_execute($conn, "SELECT", stmtVal) or die(echo "<h1>WRONG</h1>");
+                $rtn = pg_execute($conn, "SELECT", $stmtVal) or die("<h1>WRONG</h1>");
                  //PROBLEM IS RIGHT HERE ^^^^^^^^^
 
-                 //    $rtn = pg_query($conn, 'SELECT (uname, email, sname, snum, city, province, pcode, pnum, bio) FROM users LIMIT 1');//test variable*/
-                    
-                     // $data = pg_fetch_assoc($rtn);
+                     //  $rtn = pg_query($conn, 'SELECT (uname, email, sname, snum, city, province, pcode, pnum, bio) FROM users LIMIT 1');//test variable*
 
-
-                        /*
-                        echo "<td><h5>" . $data['uname'] .    "</h5></td>";
+                      $data = pg_fetch_assoc($rtn);
+ 
+                        echo "<td><h5>" . $data['uid'] . " " . $data['uname'] . "</h5></td>";
                         echo "<td><h5>" . $data['email'] .    "</h5></td>";
                         echo "<td><h5>" . $data['snum']  . " " . $data['sname'] . "</h5></td>";   
                         echo "<td><h5>" . $data['city'] . ", " . $data['province'] . "</h5></td>";
@@ -170,19 +169,8 @@ if($_POST){
                         echo "<td><h5>" . $data['pnum'] .     "</h5></td>";
                         echo "<td><h5>" . $data['bio']   .    "</h5></td>";
 
-                        echo $data['uname'];
-                        echo $data['email'];
-                        echo $data['snum'];
-                        echo $data['sname'];
-                        echo $data['city'] . ", " . echo $data['province'];
-                        echo $data['pcode'];
-                        echo $data['pnum'];
-                        echo $data['bio'];
-                */
-
-
                         pg_close($conn);   
-
+*/
                         ?>
                     </tr>
                 </table> 
@@ -197,19 +185,23 @@ if($_POST){
                         </p>
                         <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
                         <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
-                    </form>
+                        <span class="errors"> * <?php
+            if(isset($errors['pic001'])) echo $errors['pic001'];#empty
+            ?>
+        </span>
+    </form>
 
-                    <p>
-                        <!-- email Form -->
-                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="eform">
-                            <h4>Change Email</h4>
-                            <label for="email"> Email: </label>
-                            <input type="text" placeholder="Email" name="email" id="email" value="<?php if(isset($_POST['email'])); echo $_POST['email']?>"/>
+    <p>
+        <!-- email Form -->
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="eform">
+            <h4>Change Email</h4>
+            <label for="email"> Email: </label>
+            <input type="text" placeholder="Email" name="email" id="email" value="<?php if(isset($_POST['email'])); echo $_POST['email']?>"/>
 
-                            <label for="email_1"> Re-Enter: </label>
-                            <input type="text" placeholder="Email" name="email_1" id="email_1" value=""/>
-                            <span class="errors"> * <?php
-                            if(isset($errors['email001'])){
+            <label for="email_1"> Re-Enter: </label>
+            <input type="text" placeholder="Email" name="email_1" id="email_1" value=""/>
+            <span class="errors"> * <?php
+            if(isset($errors['email001'])){
                                 echo $errors['email001'];#empty
                             }
 
@@ -218,25 +210,25 @@ if($_POST){
                             }
 
                             ?></span>
-                    </p>
-                    <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
-                    <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
-                         </form>
+                        </p>
+                        <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
+                        <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
+                    </form>
 
-    <p>
-        <h4>Change Password</h4>
-        <!-- Password Form --> 
-        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="pswdform">
-        
-            <label for="pass">Password: </label>
-            <input type="password" placeholder="Password" onfocus="this.value=''" name="pass" id="pass" value="<?php if(isset($_POST['pass'])); echo $_POST['pass']; ?>"/>
+                    <p>
+                        <h4>Change Password</h4>
+                        <!-- Password Form --> 
+                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="passform">
 
-            <label for="passCheck">Re-enter Password: </label>
-            <input type="password" placeholder="Password" onfocus="this.value=''" name="passCheck" id="passCheck" value="<?php if(isset($_POST['passCheck'])); echo $_POST['passCheck']; ?>
-            "/>
+                            <label for="pass">Password: </label>
+                            <input type="password" placeholder="Password" onfocus="this.value=''" name="pass" id="pass" value="<?php if(isset($_POST['pass'])); echo $_POST['pass']; ?>"/>
 
-            <!-- Password Validation -->
-            <span class="errors"> * <?php
+                            <label for="passCheck">Re-enter Password: </label>
+                            <input type="password" placeholder="Password" onfocus="this.value=''" name="passCheck" id="passCheck" value="<?php if(isset($_POST['passCheck'])); echo $_POST['passCheck']; ?>
+                            "/>
+
+                            <!-- Password Validation -->
+                            <span class="errors"> * <?php
             if(isset($errors['pass001'])) echo $errors['pass001'];#empty
 
             if(isset($errors['pass002'])) echo $errors['pass002'];#should echo password requirements  

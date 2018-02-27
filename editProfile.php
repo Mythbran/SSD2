@@ -79,14 +79,14 @@ uses series of IF statements
 
         			session_start();
         			$conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdinsert password=insert")or die ("Connection Refused");
-$_SESSION[uname] = "tjon";
+        			$_SESSION['uname'] = "tjon";
 
         			if (!$conn) {//makes sure connection was successful
         				echo pg_last_error($conn);
 
         			} elseif(!empty($_SESSION)){//makes sure pgs cant be maniplulated
 
-        				if(isset($_SESSION[pic])){//edits user pic
+        				if(isset($_SESSION['pic'])){//edits user pic
 
         					$stmtVal = array("$_SESSION[pic]");
 
@@ -110,7 +110,9 @@ $_SESSION[uname] = "tjon";
 
         					}
 
-        					} elseif (isset($_SESSION[email])) {//edits email
+        					} 
+
+        					if (isset($_SESSION['email'])) {//edits email
         						$stmtVal = array("$_SESSION[pic]", "$_SESSION[uname]");
 
            				 	//prepared statement & query string            
@@ -125,11 +127,13 @@ $_SESSION[uname] = "tjon";
         							echo "<h2> The Following Information Was Updated In The Database</h2>";
         							echo "<br>";
 
-        							echo "<h3>Email: " . $_SESSION[email] . "</h3>";
+        							echo "<h3>Email: " . $_SESSION['email'] . "</h3>";
 
         							echo "<br><br>";
 
-        					} elseif (isset($_SESSION[pass])) {//edits password
+        					}
+
+        					if (isset($_SESSION['pass'])) {//edits password
                         		# code...
         					} else{//incase something goes wrong
         						echo "<h3> Something Went Wrong...</h3>";
@@ -157,7 +161,7 @@ $_SESSION[uname] = "tjon";
 
 
 <p><a class="btn btn-default" href="/" role="button">Home &raquo;</a></p>
-<p><a class="btn btn-default" href="/userProfile" role="button">User Profile &raquo;</a></p>
+<p><a class="btn btn-default" href="/userProfile.php" role="button">User Profile &raquo;</a></p>
 <hr>
 
 <footer>
