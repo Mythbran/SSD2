@@ -79,8 +79,8 @@ uses series of IF statements
 
         			session_start();
         			$conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdinsert password=insert")or die ("Connection Refused");
+$_SESSION[uname] = "tjon";
 
-       				 
         			if (!$conn) {//makes sure connection was successful
         				echo pg_last_error($conn);
 
@@ -90,12 +90,12 @@ uses series of IF statements
 
         					$stmtVal = array("$_SESSION[pic]");
 
-            //prepared statement & query string            
+           				 	//prepared statement & query string            
         					$result = pg_prepare($conn, "INSERT", 'INSERT INTO pics (pic) VALUES ($1)');
 
         					$rtn = pg_execute($conn, "INSERT", $stmtVal[0]);
 
-            //makes sure that the insert executed properly
+            				//makes sure that the insert executed properly
         					if (!$rtn) {
         						echo pg_last_error($conn);
         					} else {
@@ -108,10 +108,27 @@ uses series of IF statements
 
                                 //echo "<img src="$_SESSION[pic]">";
 
-
+        					}
 
         					} elseif (isset($_SESSION[email])) {//edits email
-                        		# code...
+        						$stmtVal = array("$_SESSION[pic]", "$_SESSION[uname]");
+
+           				 	//prepared statement & query string            
+        						$result = pg_prepare($conn, "UPDATE", 'UPDATE users SET email = $1 WHERE uname = $2');
+
+        						$rtn = pg_execute($conn, "UPDATE", $stmtVal);
+
+            				//makes sure that the insert executed properly
+        						if (!$rtn) {
+        							echo pg_last_error($conn);
+        						} else {
+        							echo "<h2> The Following Information Was Updated In The Database</h2>";
+        							echo "<br>";
+
+        							echo "<h3>Email: " . $_SESSION[email] . "</h3>";
+
+        							echo "<br><br>";
+
         					} elseif (isset($_SESSION[pass])) {//edits password
                         		# code...
         					} else{//incase something goes wrong
@@ -128,7 +145,7 @@ uses series of IF statements
         }
         else{
         	echo "<p><h2>Error: Please login before accessing this page.</h2></p>"; 
-        	echo "<p><a class='btn btn-default' href='/' role'button'> New User &raquo; </a></p>"; //should redirect to login page     
+        	echo "<p><a class='btn btn-default' href='/newuser.php' role'button'> New User &raquo; </a></p>"; //should redirect to login page     
         }
 
         pg_close($conn);
