@@ -23,26 +23,7 @@
 
     } elseif(!empty($_SESSION)){
 
-      $stmtVal = array("$_SESSION[uname]", "$passHashed");
-            //prepared statement & query string            
-      $result = pg_prepare($conn, "SELECT", "SELECT count(*) FROM users WHERE uname == '$1' && pass == '$2'");
 
-      $rtn = pg_execute($conn, "SELECT", $stmtVal);
-
-            //makes sure that the insert executed properly
-      switch ($rtn) {
-        case '1':
-          header("Location: /SSD2/")
-          break;
-        case '0':
-          //Found none
-          $errors['nouser'] = "The username and password combination was incorrect";
-          break;
-        
-        default:
-          //Really don't know what went wrong 
-          $errors['serverError'] = "Internal server error";
-          break;
       }
 
     } else {
