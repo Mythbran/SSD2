@@ -1,40 +1,104 @@
-<?php
-session_start();
-ini_set('display_errors', 'On');
-error_reporting(E_ALL);
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta https-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 
-if (!isset($_SESSION['email']) && !isset($_SESSION['pass'])) {//not sure why session isnt being passed
-  //$email = $_SESSION['email'];
- // $pass = $_SESSION['pass'];
-$email = 'nojt@nojt.com';
-$pass = 'tjontjonsdscdc';
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <style>
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+            }
+        </style>
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/main.css">
 
-  $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=select")or die ("Connection Refused");
+        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Home</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right" role="form">
+            <div class="form-group">
+              <input type="text" placeholder="Email" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="password" placeholder="Password" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">Sign in</button>
+          </form>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
 
-                        if(!empty($_SESSION)){//not the proper way just trying to get it to work
-                        	$stmtVal = array("$email","$pass");
-                        	$pre = pg_prepare($conn, "SELECT", 'SELECT (uid, uname) FROM users WHERE email = $1 AND pass = $2');
-                        	$rtn = pg_execute($conn, "SELECT", $stmtVal);
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Login</h1>
+      </div>
+    </div>
 
-                        	if (!$rtn) {//records not found, redirects back
-                                header("Location: userLogin.php");
-                                exit();                      		
-                            }else{
-                               
-                                echo "ypu shudnt be here";
-                                $_SESSION['SESSION_ID'] = $rtn['uid'];//uses uid as the session id
-                                unset($_POST['email']);
-                                unset($_POST['pass']);
-                                unset($email);
-                                unset($pass);
-                                header("Location: userProfile.php");
-                                exit();
-                            }
-                        }
-                  
-                    else{
-                       // echo "SOMETHING WENT WRONG FAM";
-                    header("Location: userLogin.php");
-                    }
-}
-?>
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-5">
+        	<!-- User Form --> 
+        		<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="uform">
+        			<!-- Username Form --> 
+        			<p>
+        				<label for="uname">Username: </label>
+        				<input type="text" name="uname" id="uname" />
+       					<!-- Username Validation -->
+       				
+					</p>      	
+					<!-- Username Form --> 
+        			<p>
+        				<label for="pass">password: </label>
+        				<input type="password" name="pass" id="pass"/>
+       					<!-- Username Validation -->
+       				
+					</p>      	
+					<a href="/passForget.php">Forgot Password</a>
+
+					<p>
+					<input class="btn btn-default" type="submit" value="Submit &raquo;"/>
+					<input class="btn btn-default" type="reset" value="Reset &raquo;"/>
+					<a class="btn btn-default" href="/SSD2" role="button">Back &raquo;</a>
+					</p>
+        	</div>
+       </div>
+
+      <hr>
+
+      <footer>
+        <p>&copy; D'AngeloTrudge 2018</p>
+      </footer>
+    </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+
+        <script src="js/vendor/bootstrap.min.js"></script>
+
+        <script src="js/main.js"></script>
+    </body>
+</html>
