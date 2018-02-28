@@ -1,3 +1,31 @@
+<?php
+	if($_POST){
+
+		$errors = array(); 
+		//username validation 
+		if(empty($_POST['uname'])){
+			$errors['uname001'] = "Username is required";
+		}
+	# validation = ereg("[A-Za-z]{1,25}")
+		if(!preg_match("/^[a-zA-Z]{1,25}$/", $_POST["uname"])){
+			$errors['uname002'] = "Only letters are allowed. Max 25 characters";
+		}
+	//Password validation goes here
+		if(empty($_POST['pass'])){//empty
+			$errors['pass001'] = "Password is required";
+		}
+
+		//IF DOESN'T MATCH IN DATABSE 
+
+		if(count($errors) == 0){
+			session_start();
+			$_SESSION['uname'] = $_POST['uname'];
+			header("Location: /SSD2/userLogin.php");
+			
+			exit();
+		}
+	}
+?>
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
@@ -68,23 +96,33 @@
         			<!-- Username Form --> 
         			<p>
         				<label for="uname">Username: </label>
-        				<input type="text" name="uname" id="uname" />
+        				<input type="text" name="uname" id="uname"/>
        					<!-- Username Validation -->
-       				
+       					<span class="errors"> * <?php
+							if(isset($errors['uname001'])) echo $errors['uname001'];#empty
+
+							if(isset($errors['uname002'])) echo $errors['uname002'];#A-Za-z 1-25 length      
+						?></span>
 					</p>      	
 					<!-- Username Form --> 
         			<p>
         				<label for="pass">password: </label>
         				<input type="password" name="pass" id="pass"/>
-       					<!-- Username Validation -->
-       				
+        				<!--PASSWORD VALIDATION -->
+							<span class="errors"> * <?php
+								if(isset($errors['pass001'])){
+            						echo $errors['pass001'];#empty
+            					}
+							?></span></br>
+       					<a href="/passForget.php">Forgot Password</a>
+       					
+       					
 					</p>      	
-					<a href="/passForget.php">Forgot Password</a>
-
+					
 					<p>
 					<input class="btn btn-default" type="submit" value="Submit &raquo;"/>
 					<input class="btn btn-default" type="reset" value="Reset &raquo;"/>
-					<a class="btn btn-default" href="/SSD2" role="button">Back &raquo;</a>
+					<a class="btn btn-default" href="/SSD2" role="button">Back &raquo;"</a>
 					</p>
         	</div>
        </div>
