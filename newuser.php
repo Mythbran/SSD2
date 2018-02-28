@@ -52,7 +52,7 @@ if($_POST){
 			$_SESSION['uname'] = $_POST['uname'];
 			$_SESSION['pass'] = password_hash($_POST['pass'], PASSWORD_DEFAULT);
 			$_SESSION['email'] = $_POST['email'];
-			header("Location: /SSD2/");
+			header("Location: /SSD2/userSuccess.php");
 			
 			exit();
 		}

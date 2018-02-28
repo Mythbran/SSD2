@@ -77,7 +77,7 @@ gotta get started on access control............
                         <?php
                         session_start();
                         $temp = $_SESSION['uname'];
-                        $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdinsert password=insert")or die ("Connection Refused");
+                        $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdinsert password=Jxem877&") or die ("Connection Refused");
 
         //makes sure connection was successful
                         if (!$conn) {   
@@ -85,10 +85,10 @@ gotta get started on access control............
 
                         } elseif(!empty($_SESSION)){
 
-                            $stmtVal = array("$_SESSION[uname]", "$_SESSION[pass]", "$_SESSION[email]", "$_SESSION[sname]", "$_SESSION[snum]", "$_SESSION[city]", "$_SESSION[province]", "$_SESSION[pcode]", "$_SESSION[pnum]", "$_SESSION[bio]");
+                            $stmtVal = array("$_SESSION[uname]", "$_SESSION[pass]", "$_SESSION[email]");
 
             //prepared statement & query string            
-                            $result = pg_prepare($conn, "INSERT", 'INSERT INTO users (uname, pass, email, sname, snum, city, province, pcode, pnum, bio) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)');
+                            $result = pg_prepare($conn, "INSERT", 'INSERT INTO users (uname, pass, email) VALUES ($1, $2, $3)');
 
                             $rtn = pg_execute($conn, "INSERT", $stmtVal);
 
@@ -115,8 +115,6 @@ gotta get started on access control............
             }//end of else
 
             unset($_SESSION['uname']);
-            unset($_SESSION['pass']);
-            unset($_SESSION['email']);
 
         }
         else{
