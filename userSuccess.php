@@ -85,10 +85,10 @@ gotta get started on access control............
 
                         } elseif(!empty($_SESSION)){
 
-                            $stmtVal = array("$_SESSION[uname]", "$_SESSION[pass]", "$_SESSION[email]");
+                            $stmtVal = array("$_SESSION[uname]", "$_SESSION[pass]", "$_SESSION[email]", "FALSE", "FALSE" );
 
             //prepared statement & query string            
-                            $result = pg_prepare($conn, "INSERT", 'INSERT INTO users (uname, pass, email) VALUES ($1, $2, $3)');
+                            $result = pg_prepare($conn, "INSERT", 'INSERT INTO users (uname, pass, email, admin, active) VALUES ($1, $2, $3), $4, $5');
 
                             $rtn = pg_execute($conn, "INSERT", $stmtVal);
 
@@ -102,19 +102,25 @@ gotta get started on access control............
                                 echo "<th><h4> Username </h4></th>";
                                 echo "<th><h4> Password </h4></th>";
                                 echo "<th><h4> Email </h4></th>";
+                                echo "<th><h4> Admin </h4></th>";
+                                echo "<th><h4> Active </h4></th>";
                                 echo "</tr>";
 
                                 echo "<tr>";
                                 echo "<td><h5> $_SESSION[uname]</h5></td>";
                                 echo "<td><h5> $_SESSION[pass]</h5></td>";
                                 echo "<td><h5> $_SESSION[email]</h5></td>";
+                                echo "<th><h4> FALSE </h4></th>";
+                                echo "<th><h4> FALSE </h4></th>";
                                 echo "</tr>";
 
 
 
             }//end of else
-
-            unset($_SESSION['uname']);
+            unset($_SESSION['pass']);
+            unset($_SESSION['email']);
+            $_SESSION['active'] = "FALSE";
+            $_SESSION['admin'] =  "FALSE";
 
         }
         else{
