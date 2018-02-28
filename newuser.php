@@ -33,7 +33,7 @@ if($_POST){
 
 		if(!($_POST["pass"] == $_POST["passCheck"])){//makes sure password was entered correctly
 			$errors['pass003'] = "Password do not match";
-
+			
 		}
 
 		//email validation
@@ -46,21 +46,16 @@ if($_POST){
 			$errors['email002'] = "Valid email is required";
 		}
 
+
 		if(count($errors) == 0){
 			session_start();
 			$_SESSION['uname'] = $_POST['uname'];
-			$_SESSION['pass'] = $_POST['pass'];
+			$_SESSION['pass'] = password_hash($_POST['pass'], PASSWORD_DEFAULT);
 			$_SESSION['email'] = $_POST['email'];
-			header("Location: /SSD2/userAdded.php");
+			header("Location: /SSD2/");
 			
 			exit();
 		}
-
-		else(){
-			echo "Something Broke";
-		}
-
-
 
     }
 ?>
@@ -137,24 +132,22 @@ if($_POST){
 
         					<!-- Username Validation -->
         					<span class="errors"> * <?php
-			if(isset($errors['uname001'])) echo $errors['uname001'];#empty
+								if(isset($errors['uname001'])) echo $errors['uname001'];#empty
 
-			if(isset($errors['uname002'])) echo $errors['uname002'];#A-Za-z 1-25 length      
+								if(isset($errors['uname002'])) echo $errors['uname002'];#A-Za-z 1-25 length      
 
 
-			?></span>
+							?></span>
 		</p> 
 
 		<!-- Password Form --> 
-		<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="uform">
 			<p>
 				<label for="pass">Password: </label>
-				<input type="password" placeholder="Password" onfocus="this.value=''" name="pass" id="pass" value="<?php if(isset($_POST['pass'])); echo $_POST['pass']; ?>"/> *
+				<input type="password" placeholder="Password" name="pass" id="pass" /> *
 			</p>
 			<p>	
 				<label for="passCheck">Re-enter Password: </label>
-				<input type="password" placeholder="Password" onfocus="this.value=''" name="passCheck" id="passCheck" value="<?php if(isset($_POST['passCheck'])); echo $_POST['passCheck']; ?>
-"/>
+				<input type="password" placeholder="Password" name="passCheck" id="passCheck" />
 				<!-- Password Validation -->
 				<span class="errors"> * <?php
 			if(isset($errors['pass001'])) echo $errors['pass001'];#empty
@@ -183,7 +176,7 @@ if($_POST){
 		
 		<input class="btn btn-default" type="submit" value="Submit &raquo;"/>
 		<input class="btn btn-default" type="reset" value="Reset &raquo;"/>
-		<a class="btn btn-default" href="/SSD1" role="button">Back &raquo;</a>
+		<a class="btn btn-default" href="/SSD2" role="button">Back &raquo;</a>
 	</form>
 
 	<hr>

@@ -1,6 +1,6 @@
 <?php
 	if($_POST){
-
+    $passHashed = password_hash($_POST['pass'], PASSWORD_DEFAULT);
 		$errors = array(); 
 		//username validation 
 		if(empty($_POST['uname'])){
