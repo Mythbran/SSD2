@@ -16,7 +16,7 @@
 		}
 
     //CHECKING CREDENTIALS 
-    $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Jxem877&") or die ("Connection Refused");
+    $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723") or die ("Connection Refused");
         //makes sure connection was successful
     if (!$conn) {   
       $errors['conn'] = "$conn";
