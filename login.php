@@ -15,6 +15,44 @@
 			$errors['pass001'] = "Password is required";
 		}
 
+    //CHECKING CREDENTIALS 
+    $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Jxem877&") or die ("Connection Refused");
+        //makes sure connection was successful
+    if (!$conn) {   
+      $errors['conn'] = "$conn";
+
+    } elseif(!empty($_SESSION)){
+
+      $stmtVal = array("$_SESSION[uname]", "$passHashed");
+            //prepared statement & query string            
+      $result = pg_prepare($conn, "SELECT", "SELECT count(*) FROM users WHERE uname == '$1' && pass == '$2'");
+
+      $rtn = pg_execute($conn, "SELECT", $stmtVal);
+
+            //makes sure that the insert executed properly
+      switch ($rtn) {
+        case '1':
+          //found one
+          break;
+        case '0':
+          //Found none
+          $errors['nouser'] = "The username and password combination was incorrect";
+          break;
+        
+        default:
+          //Really don't know what went wrong 
+          $errors['serverError'] = "Internal server error";
+          break;
+      }
+
+    } else {
+      $errors['defaulError'] = "An unknown error has occured";
+
+
+    }//end of else
+    pg_close($conn);
+ 
+     unset($_SESSION['pass']);      
 		//IF DOESN'T MATCH IN DATABSE 
 
 		if(count($errors) == 0){
