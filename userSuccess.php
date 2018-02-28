@@ -76,7 +76,7 @@ gotta get started on access control............
                     <table>
                         <?php
                         session_start();
-                        
+                        $temp = $_SESSION['uname'];
                         $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdinsert password=Jxem877&") or die ("Connection Refused");
 
         //makes sure connection was successful
