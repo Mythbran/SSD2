@@ -32,7 +32,7 @@
             //makes sure that the insert executed properly
       switch ($rtn) {
         case '1':
-          //found one
+          header("Location: /SSD2/")
           break;
         case '0':
           //Found none
