@@ -131,6 +131,14 @@
         <div class="col-md-5">
         	<!-- User Form --> 
         		<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="uform">
+
+              <span class="errors"> * <?php<?php
+                if(isset($errors['conn'])) echo $errors['conn'];#Conection error
+                if(isset($errors['nouser'])) echo $errors['nouser'];#nouserfound
+                if(isset($errors['serverError'])) echo $errors['serverError'];#servererror
+                if(isset($errors['defaultError'])) echo $errors['defaultError'];#unidentified error
+
+              ?></span>
         			<!-- Username Form --> 
         			<p>
         				<label for="uname">Username: </label>
