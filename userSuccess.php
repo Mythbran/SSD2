@@ -88,7 +88,7 @@ gotta get started on access control............
                             $stmtVal = array("$_SESSION[uname]", "$_SESSION[pass]", "$_SESSION[email]", "FALSE", "FALSE" );
 
             //prepared statement & query string            
-                            $result = pg_prepare($conn, "INSERT", 'INSERT INTO users (uname, pass, email, admin, active) VALUES ($1, $2, $3, $4, $5');
+                            $result = pg_prepare($conn, "INSERT", 'INSERT INTO users (uname, pass, email, admin, active) VALUES ($1, $2, $3, $4, $5)');
 
                             $rtn = pg_execute($conn, "INSERT", $stmtVal);
 
