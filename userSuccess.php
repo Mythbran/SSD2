@@ -102,26 +102,12 @@ gotta get started on access control............
                                 echo "<th><h4> Username </h4></th>";
                                 echo "<th><h4> Password </h4></th>";
                                 echo "<th><h4> Email </h4></th>";
-                                echo "<th><h4> House Number </h4></th>";
-                                echo "<th><h4> Street Name </h4></th>";
-                                echo "<th><h4> City </h4></th>";
-                                echo "<th><h4> Province </h4></th>";
-                                echo "<th><h4> Postal Code </h4></th>";
-                                echo "<th><h4> Phone Number </h4></th>";
-                                echo "<th><h4> Bio </h4></th>";
                                 echo "</tr>";
 
                                 echo "<tr>";
                                 echo "<td><h5> $_SESSION[uname]</h5></td>";
                                 echo "<td><h5> $_SESSION[pass]</h5></td>";
                                 echo "<td><h5> $_SESSION[email]</h5></td>";
-                                echo "<td><h5> $_SESSION[snum]</h5></td>";
-                                echo "<td><h5> $_SESSION[sname]</h5></td>";
-                                echo "<td><h5> $_SESSION[city]</h5></td>";
-                                echo "<td><h5> $_SESSION[province]</h5></td>";
-                                echo "<td><h5> $_SESSION[pcode]</h5></td>";
-                                echo "<td><h5> $_SESSION[pnum]</h5></td>";
-                                echo "<td><h5> $_SESSION[bio]</h5></td>";
                                 echo "</tr>";
 
 
@@ -131,13 +117,6 @@ gotta get started on access control............
             unset($_SESSION['uname']);
             unset($_SESSION['pass']);
             unset($_SESSION['email']);
-            unset($_SESSION['snum']);
-            unset($_SESSION['sname']);
-            unset($_SESSION['city']);
-            unset($_SESSION['province']);
-            unset($_SESSION['pnum']);
-            unset($_SESSION['bio']);
-            unset($_SESSION['pcode']);
 
         }
         else{
