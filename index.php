@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
@@ -59,6 +63,14 @@
         <p>This is a live demo for Assignment 2 of Secure Software Development</p>
         <P>
            Created by Matthew D'Angelo and Tjon Trudge
+
+        </p>
+        <p>
+          <?php
+            echo "Logged in user is ". $_SESSION['uname'];
+            echo "And his email is ". $_SESSION['email'];
+          ?>
+
         </p>
       </div>
     </div>
@@ -70,6 +82,7 @@
           <h2>New User</h2>
           <p>Create a new user below(Going to move to user/pass up there ^)</p>
           <p><a class="btn btn-default" href="newuser.php" role="button">New User &raquo;</a></p>
+
         </div>
         <div class="col-md-4">
           <h2>NO ACCESS CONTROL TESTING USERPROFILE</h2>
