@@ -165,9 +165,9 @@ if(!preg_match("/^([A-Za-z0-9\.\-]{1,64})[@]([A-Za-z0-9\-]{1,188}\.)([A-Za-z\.]{
                     }else{
                       $data = pg_fetch_result($rtn,0);
 
-                      var_dump($data);
+                      var_dump($data);//fine here
                       echo "<br>";
-                      echo $data[1];
+                      echo $data[1];//messed up from here onwards
                         echo "<td><h5>  $data[0] </h5></td>";
                         echo "<td><h5>  $data[1] </h5></td>";
                         echo "<td><h5>  $data[2] </h5></td>";
