@@ -15,7 +15,7 @@ if($_POST){
    $_SESSION['email'] = $_POST['email'];
    $_SESSION['pass'] = $_POST['pass'];
         //Validation things 
-   
+
 
            //pic validation
    if(empty($_POST['pic'])){
@@ -43,8 +43,8 @@ if(!preg_match("/^([A-Za-z0-9\.\-]{1,64})[@]([A-Za-z0-9\-]{1,188}\.)([A-Za-z\.]{
         if(!($_POST["pass"] == $_POST["passCheck"])){//makes sure password was entered correctly
             $errors['pass003'] = "Password do not match";
         }
-        
-        
+
+
 
         if(count($errors) == 0){
             header("Location: /editProfile.php");
@@ -127,20 +127,21 @@ if(!preg_match("/^([A-Za-z0-9\.\-]{1,64})[@]([A-Za-z0-9\-]{1,188}\.)([A-Za-z\.]{
 
                     -->
 
-                    <table>     
+                    <table style="width: 100%">     
                         <tr><!--table header-->
-                           <th><h4> Username       </h4></th>
-                           <th><h4> Email          </h4></th>
-                           <th><h4> Address        </h4></th>
-                           <th><h4> City           </h4></th>
-                           <th><h4> Postal Code    </h4></th>
-                           <th><h4> Phone Number   </h4></th>
-                           <th><h4> Bio            </h4></th>
+                            <td><h4> User ID       </h4></td>
+                           <td><h4> Username       </h4></td>
+                           <td><h4> Email          </h4></td>
+                           <td><h4> Address        </h4></td>
+                           <td><h4> City           </h4></td>
+                           <td><h4> Postal Code    </h4></td>
+                           <td><h4> Phone Number   </h4></td>
+                           <td><h4> Bio            </h4></td>
                        </tr>          
 
                        <tr>     
                         <?php
-/*
+
                         //debugging stuff - printing in text box for some reason
                         ini_set('display_errors', 'On');
                         error_reporting(E_ALL);
@@ -149,28 +150,36 @@ if(!preg_match("/^([A-Za-z0-9\.\-]{1,64})[@]([A-Za-z0-9\-]{1,188}\.)([A-Za-z\.]{
                         $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=select") 
                         or die ("connection refused");
 
-                        $stmtVal = array("tjon");
+                        $stmtVal = array("gabe");
 
-                        $pre = pg_prepare($conn, "SELECT", 'SELECT (uname, email, sname, snum, city, province, pcode, pnum, bio) FROM users WHERE uname = $1');
+                        $pre = pg_prepare($conn, "SELECT", 'SELECT (uid, uname, email, sname, snum, city, province, pcode, pnum, bio) FROM users WHERE uname = $1');
 
 
                 $rtn = pg_execute($conn, "SELECT", $stmtVal) or die("<h1>WRONG</h1>");
                  //PROBLEM IS RIGHT HERE ^^^^^^^^^
 
-                     //  $rtn = pg_query($conn, 'SELECT (uname, email, sname, snum, city, province, pcode, pnum, bio) FROM users LIMIT 1');//test variable*
+                     // $rtn = pg_query($conn, 'SELECT (uname, email, sname, snum, city, province, pcode, pnum, bio) FROM users LIMIT 1');//test variable*
 
-                      $data = pg_fetch_assoc($rtn);
- 
-                        echo "<td><h5>" . $data['uid'] . " " . $data['uname'] . "</h5></td>";
-                        echo "<td><h5>" . $data['email'] .    "</h5></td>";
-                        echo "<td><h5>" . $data['snum']  . " " . $data['sname'] . "</h5></td>";   
-                        echo "<td><h5>" . $data['city'] . ", " . $data['province'] . "</h5></td>";
-                        echo "<td><h5>" . $data['pcode'] .    "</h5></td>";
-                        echo "<td><h5>" . $data['pnum'] .     "</h5></td>";
-                        echo "<td><h5>" . $data['bio']   .    "</h5></td>";
+                    if ($rtn == FALSE) {
+                        echo "<h2>Wrong</h2>";
+                    }else{
+                      $data = pg_fetch_result($rtn,0);
 
+                      var_dump($data);
+                      echo "<br>";
+                      echo $data[1];
+                        echo "<td><h5>  $data[0] </h5></td>";
+                        echo "<td><h5>  $data[1] </h5></td>";
+                        echo "<td><h5>  $data[2] </h5></td>";
+                        echo "<td><h5>  $data[3] $data[4]  </h5></td>";   
+                        echo "<td><h5>  $data[5] , $data[6]  </h5></td>";
+                        echo "<td><h5>  $data[7] </h5></td>";
+                        echo "<td><h5>  $data[8] </h5></td>";
+                        echo "<td><h5>  $data[9] </h5></td>";
+                        
+                    }
                         pg_close($conn);   
-*/
+
                         ?>
                     </tr>
                 </table> 
