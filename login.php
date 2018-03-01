@@ -23,7 +23,7 @@
 
     } elseif($conn){
 
-      $result = pg_query($conn, 'SELECT * FROM users where uname = $_POST[uname]');
+      $result = pg_query($conn, "SELECT * FROM users where uname = 'mythbran' ");
 
       /*$stmtVal = array("$_SESSION[uname]");
 
