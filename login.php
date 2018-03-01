@@ -24,7 +24,7 @@
 
     } elseif($conn){
 
-      $result = pg_query($conn, "SELECT * FROM users where uname = 'mythbran' ");
+      $result = pg_query($conn, "SELECT * FROM users where uname = 'testacc' ");
 
       //$userPass = array($_POST['uname']);
 
