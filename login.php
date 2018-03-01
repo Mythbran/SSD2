@@ -27,7 +27,7 @@
 
       $stmtVal = array("$_SESSION[uname]");
 
-      $result = pg_prepare($conn, "SELECT", "SELECT pass FROM users where uname = 'mythbran' ");            
+      $result = pg_prepare($conn, "SELECT", "SELECT * FROM users where uname = 'mythbran' ");            
 
       $rtn = pg_execute($conn, "SELECT", $stmtVal);
 
