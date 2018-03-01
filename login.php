@@ -1,6 +1,7 @@
 <?php
 	if($_POST){
-    $passHashed = password_hash($_POST['pass'], PASSWORD_BCRYPT);
+    $password = $_POST['pass'];
+    $passHashed = password_hash($password, PASSWORD_BCRYPT);
     $password = $_POST['pass'];
 		$errors = array(); 
 		//username validation 
@@ -49,7 +50,7 @@
         //successful. No errors needing to be printed 
         $errors['invalidcred'] = "Worked";
       }else{
-        $errors['invalidcred'] = "Invalid credentials. Passed Password: " . $passHashed . " Pass from the dbase: " . $userPass . "" ;
+        $errors['invalidcred'] = "Invalid credentials. Passed Password: " . $password . " Pass from the dbase: " . $userPass . " Passed Pass Hashed: " . $passHashed . "" ;
       }
 
 
