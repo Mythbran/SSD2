@@ -21,15 +21,29 @@
     if (!$conn) {   
       $errors['conn'] = "$conn";
 
-    } elseif(!empty($_SESSION)){
+    } elseif($conn){
 
 
+
+      $stmtVal = array("$_SESSION[uname]");
+
+      $result = pg_prepare($conn, "SELECT", "SELECT pass FROM users where uname = $1");            
+
+      $rtn = pg_execute($conn, "SELECT", $stmtVal);
+
+      if(empty($result)){
+        $errors['nouser'] = "Account was not found";
+
+      }if(password_verify($_POST['pass'], $result)){
+        //successful. No errors needing to be printed 
+      }else{
+        $errors['invalidcred'] = "Invalid credentials";
       }
 
-    } else {
+
+
+    }else {
       $errors['defaulError'] = "An unknown error has occured";
-
-
     }//end of else
     pg_close($conn);
  
@@ -116,7 +130,7 @@
               <span class="errors"> <?php
                 if(isset($errors['conn'])) echo $errors['conn'];#Conection error
                 if(isset($errors['nouser'])) echo $errors['nouser'];#nouserfound
-                if(isset($errors['serverError'])) echo $errors['serverError'];#servererror
+                if(isset($errors['invalidcred'])) echo $errors['invalidcred'];#invalid credentials
                 if(isset($errors['defaultError'])) echo $errors['defaultError'];#unidentified error
 
               ?></span>
