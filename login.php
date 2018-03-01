@@ -25,7 +25,7 @@
 
       //$result = pg_query($conn, "SELECT * FROM users where uname = 'mythbran' ");
 
-      $userPass = array("$_SESSION[uname]");
+      $userPass = array($_SESSION['uname']);
 
       $result = pg_prepare($conn, "SELECT", "SELECT * FROM users where uname = 'mythbran' ");            
 
