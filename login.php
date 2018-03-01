@@ -38,7 +38,7 @@
       //$userPass2 = pg_fetch_result($result, 0, 1);
 
       while($rows = pg_fetch_assoc($result)){
-        $userPass3 = $rows['pass'];
+        $userPass = $rows['pass'];
       }
 
       if(empty($userPass)){
