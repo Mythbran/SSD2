@@ -31,7 +31,8 @@
 
       $rtn = pg_execute($conn, "SELECT", $stmtVal);
 
-      $userPass = pg_fetch_result($rtn, 0, 1);
+      $userPass = pg_fetch_array($rtn);
+      $userPass2 = pg_fetch_array($result);
 
 
       if(empty($userPass)){
@@ -41,7 +42,7 @@
         //successful. No errors needing to be printed 
         $errors['invalidCred'] = "Worked";
       }else{
-        $errors['invalidcred'] = "Invalid credentials" . $rtn . " " . $result . "";
+        $errors['invalidcred'] = "Invalid credentials. rtn: " . $rtn . " Result: " . $result . " UserPassRtn: " . $userPass ."userPassResult" . $userPass2 . "";
       }
 
 
