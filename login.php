@@ -31,9 +31,11 @@
 
       $rtn = pg_execute($conn, "SELECT", $stmtVal);
 
-      $userPass = pg_fetch_array($rtn);
-      $userPass2 = pg_fetch_array($result);
-
+      $userPass = var_dump($rtn);
+      $userPass2 = var_dump($result);
+      while($rows = pg_fetch_assoc($result)){
+        $userPass3 = $rows['pass'];
+      }
 
       if(empty($userPass)){
         $errors['nouser'] = "Account was not found";
@@ -42,7 +44,7 @@
         //successful. No errors needing to be printed 
         $errors['invalidCred'] = "Worked";
       }else{
-        $errors['invalidcred'] = "Invalid credentials. rtn: " . $rtn . " Result: " . $result . " UserPassRtn: " . $userPass ."userPassResult" . $userPass2 . "";
+        $errors['invalidcred'] = "Invalid credentials. rtn: " . $rtn . " Result: " . $result . " UserPassRtn: " . $userPass ."userPassResult" . $userPass2 . "userpass3: ". $userPass3 . "";
       }
 
 
