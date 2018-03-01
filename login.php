@@ -48,7 +48,7 @@
         //successful. No errors needing to be printed 
         $errors['invalidCred'] = "Worked";
       }else{
-        $errors['invalidcred'] = "Invalid credentials. rtn: " . $rtn . " Result: " . $result . " UserPassRtn: " . $userPass ."userPassResult " . $userPass2 . "userpass3: ". $userPass3 . "hashed pass:" . $passHashed. "";
+        $errors['invalidcred'] = "Invalid credentials. Passed Password: " . $_POST['pass'] . " Pass from the dbase: " . $userPass . "" ;
       }
 
 
