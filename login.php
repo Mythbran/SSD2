@@ -27,15 +27,16 @@
 
       $stmtVal = array("$_SESSION[uname]");
 
-      $result = pg_prepare($conn, "SELECT", "SELECT * FROM users where uname = 'mythbran' ");            
+      $result = pg_prepare($conn, "SELECT", "SELECT * FROM users where uname = mythbran ");            
 
-      $rtn = pg_execute($conn, "SELECT", $stmtVal);
+      $rtn = pg_execute($conn, "SELECT");
 
-      $value1 = pg_fetch_array($rtn);
-      $value2 = pg_fetch_array($result);
+      //$userPass = var_dump($value1);
+      //$userPass2 = var_dump($value2);
 
-      $userPass = var_dump($value1);
-      $userPass2 = var_dump($value2);
+      $userPass = pg_fetch_result($rtn, 0, 1);
+      $userPass2 = pg_fetch_result($result, 0, 1);
+
       while($rows = pg_fetch_assoc($result)){
         $userPass3 = $rows['pass'];
       }
