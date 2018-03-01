@@ -11,80 +11,90 @@ if($_POST){
     session_start();
    $errors = array(); // array to hold errors
 
-   $_SESSION['pic'] = $_POST['pic'];
-   $_SESSION['email'] = $_POST['email'];
-   $_SESSION['pass'] = $_POST['pass'];
         //Validation things 
 
+   if (isset($_POST['picform'])) {
 
            //pic validation
-   if(empty($_POST['pic'])){
+     if(empty($_POST['pic'])){
     $errors['pic001'] = "Picture is required";
-}
+     }
+     $_SESSION['pic'] = $_POST['pic'];
 
-        //email validation
-if(empty($_POST['email'])){
-    $errors['email001'] = "Email is required";
-}
+ }
+
+ elseif (isset($_POST['emailform'])) {
+
+      //email validation
+    if(empty($_POST['email'])){
+        $errors['email001'] = "Email is required";
+    }
         //Email Formatting Validation
-if(!preg_match("/^([A-Za-z0-9\.\-]{1,64})[@]([A-Za-z0-9\-]{1,188}\.)([A-Za-z\.]{1,9})$/", $_POST["email"])){
-    $errors['email002'] = "Valid email is required";
+    if(!preg_match("/^([A-Za-z0-9\.\-]{1,64})[@]([A-Za-z0-9\-]{1,188}\.)([A-Za-z\.]{1,9})$/", $_POST["email"])){
+        $errors['email002'] = "Valid email is required";
+    }
+
+    if(!($_POST["email"] == $_POST["emailCheck"])){//makes sure email was entered correctly
+            $errors['email003'] = "emails do not match";
+        }
+     $_SESSION['email'] = $_POST['email'];
 }
 
-
+elseif (isset($_POST['passform'])) {
 
         //Password validation goes here
         if(empty($_POST['pass'])){//empty
             $errors['pass001'] = "Password is required";
         }
-        if(!preg_match("/^[[a-zA-Z\d\\!@#$%^&*()-_<>]{8,12}$/", $_POST["pass"])){//password requirements 
+        if(!preg_match("/^[a-zA-Z\d\\!@#$%^&*()-_<>]{8,12}$/", $_POST["pass"])){//password requirements 
             $errors['pass002'] = "Min 8, Max 12, numbers, letters, special chars";//not fully done
         }
         if(!($_POST["pass"] == $_POST["passCheck"])){//makes sure password was entered correctly
             $errors['pass003'] = "Password do not match";
         }
+        $_SESSION['pass'] = $_POST['pass'];
 
-
-
-        if(count($errors) == 0){
-            header("Location: /editProfile.php");
-            exit();
-        }
     }
-    ?>
 
-    <!doctype html>
-    <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-    <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-    <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-    <!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta https-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+    if(count($errors) == 0 && (isset($_POST['picform']) || isset($_POST['emailform']) || isset($_POST['passform']))){
+        header("Location: login.php");
+        exit();
+    }
+}
+?>
 
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <style>
-        body {
-            padding-top: 50px;
-            padding-bottom: 20px;
-        }
-        table, td, tr{
-            border: 1px solid black;
-            width:500px;
-        }
-        th, td {
-           padding: 15px;
-           text-align: left;
-       }
-   </style>
-   <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-   <link rel="stylesheet" href="css/main.css">
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta https-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 
-   <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+    body {
+        padding-top: 50px;
+        padding-bottom: 20px;
+    }
+    table, td, tr{
+        border: 1px solid black;
+        width:500px;
+    }
+    th, td {
+       padding: 15px;
+       text-align: left;
+   }
+</style>
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="css/main.css">
+
+<script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 </head>
 <body>
         <!--[if lt IE 8]>
@@ -126,44 +136,44 @@ if(!preg_match("/^([A-Za-z0-9\.\-]{1,64})[@]([A-Za-z0-9\-]{1,188}\.)([A-Za-z\.]{
                         Profile pic goes here
 
                     -->
-   
-                        <?php
+
+                    <?php
 
                         //debugging stuff - printing in text box for some reason
-                        ini_set('display_errors', 'On');
-                        error_reporting(E_ALL);
+                     //   ini_set('display_errors', 'On');
+                       // error_reporting(E_ALL);
 
                         //database connection
-                        $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=select") 
-                        or die ("connection refused");
+                    $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=select") 
+                    or die ("connection refused");
 
-                        $stmtVal = array("tjon");
+                    $stmtVal = array("tjon");
 
-                        $pre = pg_prepare($conn, "SELECT", 'SELECT uname, email FROM users WHERE uname = $1');
+                    $pre = pg_prepare($conn, "SELECT", 'SELECT uname, email FROM users WHERE uname = $1');
 
-                $rtn = pg_execute($conn, "SELECT", $stmtVal) or die("Database Error. Contact Your Administer");
-               
-                      $data = pg_fetch_assoc($rtn);
+                    $rtn = pg_execute($conn, "SELECT", $stmtVal) or die("Database Error. Contact Your Administer");
+
+                    $data = pg_fetch_assoc($rtn);
 
                       //displays username and email
-                      echo "<h4>Username: " . $data['uname'] . "</h4>";
-                      echo "<h4>Email: " . $data['email'] . "</h4>";
+                    echo "<h4>Username: " . $data['uname'] . "</h4>";
+                    echo "<h4>Email: " . $data['email'] . "</h4>";
 
-                        pg_close($conn);   
+                    pg_close($conn);   
 
-                        ?>
+                    ?>
 
-                <h3>Profile Options</h3>
-                <div>
-                    <!-- user pic form-->
-                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="picform">
-                        <p>
-                            <label for="pic"> Upload Profile Picture: </label>
-                            <input type="file" name="pic" id="pic" value="<?php if(isset($_POST['pic'])); echo $_POST['pic']?>"/>
-                        </p>
-                        <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
-                        <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
-                        <span class="errors"> * <?php
+                    <h3>Profile Options</h3>
+                    <div>
+                        <!-- user pic form-->
+                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="picform">
+                            <p>
+                                <label for="pic"> Upload Profile Picture: </label>
+                                <input type="file" name="pic" id="pic" value="<?php if(isset($_POST['pic'])); echo $_POST['pic']?>"/>
+                            </p>
+                            <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
+                            <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
+                            <span class="errors"> * <?php
             if(isset($errors['pic001'])) echo $errors['pic001'];#empty
             ?>
         </span>
@@ -171,10 +181,10 @@ if(!preg_match("/^([A-Za-z0-9\.\-]{1,64})[@]([A-Za-z0-9\-]{1,188}\.)([A-Za-z\.]{
 
     <p>
         <!-- email Form -->
-        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="eform">
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="emailform">
             <h4>Change Email</h4>
             <label for="email"> Email: </label>
-            <input type="text" placeholder="Email" name="email" id="email" value="<?php if(isset($_POST['email'])); echo $_POST['email']?>"/>
+            <input type="text" placeholder="Email" name="email" id="email" value="<?php if(isset($_POST['email'])); echo $_POST['email']?>"/><br>
 
             <label for="email_1"> Re-Enter: </label>
             <input type="text" placeholder="Email" name="email_1" id="email_1" value=""/>
@@ -185,6 +195,9 @@ if(!preg_match("/^([A-Za-z0-9\.\-]{1,64})[@]([A-Za-z0-9\-]{1,188}\.)([A-Za-z\.]{
 
                             if(isset($errors['email002'])){
                                 echo $errors['email002'];#invalid
+                            }
+                            if(isset($errors['email003'])){
+                                echo $errors['email003'];#emailsdont match
                             }
 
                             ?></span>
@@ -199,10 +212,10 @@ if(!preg_match("/^([A-Za-z0-9\.\-]{1,64})[@]([A-Za-z0-9\-]{1,188}\.)([A-Za-z\.]{
                         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="passform">
 
                             <label for="pass">Password: </label>
-                            <input type="password" placeholder="Password" onfocus="this.value=''" name="pass" id="pass" value="<?php if(isset($_POST['pass'])); echo $_POST['pass']; ?>"/>
+                            <input type="password" placeholder="Password" name="pass" id="pass" value="<?php if(isset($_POST['pass'])); echo $_POST['pass']; ?>"/><br>
 
                             <label for="passCheck">Re-enter Password: </label>
-                            <input type="password" placeholder="Password" onfocus="this.value=''" name="passCheck" id="passCheck" value="<?php if(isset($_POST['passCheck'])); echo $_POST['passCheck']; ?>
+                            <input type="password" placeholder="Password" name="passCheck" id="passCheck" value="<?php if(isset($_POST['passCheck'])); echo $_POST['passCheck']; ?>
                             "/>
 
                             <!-- Password Validation -->
