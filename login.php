@@ -31,8 +31,11 @@
 
       $rtn = pg_execute($conn, "SELECT", $stmtVal);
 
-      $userPass = var_dump($rtn);
-      $userPass2 = var_dump($result);
+      $value1 = pg_fetch_array($rtn);
+      $value2 = pg_fetch_array($result);
+
+      $userPass = var_dump($value1);
+      $userPass2 = var_dump($value2);
       while($rows = pg_fetch_assoc($result)){
         $userPass3 = $rows['pass'];
       }
@@ -44,7 +47,7 @@
         //successful. No errors needing to be printed 
         $errors['invalidCred'] = "Worked";
       }else{
-        $errors['invalidcred'] = "Invalid credentials. rtn: " . $rtn . " Result: " . $result . " UserPassRtn: " . $userPass ."userPassResult" . $userPass2 . "userpass3: ". $userPass3 . "";
+        $errors['invalidcred'] = "Invalid credentials. rtn: " . $rtn . " Result: " . $result . " UserPassRtn: " . $userPass ."userPassResult " . $userPass2 . "userpass3: ". $userPass3 . "";
       }
 
 
