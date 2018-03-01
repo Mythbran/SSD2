@@ -21,34 +21,27 @@
     if (!$conn) {   
       $errors['conn'] = "$conn";
 
-    } elseif(!empty($_SESSION)){
+    } elseif($conn){
 
-      $stmtVal = array("$_SESSION[uname]", "$passHashed");
-            //prepared statement & query string            
-      $result = pg_prepare($conn, "SELECT", "SELECT count(*) FROM users WHERE uname == '$1' && pass == '$2'");
+      $stmtVal = array("$_SESSION[uname]");
+
+      $result = pg_prepare($conn, "SELECT", "SELECT pass FROM users where uname = $1");            
 
       $rtn = pg_execute($conn, "SELECT", $stmtVal);
 
-            //makes sure that the insert executed properly
-      switch ($rtn) {
-        case '1':
-          //found one
-          break;
-        case '0':
-          //Found none
-          $errors['nouser'] = "The username and password combination was incorrect";
-          break;
-        
-        default:
-          //Really don't know what went wrong 
-          $errors['serverError'] = "Internal server error";
-          break;
+      if(empty($result)){
+        $errors['nouser'] = "Account was not found";
+
+      }if(password_verify($_POST['pass'], $result)){
+        //successful. No errors needing to be printed 
+      }else{
+        $errors['invalidcred'] = "Invalid credentials";
       }
 
-    } else {
+
+
+    }else {
       $errors['defaulError'] = "An unknown error has occured";
-
-
     }//end of else
     pg_close($conn);
  
