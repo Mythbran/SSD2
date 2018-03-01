@@ -44,7 +44,7 @@
       if(empty($userPass)){
         $errors['nouser'] = "Account was not found";
 
-      }if(password_verify($_POST['pass'], $userPass)){
+      }if(password_verify($_POST['pass'], $passHashed)){
         //successful. No errors needing to be printed 
         $errors['invalidCred'] = "Worked";
       }else{
