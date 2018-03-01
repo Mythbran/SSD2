@@ -31,11 +31,15 @@
 
       $rtn = pg_execute($conn, "SELECT", $stmtVal);
 
-      if(empty($result)){
+      $userPass = ph_fetch_result($rtn, 0, 1)
+
+
+      if(empty($userPass)){
         $errors['nouser'] = "Account was not found";
 
-      }if(password_verify($_POST['pass'], $result)){
+      }if(password_verify($_POST['pass'], $userPass)){
         //successful. No errors needing to be printed 
+        $errors['invalidCred'] = "Worked";
       }else{
         $errors['invalidcred'] = "Invalid credentials";
       }

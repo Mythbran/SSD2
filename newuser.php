@@ -46,7 +46,7 @@ if($_POST){
 			$errors['email002'] = "Valid email is required";
 		}
 
-
+		
 		if(count($errors) == 0){
 			session_start();
 			$_SESSION['uname'] = $_POST['uname'];
