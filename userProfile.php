@@ -7,7 +7,7 @@ we'll see how this goes.....
 -->
 
 <?php
-if($_POST){
+if(!empty($_POST)){
     session_start();
    $errors = array(); // array to hold errors
 
@@ -19,6 +19,7 @@ if($_POST){
      if(empty($_POST['pic'])){
     $errors['pic001'] = "Picture is required";
      }
+     session_register('pic');
      $_SESSION['pic'] = $_POST['pic'];
 
  }
@@ -37,6 +38,7 @@ if($_POST){
     if(!($_POST["email"] == $_POST["emailCheck"])){//makes sure email was entered correctly
             $errors['email003'] = "emails do not match";
         }
+        session_register('email');
      $_SESSION['email'] = $_POST['email'];
 }
 
@@ -52,6 +54,7 @@ elseif (isset($_POST['passform'])) {
         if(!($_POST["pass"] == $_POST["passCheck"])){//makes sure password was entered correctly
             $errors['pass003'] = "Password do not match";
         }
+        session_register('pass');
         $_SESSION['pass'] = $_POST['pass'];
 
     }
@@ -139,10 +142,6 @@ elseif (isset($_POST['passform'])) {
 
                     <?php
 
-                        //debugging stuff - printing in text box for some reason
-                     //   ini_set('display_errors', 'On');
-                       // error_reporting(E_ALL);
-
                         //database connection
                     $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=select") 
                     or die ("connection refused");
@@ -174,12 +173,12 @@ elseif (isset($_POST['passform'])) {
                             <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
                             <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
                             <span class="errors"> * <?php
-            if(isset($errors['pic001'])) echo $errors['pic001'];#empty
-            ?>
-        </span>
-    </form>
+                               if(isset($errors['pic001'])) echo $errors['pic001'];#empty
+                             ?>
+                            </span>
+                        </form>
 
-    <p>
+                            <p>
         <!-- email Form -->
         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="emailform">
             <h4>Change Email</h4>
