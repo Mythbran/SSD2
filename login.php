@@ -41,7 +41,7 @@
         //successful. No errors needing to be printed 
         $errors['invalidCred'] = "Worked";
       }else{
-        $errors['invalidcred'] = "Invalid credentials";
+        $errors['invalidcred'] = "Invalid credentials" . $rtn . " " . $result . "";
       }
 
 
