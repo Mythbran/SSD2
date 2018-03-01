@@ -126,20 +126,7 @@ if(!preg_match("/^([A-Za-z0-9\.\-]{1,64})[@]([A-Za-z0-9\-]{1,188}\.)([A-Za-z\.]{
                         Profile pic goes here
 
                     -->
-
-                    <table style="width: 100%">     
-                        <tr><!--table header-->
-                            <td><h4> User ID       </h4></td>
-                           <td><h4> Username       </h4></td>
-                           <td><h4> Email          </h4></td>
-                           <td><h4> Address        </h4></td>
-                           <td><h4> City           </h4></td>
-                           <td><h4> Postal Code    </h4></td>
-                           <td><h4> Phone Number   </h4></td>
-                           <td><h4> Bio            </h4></td>
-                       </tr>          
-
-                       <tr>     
+   
                         <?php
 
                         //debugging stuff - printing in text box for some reason
@@ -150,39 +137,21 @@ if(!preg_match("/^([A-Za-z0-9\.\-]{1,64})[@]([A-Za-z0-9\-]{1,188}\.)([A-Za-z\.]{
                         $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=select") 
                         or die ("connection refused");
 
-                        $stmtVal = array("gabe");
+                        $stmtVal = array("tjon");
 
-                        $pre = pg_prepare($conn, "SELECT", 'SELECT (uid, uname, email, sname, snum, city, province, pcode, pnum, bio) FROM users WHERE uname = $1');
+                        $pre = pg_prepare($conn, "SELECT", 'SELECT uname, email FROM users WHERE uname = $1');
 
+                $rtn = pg_execute($conn, "SELECT", $stmtVal) or die("Database Error. Contact Your Administer");
+               
+                      $data = pg_fetch_assoc($rtn);
 
-                $rtn = pg_execute($conn, "SELECT", $stmtVal) or die("<h1>WRONG</h1>");
-                 //PROBLEM IS RIGHT HERE ^^^^^^^^^
+                      //displays username and email
+                      echo "<h4>Username: " . $data['uname'] . "</h4>";
+                      echo "<h4>Email: " . $data['email'] . "</h4>";
 
-                     // $rtn = pg_query($conn, 'SELECT (uname, email, sname, snum, city, province, pcode, pnum, bio) FROM users LIMIT 1');//test variable*
-
-                    if ($rtn == FALSE) {
-                        echo "<h2>Wrong</h2>";
-                    }else{
-                      $data = pg_fetch_result($rtn,0);
-
-                      var_dump($data);//fine here
-                      echo "<br>";
-                      echo $data[1];//messed up from here onwards
-                        echo "<td><h5>  $data[0] </h5></td>";
-                        echo "<td><h5>  $data[1] </h5></td>";
-                        echo "<td><h5>  $data[2] </h5></td>";
-                        echo "<td><h5>  $data[3] $data[4]  </h5></td>";   
-                        echo "<td><h5>  $data[5] , $data[6]  </h5></td>";
-                        echo "<td><h5>  $data[7] </h5></td>";
-                        echo "<td><h5>  $data[8] </h5></td>";
-                        echo "<td><h5>  $data[9] </h5></td>";
-                        
-                    }
                         pg_close($conn);   
 
                         ?>
-                    </tr>
-                </table> 
 
                 <h3>Profile Options</h3>
                 <div>
