@@ -1,6 +1,7 @@
 <?php
 	if($_POST){
     $passHashed = password_hash($_POST['pass'], PASSWORD_BCRYPT);
+    $password = $_POST['pass'];
 		$errors = array(); 
 		//username validation 
 		if(empty($_POST['uname'])){
@@ -44,7 +45,7 @@
       if(empty($userPass)){
         $errors['nouser'] = "Account was not found";
 
-      }if(password_verify($_POST['pass'], $userPass)){
+      }if(password_verify($password, $userPass)){
         //successful. No errors needing to be printed 
         $errors['invalidcred'] = "Worked";
       }else{
