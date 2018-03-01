@@ -46,7 +46,7 @@
 
       }if(password_verify($_POST['pass'], $passHashed)){
         //successful. No errors needing to be printed 
-        $errors['invalidCred'] = "Worked";
+        $errors['invalidcred'] = "Worked";
       }else{
         $errors['invalidcred'] = "Invalid credentials. Passed Password: " . $passHashed . " Pass from the dbase: " . $userPass . "" ;
       }
