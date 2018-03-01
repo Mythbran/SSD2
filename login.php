@@ -23,11 +23,11 @@
 
     } elseif($conn){
 
-      $result = pg_query($conn, "SELECT * FROM users where uname = 'mythbran' ");
+      //$result = pg_query($conn, "SELECT * FROM users where uname = 'mythbran' ");
 
-      /*$stmtVal = array("$_SESSION[uname]");
+      $stmtVal = array("$_SESSION[uname]");
 
-      $result = pg_prepare($conn, "SELECT", "SELECT pass FROM users where uname = $1");            
+      $result = pg_prepare($conn, "SELECT", "SELECT pass FROM users where uname = 'mythbran' ");            
 
       $rtn = pg_execute($conn, "SELECT", $stmtVal);
 
@@ -35,7 +35,7 @@
       $value2 = pg_fetch_array($result);
 
       $userPass = var_dump($value1);
-      $userPass2 = var_dump($value2);*/
+      $userPass2 = var_dump($value2);
       while($rows = pg_fetch_assoc($result)){
         $userPass3 = $rows['pass'];
       }
