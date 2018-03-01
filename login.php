@@ -1,9 +1,12 @@
 <?php
 	if($_POST){
     $password = $_POST['pass'];
+    if($_POST['pass']){
     $passHashed = password_hash($password, PASSWORD_BCRYPT);
     $password = $_POST['pass'];
+  }
 		$errors = array(); 
+
 		//username validation 
 		if(empty($_POST['uname'])){
 			$errors['uname001'] = "Username is required";
