@@ -31,7 +31,7 @@
 
       $rtn = pg_execute($conn, "SELECT", $stmtVal);
 
-      $userPass = ph_fetch_result($rtn, 0, 1);
+      $userPass = ph_fetch_result($result, 0, 1);
 
 
       if(empty($userPass)){
