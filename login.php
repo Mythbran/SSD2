@@ -28,7 +28,7 @@
 
     } elseif($conn){
 
-      $result = pg_query($conn, "SELECT * FROM users where uname = 'testacc' ");
+      $result = pg_query($conn, "SELECT * FROM users where uname = '$_POST[uname]' ");
 
       //$userPass = array($_POST['uname']);
 
@@ -50,10 +50,9 @@
         $errors['nouser'] = "Account was not found";
 
       }if(password_verify($password, $userPass)){
-        //successful. No errors needing to be printed 
         $errors['invalidcred'] = "Worked";
       }else{
-        $errors['invalidcred'] = "Invalid credentials. Passed Password: " . $password . " Pass from the dbase: " . $userPass . " Passed Pass Hashed: " . $passHashed . "" ;
+        $errors['invalidcred'] = "Invalid credentials.";
       }
 
 
@@ -63,7 +62,7 @@
     }//end of else
     pg_close($conn);
  
-     unset($_SESSION['pass']);      
+    unset($_SESSION['pass']);      
 		//IF DOESN'T MATCH IN DATABSE 
 
 		if(count($errors) == 0){
