@@ -5,7 +5,7 @@ uses series of IF statements
 
 <?php
 session_start();
-$_SESSION['pic'] = '/home/tjon/Pictures/skull.png';
+//$_SESSION['pic'] = '/home/tjon/Pictures/skull.png';
 //$_SESSION['email'] = 'tjon@tjon.com';
 //$_SESSION['pass'] = 'lOOkHeRe';
 //debugging stuff
@@ -16,8 +16,8 @@ if (empty($_SESSION)) {
 	echo "<h1>sessions isnt being passed</h1>";
 	exit();
 }
-$_SESSION['uname'] = 'tjon';
-
+$_SESSION['uname'] = 'gabe';
+//ssdupdate;Qwtc8*08
 $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdinsert password=Jxem877&")or die ("Connection Refused");
 
 if(!empty($_SESSION)){//makes sure pgs cant be maniplulated
@@ -53,12 +53,12 @@ if(isset($_SESSION['pic'])){//edits user pic
 }
 
 elseif (isset($_SESSION['email'])) {//edits email
-	//$stmtVal = array("$_SESSION[email]", "$_SESSION[uname]");
-	$stmtVal = array("$_SESSION[uname]", "passpass", "$_SESSION[email]", "FALSE", "FALSE");
+	$stmtVal = array("$_SESSION[email]", "$_SESSION[uname]");
+	//$stmtVal = array("$_SESSION[uname]", "passpass", "$_SESSION[email]", "FALSE", "FALSE");
 
 //prepared statement & query string            
-	//$result = pg_prepare($conn, "UPDATE", 'UPDATE users SET email = $1 WHERE uname = $2');
-	$result = pg_prepare($conn, "UPDATE", 'INSERT INTO users (uname, pass, email, admin, active) VALUES ($1, $2, $3, $4, $5)');
+	$result = pg_prepare($conn, "UPDATE", 'UPDATE users SET email = $1 WHERE uname = $2');
+	//$result = pg_prepare($conn, "UPDATE", 'INSERT INTO users (uname, pass, email, admin, active) VALUES ($1, $2, $3, $4, $5)');
 
 	$rtn = pg_execute($conn, "UPDATE", $stmtVal);
 
@@ -112,23 +112,27 @@ echo "<p><a class='btn btn-default' href='/SSD2/login.php' role'button'>Login &r
 
 pg_close($conn);
 
-//testing for retreiving pictures from the database
 
-
+/*testing for retreiving pictures from the database
 
 $conn_1 = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723")or die ("Connection Refused");
 $stmtVal = array('tjon');
-$fileName = "/home/Documents/SSD/SSD2/images/$_SESSION[uname].png";
+$fName = "$_SESSION[uname].png";
 $pre = pg_prepare($conn_1, "SELECT", 'SELECT pic FROM pics WHERE uname = $1');
 
 $rtn = pg_execute($conn_1, "SELECT", $stmtVal) or die(pg_last_error($conn_1));
 
 $data = pg_fetch_assoc($rtn);
 
-$decodePic = pg_unescape_bytea($data['pic']);
-//$finalPic = file_put_contents($fileName, $decodePic);
+$decodePic = file("pg_unescape_bytea($data[pic])");
+
+$img = fopen($fName, 'wb') or die("cannot open image\n");
+fwrite($img, $decodePic) or die("cannot write image data\n");
+fclose($img);
+
 echo'<div align="center">
 <img src="'.$decodePic.'"/>
 </div>';
 pg_close($conn_1);
+//*/
 ?>

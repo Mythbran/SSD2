@@ -13,19 +13,18 @@ if(!empty($_POST)){
 
         //Validation things 
 
-   if (isset($_POST['picform'])) {
+   if (isset($_POST['picbtn'])) {
 
            //pic validation
      if(empty($_POST['pic'])){
     $errors['pic001'] = "Picture is required";
      }
-     session_register('pic');
 
      $_SESSION['pic'] = file($_POST['pic']);
 
  }
 
- elseif (isset($_POST['emailform'])) {
+ elseif (!empty($_POST['emailbtn'])) {
 
       //email validation
     if(empty($_POST['email'])){
@@ -36,14 +35,14 @@ if(!empty($_POST)){
         $errors['email002'] = "Valid email is required";
     }
 
-    if(!($_POST["email"] == $_POST["emailCheck"])){//makes sure email was entered correctly
-            $errors['email003'] = "emails do not match";
+    if(!($_POST['email'] == $_POST['emailCheck'])){//makes sure email was entered correctly
+            $errors['email003'] = "Emails Do Not Match";
         }
-        session_register('email');
+
      $_SESSION['email'] = $_POST['email'];
 }
 
-elseif (isset($_POST['passform'])) {
+elseif (isset($_POST['passbtn'])) {
 
         //Password validation goes here
         if(empty($_POST['pass'])){//empty
@@ -52,16 +51,16 @@ elseif (isset($_POST['passform'])) {
         if(!preg_match("/^[a-zA-Z\d\\!@#$%^&*()-_<>]{8,12}$/", $_POST["pass"])){//password requirements 
             $errors['pass002'] = "Min 8, Max 12, numbers, letters, special chars";//not fully done
         }
-        if(!($_POST["pass"] == $_POST["passCheck"])){//makes sure password was entered correctly
+        if(!($_POST['pass'] == $_POST['passCheck'])){//makes sure password was entered correctly
             $errors['pass003'] = "Password do not match";
         }
-        session_register('pass');
+
         $_SESSION['pass'] = $_POST['pass'];
 
     }
 
-    if(count($errors) == 0 && (isset($_POST['picform']) || isset($_POST['emailform']) || isset($_POST['passform']))){
-        header("Location: SSD2/login.php");
+    if(count($errors) == 0 ){
+        header("Location: editProfile.php");
         exit();
     }
 }
@@ -171,7 +170,7 @@ elseif (isset($_POST['passform'])) {
                                 <label for="pic"> Upload Profile Picture: </label>
                                 <input type="file" name="pic" id="pic" value="<?php if(isset($_POST['pic'])); echo $_POST['pic']?>"/>
                             </p>
-                            <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
+                            <input class="btn btn-default" name="picbtn" type="submit" value="Submit &raquo;"/>
                             <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
                             <span class="errors"> * <?php
                                if(isset($errors['pic001'])) echo $errors['pic001'];#empty
@@ -187,7 +186,7 @@ elseif (isset($_POST['passform'])) {
             <input type="text" placeholder="Email" name="email" id="email" value="<?php if(isset($_POST['email'])); echo $_POST['email']?>"/><br>
 
             <label for="email_1"> Re-Enter: </label>
-            <input type="text" placeholder="Email" name="email_1" id="email_1" value=""/>
+            <input type="text" placeholder="Email" name="emailCheck" id="emailCheck" />
             <span class="errors"> * <?php
             if(isset($errors['email001'])){
                                 echo $errors['email001'];#empty
@@ -202,7 +201,7 @@ elseif (isset($_POST['passform'])) {
 
                             ?></span>
                         </p>
-                        <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
+                        <input class="btn btn-default" name="emailbtn" type="submit" value="Submit &raquo;"/>
                         <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
                     </form>
 
@@ -215,8 +214,7 @@ elseif (isset($_POST['passform'])) {
                             <input type="password" placeholder="Password" name="pass" id="pass" value="<?php if(isset($_POST['pass'])); echo $_POST['pass']; ?>"/><br>
 
                             <label for="passCheck">Re-enter Password: </label>
-                            <input type="password" placeholder="Password" name="passCheck" id="passCheck" value="<?php if(isset($_POST['passCheck'])); echo $_POST['passCheck']; ?>
-                            "/>
+                            <input type="password" placeholder="Password" name="passCheck" id="passCheck" />
 
                             <!-- Password Validation -->
                             <span class="errors"> * <?php
@@ -228,7 +226,7 @@ elseif (isset($_POST['passform'])) {
 
                ?></span>
            </p>
-           <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
+           <input class="btn btn-default" name="passbtn" type="submit" value="Submit &raquo;"/>
            <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
        </form>
 
