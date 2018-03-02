@@ -29,6 +29,8 @@
     } elseif($conn){
 
       $result = pg_query($conn, "SELECT * FROM users where uname = '$_POST[uname]' ");
+		//THIS POSSIBLY OPENS US UP TO A SQL INJECTION ATTACK 
+		//REWRITE USING PREPARED STATEMENTS WHEN WE SOME TIME 
 
       //$userPass = array($_POST['uname']);
 
@@ -50,7 +52,12 @@
         $errors['nouser'] = "Account was not found";
 
       }if(password_verify($password, $userPass)){
-        $errors['invalidcred'] = "Worked";
+		
+		session_start();
+		$_SESSION['uname'] = $_POST['uname'];
+		header("Location: /SSD2/blogPortal.php");
+			
+		exit();      	
       }else{
         $errors['invalidcred'] = "Invalid credentials.";
       }
@@ -68,7 +75,7 @@
 		if(count($errors) == 0){
 			session_start();
 			$_SESSION['uname'] = $_POST['uname'];
-			header("Location: /SSD2/userLogin.php");
+			header("Location: /SSD2/blogPortal.php");
 			
 			exit();
 		}
