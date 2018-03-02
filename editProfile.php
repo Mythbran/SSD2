@@ -111,4 +111,24 @@ echo "<p><a class='btn btn-default' href='/SSD2/login.php' role'button'>Login &r
 }
 
 pg_close($conn);
+
+//testing for retreiving pictures from the database
+
+
+
+$conn_1 = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723")or die ("Connection Refused");
+$stmtVal = array('tjon');
+$fileName = "/home/Documents/SSD/SSD2/images/$_SESSION[uname].png";
+$pre = pg_prepare($conn_1, "SELECT", 'SELECT pic FROM pics WHERE uname = $1');
+
+$rtn = pg_execute($conn_1, "SELECT", $stmtVal) or die(pg_last_error($conn_1));
+
+$data = pg_fetch_assoc($rtn);
+
+$decodePic = pg_unescape_bytea($data['pic']);
+//$finalPic = file_put_contents($fileName, $decodePic);
+echo'<div align="center">
+<img src="'.$decodePic.'"/>
+</div>';
+pg_close($conn_1);
 ?>
