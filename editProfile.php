@@ -5,9 +5,9 @@ uses series of IF statements
 
 <?php
 session_start();
-
-$_SESSION['email'] = 'tjon@tjon.com';
-$_SESSION['pass'] = 'lOOkHeRe';
+$_SESSION['pic'] = '/home/tjon/Pictures/skull.png';
+//$_SESSION['email'] = 'tjon@tjon.com';
+//$_SESSION['pass'] = 'lOOkHeRe';
 //debugging stuff
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
@@ -18,22 +18,28 @@ if (empty($_SESSION)) {
 }
 $_SESSION['uname'] = 'tjon';
 
-$conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdinsert password=insert")or die ("Connection Refused");
+$conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdinsert password=Jxem877&")or die ("Connection Refused");
 
 if(!empty($_SESSION)){//makes sure pgs cant be maniplulated
 
 if(isset($_SESSION['pic'])){//edits user pic
+	$pic = $_SESSION['pic'];
 
-	$stmtVal = array("$_SESSION[pic]");
+		$file = file_get_contents($pic);
+		$fileReady = pg_escape_bytea($file);
+
+
+	$stmtVal = array("$fileReady", "$_SESSION[uname]");
 
 //prepared statement & query string            
-	$result = pg_prepare($conn, "INSERT", 'INSERT INTO pics pic VALUES $1');
+	$result = pg_prepare($conn, "INSERT", 'INSERT INTO pics (pic, uname) VALUES ($1, $2)');
 
 	$rtn = pg_execute($conn, "INSERT", $stmtVal);
 
 //makes sure that the insert executed properly
 	if (!$rtn) {
 		echo pg_last_error($conn);
+		echo "uh oh";
 	} else {
 		echo "<h2> The Following Information Was Added To The Database</h2>";
 		echo "<br>";
@@ -47,14 +53,16 @@ if(isset($_SESSION['pic'])){//edits user pic
 }
 
 elseif (isset($_SESSION['email'])) {//edits email
-	$stmtVal = array("$_SESSION[email]", "$_SESSION[uname]");
+	//$stmtVal = array("$_SESSION[email]", "$_SESSION[uname]");
+	$stmtVal = array("$_SESSION[uname]", "passpass", "$_SESSION[email]", "FALSE", "FALSE");
 
 //prepared statement & query string            
-	$result = pg_prepare($conn, "UPDATE", 'UPDATE users SET email = $1 WHERE uname = $2');
+	//$result = pg_prepare($conn, "UPDATE", 'UPDATE users SET email = $1 WHERE uname = $2');
+	$result = pg_prepare($conn, "UPDATE", 'INSERT INTO users (uname, pass, email, admin, active) VALUES ($1, $2, $3, $4, $5)');
 
 	$rtn = pg_execute($conn, "UPDATE", $stmtVal);
 
-//makes sure that the insert executed properly
+//makes sure that the update executed properly
 	if (!$rtn) {
 		echo pg_last_error($conn);
 	} else {
@@ -75,7 +83,7 @@ elseif (isset($_SESSION['pass'])) {//edits password
 
 	$rtn = pg_execute($conn, "UPDATE", $stmtVal);
 
-//makes sure that the insert executed properly
+//makes sure that the update executed properly
 	if (!$rtn) {
 		echo pg_last_error($conn);
 	} else {
@@ -83,7 +91,7 @@ elseif (isset($_SESSION['pass'])) {//edits password
 		echo "<h2> The Following Information Was Updated In The Database</h2>";
 		echo "<br>";
 
-		echo "<h3>Email: " . $_SESSION['pass'] . "</h3>";
+		echo "<h3>Password: " . $_SESSION['pass'] . "</h3>";
 	} 
 
 
@@ -99,7 +107,7 @@ unset($_SESSION['pass']);
 }
 else{
 	echo "<p><h2>Error: Please login before accessing this page.</h2></p>"; 
-echo "<p><a class='btn btn-default' href='/login.php' role'button'>Login &raquo; </a></p>"; //should redirect to login page     
+echo "<p><a class='btn btn-default' href='/SSD2/login.php' role'button'>Login &raquo; </a></p>"; //should redirect to login page     
 }
 
 pg_close($conn);

@@ -20,7 +20,8 @@ if(!empty($_POST)){
     $errors['pic001'] = "Picture is required";
      }
      session_register('pic');
-     $_SESSION['pic'] = $_POST['pic'];
+
+     $_SESSION['pic'] = file($_POST['pic']);
 
  }
 
@@ -60,7 +61,7 @@ elseif (isset($_POST['passform'])) {
     }
 
     if(count($errors) == 0 && (isset($_POST['picform']) || isset($_POST['emailform']) || isset($_POST['passform']))){
-        header("Location: login.php");
+        header("Location: SSD2/login.php");
         exit();
     }
 }
@@ -143,7 +144,7 @@ elseif (isset($_POST['passform'])) {
                     <?php
 
                         //database connection
-                    $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=select") 
+                    $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723") 
                     or die ("connection refused");
 
                     $stmtVal = array("tjon");
