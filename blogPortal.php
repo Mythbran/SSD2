@@ -4,66 +4,7 @@ redirects to separate pages
 -->
 
 <?php
-if(!empty($_POST)){
     session_start();
-   $errors = array(); // array to hold errors
-
-        //Validation things 
-
-   if (isset($_POST['picbtn'])) {
-
-           //pic validation
-     if(empty($_POST['pic'])){
-    $errors['pic001'] = "Picture is required";
-     }
-     /*
-     $file = $_POST['pic'];
-    $img = new Imagick(realpath($file));
-    $img->stripImage();*/
-    $_SESSION['pic'] = file($_POST['pic']);
-
- }
-
- elseif (!empty($_POST['emailbtn'])) {
-
-      //email validation
-    if(empty($_POST['email'])){
-        $errors['email001'] = "Email is required";
-    }
-        //Email Formatting Validation
-    if(!preg_match("/^([A-Za-z0-9\.\-]{1,64})[@]([A-Za-z0-9\-]{1,188}\.)([A-Za-z\.]{1,9})$/", $_POST["email"])){
-        $errors['email002'] = "Valid email is required";
-    }
-
-    if(!($_POST['email'] == $_POST['emailCheck'])){//makes sure email was entered correctly
-            $errors['email003'] = "Emails Do Not Match";
-        }
-
-     $_SESSION['email'] = $_POST['email'];
-}
-
-elseif (isset($_POST['passbtn'])) {
-
-        //Password validation goes here
-        if(empty($_POST['pass'])){//empty
-            $errors['pass001'] = "Password is required";
-        }
-        if(!preg_match("/^[a-zA-Z\d\\!@#$%^&*()-_<>]{8,12}$/", $_POST["pass"])){//password requirements 
-            $errors['pass002'] = "Min 8, Max 12, numbers, letters, special chars";//not fully done
-        }
-        if(!($_POST['pass'] == $_POST['passCheck'])){//makes sure password was entered correctly
-            $errors['pass003'] = "Password do not match";
-        }
-
-        $_SESSION['pass'] = $_POST['pass'];
-
-    }
-
-    if(count($errors) == 0 ){
-        header("Location: editProfile.php");
-        exit();
-    }
-}
 ?>
 
 <!doctype html>
@@ -132,6 +73,36 @@ elseif (isset($_POST['passbtn'])) {
             <!-- Example row of columns -->
             <div class="row">
                 <div class="col-md-4">
+                    <h2>Your Blogs</h2>
+                    <p>
+                        <table style="width: 100%">
+                            <tr>
+                                <th>Blog ID</th>
+                                <th>Title</th>
+                            </tr>
+                                <?php
+                                    $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723") 
+                    or die ("connection refused");
+
+                    $stmtVal = array("tjon");
+
+                    $pre = pg_prepare($conn, "SELECT", 'SELECT bid, title FROM blogs WHERE owner = $1');
+                    $rtn = pg_execute($conn, "SELECT", $stmtVal) or die("Database Error. Contact Your Administer");
+
+                    while($data = pg_fetch_assoc($rtn)){
+                        echo "<tr>";
+                        echo "<td>$data[bid]</td>";
+                        echo "<td>$data[title]</td>";
+                        echo "</tr>";
+                    }
+
+                    pg_close($conn);
+                                ?>
+
+                        </table>
+
+
+                    </p>
                     <h2>Blog Options</h2>
                    
                        <p>

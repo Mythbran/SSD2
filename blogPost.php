@@ -15,7 +15,7 @@ if (!empty($_SESSION)) {//need to re do this. itll never be empty with whatever 
 		echo pg_last_error($conn);
 	}else{
 
-		header("Refresh: 10; Location: blogPortal.php");
+		header("Refresh: 10; URL=/SSD2/blogPortal.php");
 		echo "<h2>Your Blog Post Can now be seen from the front page.</h2>";
 		unset($_SESSION['btitle']);
 		unset($_SESSION['bdata']);

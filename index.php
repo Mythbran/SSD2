@@ -109,7 +109,7 @@ $pre = pg_prepare($conn, "SELECT", 'SELECT (owner, title, data) FROM blogs');
 
 $rtn = pg_execute($conn, "SELECT") or die(pg_last_error($conn));
 
-while($data = pg_fetch_assoc($array)){
+while($data = pg_fetch_assoc($rtn)){
   echo" <p>
         <h2>$data[title]</h2><br>
         <h3>By: $data[owner]</h3><br>
@@ -123,6 +123,8 @@ pg_close($conn);
             
           </p>
         </div>
+      </div>
+    </div>
       <hr>
 
       <footer>
