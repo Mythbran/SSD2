@@ -1,28 +1,20 @@
 <!--
-a modified version of usedAdded
-displays the info of a newly added user
-redirects to index page
-gotta get started on access control............
+
 -->
+
 <?php
-
-    if($_SESSION['userStatus'] == 1 | $_SESSION['userStatus'] == 2){ 
-        $welcome = array(); 
-
-        $welcome['user'] = "Welcome". $_SESSION['uname'];
+session_start();
+if(!empty($_POST)){
+    if (!empty($_POST['editbtn'])) {
+        $_SESSION['editid'] = $_POST['editid'];
+        header("Location: editBlog.php");
     }
+    elseif (isset($_POST['deletebtn'])) {
+        $_SESSION['deleteid'] = $_POST['deleteid'];
+        header("URL=/SSD2/deleteBlog.php");
 
-    elseif($_SESSION['userStatus'] == 3){ 
-
-        header("Location: notAvail.php"); 
-        exit();
     }
-
-    else{
-        header("Location: login.php");
-        exit();
-    }
-
+}
 ?>
 
 <!doctype html>
@@ -31,7 +23,6 @@ gotta get started on access control............
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
 <head>
-
     <meta charset="utf-8">
     <meta https-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title></title>
@@ -45,15 +36,14 @@ gotta get started on access control............
         padding-top: 50px;
         padding-bottom: 20px;
     }
-    table, tr, td{
+    table, td, tr{
         border: 1px solid black;
         width:500px;
     }
-
     th, td {
-        padding: 15px;
-        text-align: left;
-    }
+       padding: 15px;
+       text-align: left;
+   }
 </style>
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="css/main.css">
@@ -88,68 +78,67 @@ gotta get started on access control............
                 </div><!--/.navbar-collapse -->
             </div>
         </nav>
+
         <div class="container">
             <!-- Example row of columns -->
             <div class="row">
                 <div class="col-md-4">
-   
- <?php
- //debugging stuff???
-                        ini_set('display_errors', 'On');
-                        error_reporting(E_ALL);
+                    <h2>Your Blogs</h2>
+                    <p>
+                        <table style="width: 100%">
+                            <tr>
+                                <th>Blog ID</th>
+                                <th>Title</th>
+                            </tr>
+                            <?php
+                            $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723") 
+                            or die ("connection refused");
 
-                        session_start();
-                        $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdinsert password=insert")or die ("Connection Refused");
+                            $stmtVal = array("tjon");
 
-        //makes sure connection was successful
-                        if (!$conn) {   
-                            echo pg_last_error($conn);
+                            $pre = pg_prepare($conn, "SELECT", 'SELECT bid, title FROM blogs WHERE owner = $1');
+                            $rtn = pg_execute($conn, "SELECT", $stmtVal) or die("Database Error. Contact Your Administer");
 
-                        } elseif(!empty($_SESSION)){
+                            while($data = pg_fetch_assoc($rtn)){
+                                echo "<tr>";
+                                echo "<td>$data[bid]</td>";
+                                echo "<td>$data[title]</td>";
+                                echo "</tr>";
+                            }
 
-                            $stmtVal = array("$_SESSION[pic]");
+                            pg_close($conn);
+                            ?>
 
-            //prepared statement & query string            
-                            $result = pg_prepare($conn, "INSERT", 'INSERT INTO pics (pic) VALUES ($1)');
-
-                            $rtn = pg_execute($conn, "INSERT", $stmtVal[0]);
-
-            //makes sure that the insert executed properly
-                            if (!$rtn) {
-                                echo pg_last_error($conn);
-                            } else {
-                                echo "<h2> The Following Information Was Added To The Database</h2>";
-                                echo "<br>";
-
-                                echo "<h3>Profile pic is below </h3>";
-
-                                echo "<br><br>";
-                               
-                               // echo "<img src="$_SESSION[pic]">";
+                        </table>
 
 
+                    </p>
+                    <h2>Blog Options</h2>
 
-            }//end of else
+                    <p>
+                       <a  href="/SSD2/createBlog.php">Create a Blog</a><br>
+                   </p>
 
-            unset($_SESSION['pic']);
-          ;
+                   <p>
+                       <h3>Edit a Blog</h3>
+                       <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="editblogform">
+                        <label for="editid"> Enter a Blog ID: </label>
+                        <input type="text" placeholder="Blog ID " name="editid" id="editid" value="<?php if(isset($_POST['editid'])); echo $_POST['editid']?>"/>
+                        <input class="btn btn-default" name="editbtn" type="submit" value="Submit &raquo;"/>
+                    </form>
+                </p>
 
-        }
-        else{
-            echo "<p><h2>Error: Please enter information before accessing this page.</h2></p>"; 
-            echo "<p><a class='btn btn-default' href='/newuser.php' role'button'> New User &raquo; </a></p>";      
-        }
+                <p>
+                   <h3>Delete a Blog</h3>
+                   <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="deleteblogform">
+                    <label for="deleteid"> Enter a Blog ID: </label>
+                    <input type="text" placeholder="Blog ID " name="deleteid" id="deleteid" value="<?php if(isset($_POST['deleteid'])); echo $_POST['deleteid']?>"/>
+                    <input class="btn btn-default" name="deletebtn" type="submit" value="Submit &raquo;"/>
+                    </form>
+                </p>
+        </div>
+    </div>
 
-            pg_close($conn);
-        ?>
-<img src="<?php echo $stmtVal; ?>">
-
-</div>
-</div>
-
-
-    <p><a class="btn btn-default" href="/" role="button">Home &raquo;</a></p>
-    <p><a class="btn btn-default" href="/userProfile" role="button">User Profile &raquo;</a></p>
     <hr>
 
     <footer>

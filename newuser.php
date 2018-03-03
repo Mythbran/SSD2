@@ -11,13 +11,6 @@ if($_POST){
 	$_SESSION['uname'] = $_POST['uname'];
 	$_SESSION['pass'] = $_POST['pass'];
 	$_SESSION['email'] = $_POST['email'];
-	$_SESSION['snum'] = $_POST['snum'];
-	$_SESSION['sname'] = $_POST['sname'];
-	$_SESSION['city'] = $_POST['city'];
-	$_SESSION['province'] = $_POST['province'];
-	$_SESSION['bio'] = $_POST['bio'];
-	$_SESSION['pcode'] = $_POST['pcode'];
-	$_SESSION['pnum'] = $_POST['pnum'];
 		//Validation things 
 
 
@@ -184,117 +177,6 @@ if($_POST){
             }
             ?></span>
         </p>	
-
-        <p> 
-        	<!-- Street Number Form --> 
-        	<label for="snum"> Street Number: </label>
-        	<input type="text" placeholder="Street Number" name="snum" id="snum"value="<?php if(isset($_POST['snum'])); echo $_POST['snum']?>"/>
-
-        	<span class="errors"> * <?php
-			if(isset($errors['snum001'])) echo $errors['snum001'];#empty
-
-
-
-			?></span>
-		</p> 
-
-		<p> 
-
-			<!-- Street Name Form --> 
-			<label for="sname"> Street Name: </label>
-			<input type="text" placeholder="Street Name" name="sname" id="sname"value="<?php if(isset($_POST['sname'])); echo $_POST['sname']?>"/>
-
-			<span class="errors"> * <?php
-			if(isset($errors['sname001'])) echo $errors['sname001'];#empty
-
-
-
-			?></span>
-		</p> 
-
-		<p> 
-			<!-- City Form --> 
-			<label for="city"> City: </label>
-			<input type="text" placeholder="City" name="city" id="city"value="<?php if(isset($_POST['city'])); echo $_POST['city']?>"/>
-			<span class="errors"> * <?php
-			if(isset($errors['city001'])) echo $errors['city001'];#empty
-
-
-
-			?></span>
-		</p> 
-
-		<p> 
-
-			<!-- Province Form -->
-
-			<label for="province"> Province: </label>
-			<select name="province" id="province" form="uform">
-				<option value=''>--Select--</option>
-				<option value='AB'>Alberta</option>
-				<option value='BC'>British Columbia</option>
-				<option value='MN'>Manitoba</option>
-				<option value='NB'>New Brunswick</option>
-				<option value='NF'>Newfoundland & labrador</option>
-				<option value='NT'>Northwest Territories</option>
-				<option value='NS'>Nova Scotia</option>
-				<option value='NV'>Nunavut</option>
-				<option value='ON'>Ontario</option>
-				<option value='PI'>Prince Edward Island</option>
-				<option value='QB'>Quebec</option>
-				<option value='SK'>Saskatchewan</option>
-				<option value='YK'>Yukon</option>
-			</select>	
-			<span class="errors"> * <?php
-			if(isset($errors['province001'])) echo $errors['province001'];#empty
-			if(isset($errors['province002'])) echo $errors['province002'];
-
-
-
-			?></span>
-
-
-		</p> 
-
-		<p> 
-			<!-- Postal Code Form --> 
-
-			<label for="pcode"> Postal Code: </label>
-			<input type="text" placeholder="Postal Code" name="pcode" id="pcode" value="<?php if(isset($_POST['pcode'])); echo $_POST['pcode']?>">
-
-			<span class="errors"> * <?php
-			if(isset($errors['pcode001'])) echo $errors['pcode001'];#empty
-			if(isset($errors['pcode002'])) echo $errors['pcode002'];#validation check
-
-
-
-			?></span>
-
-		</p> 
-
-		<p> 
-
-			<!-- Phone Number Form --> 
-
-			<label for="pnum"> Phone Number: </label>
-			<input type="text" placeholder="PhoneNumber" name="pnum" id="pnum"value="<?php if(isset($_POST['pnum'])); echo $_POST['pnum']?>"/>
-
-
-			<span class="errors">* <?php
-			if(isset($errors['pnum001'])) echo $errors['pnum001'];#empty
-			if(isset($errors['pnum002'])) echo $errors['pnum002'];#Valid
-
-
-			?></span>
-		</p> 
-
-		<p>
-			<label for="bio"> Bio: </label> 
-			<textarea name="bio" rows="5" cols="20"></textarea>
-
-
-		</p>
-
 		
 		<input class="btn btn-default" type="submit" value="Submit &raquo;"/>
 		<input class="btn btn-default" type="reset" value="Reset &raquo;"/>

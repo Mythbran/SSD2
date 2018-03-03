@@ -95,6 +95,36 @@ session_start();
           <p><a class="btn btn-default" href="gitpush.sh" role="button">Download gitpush &raquo;</a></p>
        </div>
 
+       <div class="col-md-4">
+          <h2>Blog Posts</h2>
+          <p>
+            <?php
+            ini_set('display_errors', 'On');
+error_reporting(E_ALL);
+            //selects blogs from the database
+
+            $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723")or die ("Connection Refused");
+
+$pre = pg_prepare($conn, "SELECT", 'SELECT (owner, title, data) FROM blogs');
+
+$rtn = pg_execute($conn, "SELECT") or die(pg_last_error($conn));
+
+while($data = pg_fetch_assoc($rtn)){
+  echo" <p>
+        <h2>$data[title]</h2><br>
+        <h3>By: $data[owner]</h3><br>
+        <h4>$data[data]</h4><br>
+        </p>
+  ";
+}
+
+pg_close($conn);
+            ?>
+            
+          </p>
+        </div>
+      </div>
+    </div>
       <hr>
 
       <footer>
