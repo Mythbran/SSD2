@@ -80,9 +80,6 @@ if (!empty($_POST['submitbtn'])) {
           <div class="jumbotron">
             <div class="container">
               <h1>Main Blog Page</h1>
-              <p>This is a live demo for Assignment 2 of Secure Software Development</p>
-              <P>
-               Created by Matthew D'Angelo and Tjon Trudge
 
              </p>
              <p>
