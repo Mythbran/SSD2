@@ -11,25 +11,39 @@ if(!empty($_POST)){
     session_start();
    $errors = array(); // array to hold errors
 
-        //Validation things 
-
+    //Picture Validation 
    if (isset($_POST['picbtn'])) {
 
-           //pic validation
-     if(empty($_POST['pic'])){
-    $errors['pic001'] = "Picture is required";
-     }
+       if(empty($_POST['pic'])){
+        $errors['pic001'] = "Picture is required";
+    }
+
+    if ($_FILES['pic']['size'] > 35000) {
+        $errors['pic002'] = "File Limit Is 3.5 MB";
+    } 
+
+    if(!getimagesize($_FILES['pic']['name'])){
+        $errors['pic003'] = "Please Upload An Image";
+    }
+
      /*
      $file = $_POST['pic'];
     $img = new Imagick(realpath($file));
     $img->stripImage();*/
-    $_SESSION['pic'] = file($_POST['pic']);
+    
+if(count($errors) == 0 && $_FILES['pic']['errors'] == 0){
+$target = "/var/www/html/SSD2/userImages/" . $_FILES['pic'][$_SESSION['uname']];
+move_uploaded_file("$_SESSION[uname].png", $target);
+   // $_SESSION['pic'] = file($_POST['pic']);
+        header("Refresh: 5; URL=/SSD2/editProfile.php");
+        echo "Profile Pic has been uploaded";
+        exit();
+    }
+}
 
- }
+//email validation
+elseif (!empty($_POST['emailbtn'])) {
 
- elseif (!empty($_POST['emailbtn'])) {
-
-      //email validation
     if(empty($_POST['email'])){
         $errors['email001'] = "Email is required";
     }
@@ -39,15 +53,19 @@ if(!empty($_POST)){
     }
 
     if(!($_POST['email'] == $_POST['emailCheck'])){//makes sure email was entered correctly
-            $errors['email003'] = "Emails Do Not Match";
-        }
+        $errors['email003'] = "Emails Do Not Match";
+    }
 
-     $_SESSION['email'] = $_POST['email'];
+if(count($errors) == 0 ){
+    $_SESSION['email'] = $_POST['email'];
+        header("Location: editProfile.php");
+        exit();
+    }
 }
 
+//Password validation 
 elseif (isset($_POST['passbtn'])) {
 
-        //Password validation goes here
         if(empty($_POST['pass'])){//empty
             $errors['pass001'] = "Password is required";
         }
@@ -58,14 +76,13 @@ elseif (isset($_POST['passbtn'])) {
             $errors['pass003'] = "Password do not match";
         }
 
+        if(count($errors) == 0 ){
         $_SESSION['pass'] = password_hash($_POST['pass'], PASSWORD_DEFAULT);
-
-    }
-
-    if(count($errors) == 0 ){
         header("Location: editProfile.php");
         exit();
     }
+
+    }    
 }
 ?>
 
@@ -93,9 +110,9 @@ elseif (isset($_POST['passbtn'])) {
         width:500px;
     }
     th, td {
-       padding: 15px;
-       text-align: left;
-   }
+     padding: 15px;
+     text-align: left;
+ }
 </style>
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="css/main.css">
@@ -178,62 +195,57 @@ fclose($img);*/
 //*/
 
                         //database connection
-                    $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723") 
-                    or die ("connection refused");
+$conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723") 
+or die ("connection refused");
 
-                    $stmtVal = array("tjon");
+$stmtVal = array("tjon");
 
-                    $pre = pg_prepare($conn, "SELECT", 'SELECT uname, email FROM users WHERE uname = $1');
+$pre = pg_prepare($conn, "SELECT", 'SELECT uname, email FROM users WHERE uname = $1');
 
-                    $rtn = pg_execute($conn, "SELECT", $stmtVal) or die("Database Error. Contact Your Administer");
+$rtn = pg_execute($conn, "SELECT", $stmtVal) or die("Database Error. Contact Your Administer");
 
-                    $data = pg_fetch_assoc($rtn);
+$data = pg_fetch_assoc($rtn);
 
                       //displays username and email
-                    echo "<h4>Username: " . $data['uname'] . "</h4>";
-                    echo "<h4>Email: " . $data['email'] . "</h4>";
+echo "<h4>Username: " . $data['uname'] . "</h4>";
+echo "<h4>Email: " . $data['email'] . "</h4>";
 
-                    pg_close($conn);   
+pg_close($conn);   
 
-                    ?>
+?>
 
-                    <h3>Profile Options</h3>
-                    <p href="/SSD2/blogPortal.php">Blog Portal</p>
-                    <div>
-                        <!-- user pic form-->
-                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="picform">
-                            <p>
-                                <label for="pic"> Upload Profile Picture: </label>
-                                <input type="file" name="pic" id="pic" value="<?php if(isset($_POST['pic'])); echo $_POST['pic']?>"/>
-                            </p>
-                            <input class="btn btn-default" name="picbtn" type="submit" value="Submit &raquo;"/>
-                            <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
-                            <span class="errors"> * <?php
+<h3>Profile Options</h3>
+<p href="/SSD2/blogPortal.php">Blog Portal</p>
+<div>
+    <!-- user pic form-->
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="picform">
+        <p>
+            <label for="pic"> Upload Profile Picture: </label>
+            <input type="file" name="pic" id="pic" value="<?php if(isset($_POST['pic'])); echo $_POST['pic']?>"/>
+        </p>
+        <input class="btn btn-default" name="picbtn" type="submit" value="Submit &raquo;"/>
+        <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
+        <span class="errors"> * <?php
                                if(isset($errors['pic001'])) echo $errors['pic001'];#empty
-                             ?>
-                            </span>
-                        </form>
+                               if(isset($errors['pic002'])) echo $errors['pic002'];
+                               if(isset($errors['pic003'])) echo $errors['pic003'];
+                               ?>
+                           </span>
+                       </form>
 
-                            <p>
-        <!-- email Form -->
-        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="emailform">
-            <h4>Change Email</h4>
-            <label for="email"> Email: </label>
-            <input type="text" placeholder="Email" name="email" id="email" value="<?php if(isset($_POST['email'])); echo $_POST['email']?>"/><br>
+                       <p>
+                        <!-- email Form -->
+                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="emailform">
+                            <h4>Change Email</h4>
+                            <label for="email"> Email: </label>
+                            <input type="text" placeholder="Email" name="email" id="email" value="<?php if(isset($_POST['email'])); echo $_POST['email']?>"/><br>
 
-            <label for="email_1"> Re-Enter: </label>
-            <input type="text" placeholder="Email" name="emailCheck" id="emailCheck" />
-            <span class="errors"> * <?php
-            if(isset($errors['email001'])){
-                                echo $errors['email001'];#empty
-                            }
-
-                            if(isset($errors['email002'])){
-                                echo $errors['email002'];#invalid
-                            }
-                            if(isset($errors['email003'])){
-                                echo $errors['email003'];#emailsdont match
-                            }
+                            <label for="email_1"> Re-Enter: </label>
+                            <input type="text" placeholder="Email" name="emailCheck" id="emailCheck" />
+                            <span class="errors"> * <?php
+                            if(isset($errors['email001'])) echo $errors['email001'];
+                            if(isset($errors['email002'])) echo $errors['email002'];
+                            if(isset($errors['email003'])) echo $errors['email003'];
 
                             ?></span>
                         </p>
