@@ -4,7 +4,26 @@ displays the info of a newly added user
 redirects to index page
 gotta get started on access control............
 -->
+<?php
 
+    if($_SESSION['userStatus'] == 1 | $_SESSION['userStatus'] == 2){ 
+        $welcome = array(); 
+
+        $welcome['user'] = "Welcome". $_SESSION['uname'];
+    }
+
+    elseif($_SESSION['userStatus'] == 3){ 
+
+        header("Location: notAvail.php"); 
+        exit();
+    }
+
+    else{
+        header("Location: login.php");
+        exit();
+    }
+
+?>
 
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->

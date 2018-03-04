@@ -73,9 +73,34 @@
 		//IF DOESN'T MATCH IN DATABSE 
 
 		if(count($errors) == 0){
+
+      $result = pg_query($conn, "SELECT * FROM users where uname = '$_POST[uname]' ");
+
+      while($rows = pg_fetch_assoc($result)){
+        $userAdmin = $rows['admin'];
+        $userActive = $rows['active'];
+      }
 			session_start();
 			$_SESSION['uname'] = $_POST['uname'];
-      $_SESSION['admin'] = 
+      if($userAdmin == TRUE && $userActive == TRUE){
+        $_SESSION['userStatus'] = 1;//admin
+      }
+      elseif($userAdmin == FALSE && $userActive == TRUE){
+        $_SESSION['userStatus']=2;//user
+      }
+      elseif($userAdmin == FALSE && $userActive == FALSE){
+        $_SESSION['userStatus']=3; //non active user
+      }
+      elseif($userAdmin == TRUE && $userActive == FALSE){
+        $_SESSION['userStatus'] = 500; //BAD USER LOG 
+      }
+      else{
+        $_SESSION['userStatus']=501 //unknown issue 
+        unset($_SESSION['uname']);
+      }
+
+
+
 			header("Location: /SSD2/userLogin.php");
 			
 			exit();
