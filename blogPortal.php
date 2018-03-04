@@ -1,10 +1,20 @@
 <!--
-modified version of userProfile
-redirects to separate pages
+
 -->
 
 <?php
-    session_start();
+session_start();
+if(!empty($_POST)){
+    if (!empty($_POST['editbtn'])) {
+        $_SESSION['editid'] = $_POST['editid'];
+        header("Location: editBlog.php");
+    }
+    elseif (isset($_POST['deletebtn'])) {
+        $_SESSION['deleteid'] = $_POST['deleteid'];
+        header("URL=/SSD2/deleteBlog.php");
+
+    }
+}
 ?>
 
 <!doctype html>
@@ -80,44 +90,60 @@ redirects to separate pages
                                 <th>Blog ID</th>
                                 <th>Title</th>
                             </tr>
-                                <?php
-                                    $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723") 
-                    or die ("connection refused");
+                            <?php
+                            $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723") 
+                            or die ("connection refused");
 
-                    $stmtVal = array("tjon");
+                            $stmtVal = array("tjon");
 
-                    $pre = pg_prepare($conn, "SELECT", 'SELECT bid, title FROM blogs WHERE owner = $1');
-                    $rtn = pg_execute($conn, "SELECT", $stmtVal) or die("Database Error. Contact Your Administer");
+                            $pre = pg_prepare($conn, "SELECT", 'SELECT bid, title FROM blogs WHERE owner = $1');
+                            $rtn = pg_execute($conn, "SELECT", $stmtVal) or die("Database Error. Contact Your Administer");
 
-                    while($data = pg_fetch_assoc($rtn)){
-                        echo "<tr>";
-                        echo "<td>$data[bid]</td>";
-                        echo "<td>$data[title]</td>";
-                        echo "</tr>";
-                    }
+                            while($data = pg_fetch_assoc($rtn)){
+                                echo "<tr>";
+                                echo "<td>$data[bid]</td>";
+                                echo "<td>$data[title]</td>";
+                                echo "</tr>";
+                            }
 
-                    pg_close($conn);
-                                ?>
+                            pg_close($conn);
+                            ?>
 
                         </table>
 
 
                     </p>
                     <h2>Blog Options</h2>
-                   
-                       <p>
-           <a  href="/SSD2/createBlog.php">Create a Blog</a><br>
-           <a  href="/SSD2/editBlog.php">Edit a Blog</a><br>
-           <a  href="/SSD2/deleteBlog.php">Delete a Blog</a><br>
-</p>
- </div>
-   </div>
 
-   <hr>
+                    <p>
+                       <a  href="/SSD2/createBlog.php">Create a Blog</a><br>
+                   </p>
 
-   <footer>
-    <p>&copy; D'AngeloTrudge 2018</p>
-</footer>
+                   <p>
+                       <h3>Edit a Blog</h3>
+                       <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="editblogform">
+                        <label for="editid"> Enter a Blog ID: </label>
+                        <input type="text" placeholder="Blog ID " name="editid" id="editid" value="<?php if(isset($_POST['editid'])); echo $_POST['editid']?>"/>
+                        <input class="btn btn-default" name="editbtn" type="submit" value="Submit &raquo;"/>
+                    </form>
+                </p>
+
+                <p>
+                   <h3>Delete a Blog</h3>
+                   <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="deleteblogform">
+                    <label for="deleteid"> Enter a Blog ID: </label>
+                    <input type="text" placeholder="Blog ID " name="deleteid" id="deleteid" value="<?php if(isset($_POST['deleteid'])); echo $_POST['deleteid']?>"/>
+                    <input class="btn btn-default" name="deletebtn" type="submit" value="Submit &raquo;"/>
+                    </form>
+                </p>
+        </div>
+    </div>
+
+    <hr>
+
+    <footer>
+        <p>&copy; D'AngeloTrudge 2018</p>
+    </footer>
 </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 
