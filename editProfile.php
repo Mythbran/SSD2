@@ -1,13 +1,12 @@
 <!--
 takes data from user profile and alters it in the DB
 uses series of IF statements
+redirects back to userProfile after 10 seconds
 -->
 
 <?php
 session_start();
-//$_SESSION['pic'] = '/home/tjon/Pictures/skull.png';
-//$_SESSION['email'] = 'tjon@tjon.com';
-//$_SESSION['pass'] = 'lOOkHeRe';
+
 //debugging stuff
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
@@ -16,70 +15,62 @@ if (empty($_SESSION)) {
 	echo "<h1>sessions isnt being passed</h1>";
 	exit();
 }
-$_SESSION['uname'] = 'gabe';
-//ssdupdate;Qwtc8*08
-$conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdinsert password=Jxem877&")or die ("Connection Refused");
+
+$conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdupdate password=Qwtc8*08")or die ("Connection Refused");
 
 if(!empty($_SESSION)){//makes sure pgs cant be maniplulated
-
+$_SESSION['uname'] = 'tjon';
 if(isset($_SESSION['pic'])){//edits user pic
 	$pic = $_SESSION['pic'];
 
-		$file = file_get_contents($pic);
-		$fileReady = pg_escape_bytea($file);
+		//preps file for insert
+	$file = file_get_contents($pic);
+	$fileReady = pg_escape_bytea($file);
 
-
-	$stmtVal = array("$fileReady", "$_SESSION[uname]");
-
-//prepared statement & query string            
+		//db statements
+	$stmtVal = array("$fileReady", "$_SESSION[uname]");           
 	$result = pg_prepare($conn, "INSERT", 'INSERT INTO pics (pic, uname) VALUES ($1, $2)');
-
 	$rtn = pg_execute($conn, "INSERT", $stmtVal);
 
-//makes sure that the insert executed properly
-	if (!$rtn) {
-		echo pg_last_error($conn);
-		echo "uh oh";
-	} else {
-		echo "<h2> The Following Information Was Added To The Database</h2>";
-		echo "<br>";
-
-		echo "<h3>Profile pic is below </h3>";
-
-//echo "<img src="$_SESSION[pic]">";
+		if (!$rtn) {//makes sure that the insert executed properly
+			echo pg_last_error($conn);
+			echo "uh oh";
+		} else {
+			header("Refresh: 5; URL=/SSD2/userProfile.php");
+			echo "<h2> Your Picture Was Added To The Database</h2>";
+			unset($_SESSION['pic']);
+		}
 
 	}
 
-}
-
 elseif (isset($_SESSION['email'])) {//edits email
-	$stmtVal = array("$_SESSION[email]", "$_SESSION[uname]");
+	$stmtVal =  array("$_SESSION[email]", "$_SESSION[uname]");
 	//$stmtVal = array("$_SESSION[uname]", "passpass", "$_SESSION[email]", "FALSE", "FALSE");
 
 //prepared statement & query string            
-	$result = pg_prepare($conn, "UPDATE", 'UPDATE users SET email = $1 WHERE uname = $2');
-	//$result = pg_prepare($conn, "UPDATE", 'INSERT INTO users (uname, pass, email, admin, active) VALUES ($1, $2, $3, $4, $5)');
+	$result = pg_prepare($conn, "UPDATE", "UPDATE users SET email = $1 WHERE uname = $2");
+	//$result = pg_query_params($conn, "UPDATE users SET email = $1 WHERE uname = $2", $stmtVal);
 
 	$rtn = pg_execute($conn, "UPDATE", $stmtVal);
 
 //makes sure that the update executed properly
-	if (!$rtn) {
+	if (!$result) {
 		echo pg_last_error($conn);
 	} else {
-
+		header("Refresh: 10; URL=/SSD2/userProfile.php");
 		echo "<h2> The Following Information Was Updated In The Database</h2>";
 		echo "<br>";
-
 		echo "<h3>Email: " . $_SESSION['email'] . "</h3>";
-
+		unset($_SESSION['email']);
 	}
 }
 
 elseif (isset($_SESSION['pass'])) {//edits password
+
 	$stmtVal = array("$_SESSION[pass]", "$_SESSION[uname]");
 
 //prepared statement & query string            
-	$result = pg_prepare($conn, "UPDATE", 'UPDATE users SET pass = $1 WHERE uname = $2');
+	$result = pg_prepare($conn, "UPDATE", "UPDATE users SET pass = $1 WHERE uname = $2");
 
 	$rtn = pg_execute($conn, "UPDATE", $stmtVal);
 
@@ -87,23 +78,16 @@ elseif (isset($_SESSION['pass'])) {//edits password
 	if (!$rtn) {
 		echo pg_last_error($conn);
 	} else {
-
-		echo "<h2> The Following Information Was Updated In The Database</h2>";
-		echo "<br>";
-
-		echo "<h3>Password: " . $_SESSION['pass'] . "</h3>";
+		header("Refresh: 10; URL=/SSD2/userProfile.php");
+		echo "<h2> Your Password Was Updated In The Database</h2>";
+		unset($_SESSION['pass']);
 	} 
-
 
 }else{//incase something goes wrong
 	echo "<h3> Something Went Wrong...</h3>";
 	echo "<p><a class='btn btn-default' href='/login.php' role'button'>Login &raquo; </a></p>";
 }
 
-//releases session data #SECUREAF
-unset($_SESSION['pic']);
-unset($_SESSION['email']);
-unset($_SESSION['pass']);
 }
 else{
 	echo "<p><h2>Error: Please login before accessing this page.</h2></p>"; 
@@ -111,28 +95,4 @@ echo "<p><a class='btn btn-default' href='/SSD2/login.php' role'button'>Login &r
 }
 
 pg_close($conn);
-
-
-/*testing for retreiving pictures from the database
-
-$conn_1 = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723")or die ("Connection Refused");
-$stmtVal = array('tjon');
-$fName = "$_SESSION[uname].png";
-$pre = pg_prepare($conn_1, "SELECT", 'SELECT pic FROM pics WHERE uname = $1');
-
-$rtn = pg_execute($conn_1, "SELECT", $stmtVal) or die(pg_last_error($conn_1));
-
-$data = pg_fetch_assoc($rtn);
-
-$decodePic = file("pg_unescape_bytea($data[pic])");
-
-$img = fopen($fName, 'wb') or die("cannot open image\n");
-fwrite($img, $decodePic) or die("cannot write image data\n");
-fclose($img);
-
-echo'<div align="center">
-<img src="'.$decodePic.'"/>
-</div>';
-pg_close($conn_1);
-//*/
 ?>

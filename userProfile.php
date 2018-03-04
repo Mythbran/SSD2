@@ -19,8 +19,11 @@ if(!empty($_POST)){
      if(empty($_POST['pic'])){
     $errors['pic001'] = "Picture is required";
      }
-
-     $_SESSION['pic'] = file($_POST['pic']);
+     /*
+     $file = $_POST['pic'];
+    $img = new Imagick(realpath($file));
+    $img->stripImage();*/
+    $_SESSION['pic'] = file($_POST['pic']);
 
  }
 
@@ -55,7 +58,7 @@ elseif (isset($_POST['passbtn'])) {
             $errors['pass003'] = "Password do not match";
         }
 
-        $_SESSION['pass'] = $_POST['pass'];
+        $_SESSION['pass'] = password_hash($_POST['pass'], PASSWORD_DEFAULT);
 
     }
 
@@ -141,6 +144,38 @@ elseif (isset($_POST['passbtn'])) {
                     -->
 
                     <?php
+                    //testing for retreiving pictures from the database
+
+// $conn_1 = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723")or die ("Connection Refused");
+// $stmtVal = array('tjon');
+// $fName = "/SSD2/image/$_SESSION[uname].png";
+// $pre = pg_prepare($conn_1, "SELECT", 'SELECT pic FROM pics WHERE uname = $1');
+
+// $rtn = pg_execute($conn_1, "SELECT", $stmtVal) or die(pg_last_error($conn_1));
+
+// $data = pg_fetch_assoc($rtn);
+
+
+// $decodePic = pg_unescape_bytea($data['pic']);
+//header('Content-type: image/jpeg');
+//echo base64_decode($decodePic);
+
+/*$img = fopen($fName, 'w') or die("cannot open image");
+fwrite($img, $decodePic) or die("cannot write image data");
+fclose($img);*/
+// $imgSize = imagecreatetruecolor(200, 200);
+// $img = imagepng($imgSize, PNG_NO_FILTER);
+
+// if ($img) {
+//     echo"<div align=center>
+// <img src=/SSD2/image/$_SESSION[uname].png/>
+// </div>";
+// }else{
+//     echo "IMAGE WASNT MADE!!!!";
+// }
+
+//pg_close($conn_1);
+//*/
 
                         //database connection
                     $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723") 
@@ -163,6 +198,7 @@ elseif (isset($_POST['passbtn'])) {
                     ?>
 
                     <h3>Profile Options</h3>
+                    <p href="/SSD2/blogPortal.php">Blog Portal</p>
                     <div>
                         <!-- user pic form-->
                         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="picform">
