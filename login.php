@@ -1,4 +1,11 @@
 <?php
+  
+  if(!empty($_SESSION)){
+
+    header("Location: /SSD2/index.php");
+
+  }
+
 	if($_POST){
     $password = $_POST['pass'];
     if($_POST['pass']){
@@ -50,7 +57,7 @@
         $errors['nouser'] = "Account was not found";
 
       }if(password_verify($password, $userPass)){
-        $errors['invalidcred'] = "Worked";
+        
       }else{
         $errors['invalidcred'] = "Invalid credentials.";
       }
@@ -68,6 +75,7 @@
 		if(count($errors) == 0){
 			session_start();
 			$_SESSION['uname'] = $_POST['uname'];
+      $_SESSION['admin'] = 
 			header("Location: /SSD2/userLogin.php");
 			
 			exit();
