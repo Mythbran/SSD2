@@ -95,7 +95,7 @@
         $_SESSION['userStatus'] = 500; //BAD USER LOG 
       }
       else{
-        $_SESSION['userStatus']=501 //unknown issue 
+        $_SESSION['userStatus']=501; //unknown issue 
         unset($_SESSION['uname']);
       }
 
