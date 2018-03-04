@@ -5,27 +5,27 @@ if (!empty($_SESSION)) {
   $owner = 'tjon';
 
   if(!empty($_POST['submitbtn'])){
-    $_SESSION['uname'] = 'tjon';
-    $_SESSION['btitle'] = $_POST['btitle'];
-    $_SESSION['bdata'] = $_POST['bdata'];
+   $_SESSION['btitle'] = $_POST['btitle'];
+   $_SESSION['bdata'] = $_POST['bdata'];
+   $_SESSION['bid'] = $editID;
 
-    $errors = array();
+   $errors = array();
 
     //Title validation 
-    if(empty($_POST['btitle'])){
-      $errors['btitle001'] = "Title is required";
-    }
+   if(empty($_POST['btitle'])){
+    $errors['btitle001'] = "Title is required";
+  }
 
-    if(!preg_match("/^[a-zA-Z0-9\s]{1,25}$/", $_POST["btitle"])){
-      $errors['btitle002'] = "Only letters are allowed. Max 25 characters";
-    }
+  if(!preg_match("/^[a-zA-Z0-9\s]{1,25}$/", $_POST["btitle"])){
+    $errors['btitle002'] = "Only letters are allowed. Max 25 characters";
+  }
 
       //bdata validation
-    if(empty($_POST['bdata'])){
-      $errors['bdata001'] = "Blog Content is required";
-    }
+  if(empty($_POST['bdata'])){
+    $errors['bdata001'] = "Blog Content is required";
+  }
 
-    $temp = $_POST['bdata'];
+  $temp = $_POST['bdata'];
         $temp = stripslashes($temp);//going to strip html regardless
         $temp = htmlspecialchars($temp);
         $temp = trim($temp);
@@ -40,7 +40,27 @@ if (!empty($_SESSION)) {
                 $_POST['bdata'] = $temp;//posts back to bdata
                 
                 if(count($errors) == 0){
-                  header("Location: blogPost.php");
+                  $_SESSION['uname'] = $owner;
+                  
+                  $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdinsert password=Jxem877&")or die ("Connection Refused");
+
+                  $stmtVal = array("$btitle", "$bdata", "$editID");
+                  $result = pg_prepare($conn, "UPDATE", "UPDATE blogs SET title = $1, data = $2 WHERE bid = $3");
+                  $rtn = pg_execute($conn, "UPDATE", $stmtVal);
+
+                  if (!$rtn) {
+                    echo pg_last_error($conn);
+                  }else{
+
+                    header("Refresh: 10; URL=/SSD2/blogPortal.php");
+                    echo "<h2>Your Blog Post has been updated.</h2>";
+                    unset($_SESSION['btitle']);
+                    unset($_SESSION['bdata']);
+                    unset($_SESSION['editID']);
+                    exit();
+
+                  }
+                  pg_close($conn);
 
                   exit();
                 }
@@ -71,13 +91,18 @@ if (!empty($_SESSION)) {
                 padding-top: 50px;
                 padding-bottom: 20px;
               }
-            </style>
-            <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-            <link rel="stylesheet" href="css/main.css">
+              textarea {
+               resize: none;
+               width: 800px;
+               height: 300px;
+             }
+           </style>
+           <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+           <link rel="stylesheet" href="css/main.css">
 
-            <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
-          </head>
-          <body>
+           <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+         </head>
+         <body>
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
           <![endif]-->
@@ -113,12 +138,14 @@ if (!empty($_SESSION)) {
 
               <p>
                 <?php
-
+                ini_set('display_errors', 'On');
+                error_reporting(E_ALL);
           //makes sure user owns said blog
                 $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723")or die ("Connection Refused");
+                $stmtVal = array("$editID");
                 $pre = pg_prepare($conn, "SELECT", "SELECT owner, title, data FROM blogs WHERE bid = $1");
                 $rtn = pg_execute($conn, "SELECT", $stmtVal) or die(pg_last_error($conn));
-                $result = pg_fetch_result($rtn);
+                $result = pg_fetch_assoc($rtn);
 
                 if ($owner == $result['owner']) {
                   $editTitle = $result['title'];
@@ -128,55 +155,52 @@ if (!empty($_SESSION)) {
                 }else{
                   header("Refresh: 5; URL=/SSD2/blogPortal.php");
                   echo "You Don't Own Thing Blog!";
+                  exit();
                 }
 
                 pg_close($conn);
                 ?>
-</p>
-              <p> 
-                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="mkblogform">
-                  <!--Edit Blog Name Input -->
+
                 
+                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="editblogform">
+                  <!--Edit Blog Name Input -->
+                  <p>
                     <label for="btitle"> Blog Title </label>
-                    <input type="text" placeholder="Blog Title" name="btitle" id="btitle" value="<?php echo $editTitle?>"/>
+                    <input type="text" name="btitle" id="btitle" value="<?php echo $editTitle;?>"/>
                     <span>
                       <?php
                         if(isset($errors['btitle001'])) echo $errors['btitle001'];#empty
                         if(isset($errors['btitle002'])) echo $errors['btitle002'];#formatting
                         ?>
                       </span>
-                    
+                    </p>
 
                     <!--Edit Blog Data Input -->
-                  
+                    <p>
                       <label for="bdata"> Blog Content </label>
-                      <textarea name="bdata"  value="<?php echo $editData?>" rows="8" cols="20"></textarea>
+                      <textarea name="bdata" rows="8" cols="20"> <?php echo $editData;?> </textarea>
                       <span><?php
                         if(isset($errors['bdata001'])) echo $errors['bdata001'];#empty
                         ?></span>
-                      
-
-                      <input class="btn btn-default" name="submitbtn" type="submit" value="Submit &raquo;"/>
-                      <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
-
+                        
+                        <input class="btn btn-default" name="submitbtn" type="submit" value="Submit &raquo;"/>
+                        <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
+                      </p>
                     </form>
-
-
-                  </p>
+                  </div>
                 </div>
-              </div>
 
 
-                  <hr>
+                <hr>
 
-                  <footer>
-                    <p>&copy; D'AngeloTrudge 2018</p>
-                  </footer>
-                </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-                <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+                <footer>
+                  <p>&copy; D'AngeloTrudge 2018</p>
+                </footer>
+              </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+              <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 
-                <script src="js/vendor/bootstrap.min.js"></script>
+              <script src="js/vendor/bootstrap.min.js"></script>
 
-                <script src="js/main.js"></script>
-              </body>
-              </html>
+              <script src="js/main.js"></script>
+            </body>
+            </html>

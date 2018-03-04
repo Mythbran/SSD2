@@ -5,13 +5,13 @@
 <?php
 session_start();
 if(!empty($_POST)){
-    if (!empty($_POST['editbtn'])) {
+    if (isset($_POST['editbtn'])) {
         $_SESSION['editid'] = $_POST['editid'];
         header("Location: editBlog.php");
     }
     elseif (isset($_POST['deletebtn'])) {
         $_SESSION['deleteid'] = $_POST['deleteid'];
-        header("URL=/SSD2/deleteBlog.php");
+        header("Location: deleteBlog.php");
 
     }
 }
