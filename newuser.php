@@ -46,7 +46,7 @@ if($_POST){
         	$_SESSION['uname'] = $_POST['uname'];
         	$_SESSION['pass'] = password_hash($_POST['pass'], PASSWORD_BYCRYPT);
         	$_SESSION['email'] = $_POST['email'];
-         	header("Location: /userSuccess.php");
+         	header("Location: userSuccess.php");
            	exit();
         }
         }
