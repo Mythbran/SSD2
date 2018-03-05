@@ -65,7 +65,7 @@
 			
 		exit();      	
       }else{
-        $errors['invalidcred'] = "Invalid credentials.";
+        $errors['invalidcred'] = "Invalid credentials." . $_POST['uname'];
       }
 
 
