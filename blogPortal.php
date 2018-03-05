@@ -63,7 +63,7 @@ if(!empty($_POST)){
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">Home</a>
+                    <a class="navbar-brand" href="/SSD2">Home</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <form class="navbar-form navbar-right" role="form">
@@ -91,13 +91,14 @@ if(!empty($_POST)){
                                 <th>Title</th>
                             </tr>
                             <?php
+                            try{
                             $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723") 
                             or die ("connection refused");
 
                             $stmtVal = array("tjon");
 
                             $pre = pg_prepare($conn, "SELECT", 'SELECT bid, title FROM blogs WHERE owner = $1');
-                            $rtn = pg_execute($conn, "SELECT", $stmtVal) or die("Database Error. Contact Your Administer");
+                            $rtn = pg_execute($conn, "SELECT", $stmtVal) or die(pg_last_error($conn));
 
                             while($data = pg_fetch_assoc($rtn)){
                                 echo "<tr>";
@@ -107,6 +108,9 @@ if(!empty($_POST)){
                             }
 
                             pg_close($conn);
+                            }catch (Exception $e) {
+                                echo 'Caught exception: ',  $e->getMessage(), "\n";
+                            }
                             ?>
 
                         </table>
