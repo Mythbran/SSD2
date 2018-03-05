@@ -192,7 +192,8 @@
                 if(isset($errors['nouser'])) echo $errors['nouser'];#nouserfound
                 if(isset($errors['invalidcred'])) echo $errors['invalidcred'];#invalid credentials
                 if(isset($errors['defaultError'])) echo $errors['defaultError'];#unidentified error
-
+                if(isset($_SESSION['error'])) echo $_SESSION['error'];//errors from oher pages
+                unset($_SESSION['error']);
               ?></span>
         			<!-- Username Form --> 
         			<p>

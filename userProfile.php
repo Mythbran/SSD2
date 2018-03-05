@@ -8,9 +8,27 @@ modifying empty validation to skip updating field
 -->
 
 <?php
-if($_POST){
-
     session_start();
+    if($_SESSION['userStatus'] == 1 || $_SESSION['userStatus'] == 2 ){
+        //LOG USER HAS ACCESSED THEIR PROFILE 
+    }   
+
+    elseif($_SESSION['userStatus'] == 3){
+        $_SESSION['error'] = "Please wait until your account is active";
+        header("Location: error.php");
+        exit();
+    }
+
+    elseif($_SESSION['userStatus'] == 500){
+        //ban ip 
+    }
+    else{
+        $_SESSION['error'] = "Please login to view this page";
+        header("Location: login.php");
+        exit();
+    }
+
+if($_POST){
 
     $_SESSION['pass'] = $_POST['pass'];
     $_SESSION['email'] = $_POST['email'];
