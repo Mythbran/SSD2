@@ -1,10 +1,9 @@
 <?php
   
   if(!empty($_SESSION)){
-
     header("Location: /SSD2/index.php");
-
   }
+
 
 	if($_POST){
     $password = $_POST['pass'];
@@ -36,6 +35,8 @@
     } elseif($conn){
 
       $result = pg_query($conn, "SELECT * FROM users where uname = '$_POST[uname]' ");
+		//THIS POSSIBLY OPENS US UP TO A SQL INJECTION ATTACK 
+		//REWRITE USING PREPARED STATEMENTS WHEN WE SOME TIME 
 
       //$userPass = array($_POST['uname']);
 
@@ -57,7 +58,12 @@
         $errors['nouser'] = "Account was not found";
 
       }if(password_verify($password, $userPass)){
-        
+		
+		session_start();
+		$_SESSION['uname'] = $_POST['uname'];
+		header("Location: /SSD2/blogPortal.php");
+			
+		exit();      	
       }else{
         $errors['invalidcred'] = "Invalid credentials.";
       }
@@ -73,35 +79,41 @@
 		//IF DOESN'T MATCH IN DATABSE 
 
 		if(count($errors) == 0){
+			session_start();
 
       $result = pg_query($conn, "SELECT * FROM users where uname = '$_POST[uname]' ");
 
       while($rows = pg_fetch_assoc($result)){
         $userAdmin = $rows['admin'];
         $userActive = $rows['active'];
+
       }
-			session_start();
-			$_SESSION['uname'] = $_POST['uname'];
-      if($userAdmin == TRUE && $userActive == TRUE){
-        $_SESSION['userStatus'] = 1;//admin
+
+      if($userAdmin == TRUE && userActive == TRUE){
+        $_SESSION['userStatus']= 1; 
       }
-      elseif($userAdmin == FALSE && $userActive == TRUE){
-        $_SESSION['userStatus']=2;//user
+
+      elseif($userAdmin == FALSE && userActive == TRUE){
+        $_SESSION['userStatus']=2; 
       }
-      elseif($userAdmin == FALSE && $userActive == FALSE){
-        $_SESSION['userStatus']=3; //non active user
+      elseif($userAdmin == FALSE && userActive == FALSE){
+        $_SESSION['userStatus']=3; 
       }
-      elseif($userAdmin == TRUE && $userActive == FALSE){
-        $_SESSION['userStatus'] = 500; //BAD USER LOG 
+      elseif($userAdmin == TRUE && userActive == FALSE){
+        $_SESSION['userStatus']=500;
+        //LOG THAT A BAD USER HAS BEEN ENTERED 
+        exit();
       }
       else{
-        $_SESSION['userStatus']=501; //unknown issue 
+        $_SESSION = 501; 
         unset($_SESSION['uname']);
+        exit();
+        //LOG THAT AN ERROR HAS OCCURED 
       }
 
 
-
-			header("Location: /SSD2/userLogin.php");
+			$_SESSION['uname'] = $_POST['uname'];
+			header("Location: /SSD2/blogPortal.php");
 			
 			exit();
 		}
