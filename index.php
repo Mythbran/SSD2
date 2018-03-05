@@ -75,7 +75,7 @@ session_start();
       </div>
     </div>
 
-    <div class="container">
+    <div class="container" align="left">
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-4">
@@ -115,6 +115,8 @@ session_start();
     </div>
 
 <div class="container" align="center">
+    <h3>Recent Blogs</h3>
+    <h2>Come Join The Community!!!</h2>
 <?php
 
             //selects blogs from the database
