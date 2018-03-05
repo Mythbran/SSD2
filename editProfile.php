@@ -20,30 +20,8 @@ $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdupdate password
 
 if(!empty($_SESSION)){//makes sure pgs cant be maniplulated
 $_SESSION['uname'] = 'tjon';
-if(isset($_SESSION['pic'])){//edits user pic
-	$pic = $_SESSION['pic'];
 
-		//preps file for insert
-	$file = file_get_contents($pic);
-	$fileReady = pg_escape_bytea($file);
-
-		//db statements
-	$stmtVal = array("$fileReady", "$_SESSION[uname]");           
-	$result = pg_prepare($conn, "INSERT", 'INSERT INTO pics (pic, uname) VALUES ($1, $2)');
-	$rtn = pg_execute($conn, "INSERT", $stmtVal);
-
-		if (!$rtn) {//makes sure that the insert executed properly
-			echo pg_last_error($conn);
-			echo "uh oh";
-		} else {
-			header("Refresh: 5; URL=/SSD2/userProfile.php");
-			echo "<h2> Your Picture Was Added To The Database</h2>";
-			unset($_SESSION['pic']);
-		}
-
-	}
-
-elseif (isset($_SESSION['email'])) {//edits email
+if (isset($_SESSION['email'])) {//edits email
 	$stmtVal =  array("$_SESSION[email]", "$_SESSION[uname]");
 	//$stmtVal = array("$_SESSION[uname]", "passpass", "$_SESSION[email]", "FALSE", "FALSE");
 

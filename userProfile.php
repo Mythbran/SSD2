@@ -7,38 +7,47 @@ we'll see how this goes.....
 -->
 
 <?php
+ini_set('display_errors', 'On');
+error_reporting(E_ALL);
 if(!empty($_POST)){
     session_start();
-   $errors = array(); // array to hold errors
+    $_SESSION['uname'] = 'tjon';
+    $errors = array(); // array to hold errors
+    $fPath = pathinfo($_FILES['pic']['name']);
+    $ext = $fPath['extension']; 
 
     //Picture Validation 
    if (isset($_POST['picbtn'])) {
 
-       if(empty($_POST['pic'])){
+       if(empty($_FILES['pic'])){
         $errors['pic001'] = "Picture is required";
     }
 
-    if ($_FILES['pic']['size'] > 35000) {
+    if ($_FILES['pic']['size'] > 3500000) {
         $errors['pic002'] = "File Limit Is 3.5 MB";
     } 
 
-    if(!getimagesize($_FILES['pic']['name'])){
+    if(!($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif')){
         $errors['pic003'] = "Please Upload An Image";
     }
-
-     /*
-     $file = $_POST['pic'];
-    $img = new Imagick(realpath($file));
-    $img->stripImage();*/
     
-if(count($errors) == 0 && $_FILES['pic']['errors'] == 0){
-$target = "/var/www/html/SSD2/userImages/" . $_FILES['pic'][$_SESSION['uname']];
-move_uploaded_file("$_SESSION[uname].png", $target);
-   // $_SESSION['pic'] = file($_POST['pic']);
-        header("Refresh: 5; URL=/SSD2/editProfile.php");
-        echo "Profile Pic has been uploaded";
-        exit();
+if(count($errors) == 0 ){
+
+
+$path = "/var/www/html/SSD2/userImages/";
+$uNamePic = "$_SESSION[uname].".$ext; 
+$target = $path .$uNamePic;
+if(move_uploaded_file( $_FILES['pic']['tmp_name'], $target)){
+        header("Refresh: 5; Location: userProfile.php");
+        echo "<h2>Profile Pic has been uploaded</h2>";
+        unset($_FILES['pic']);
+         exit();
+
+    }else{
+        echo "<h2>file upload didnt work</h2>";
     }
+
+}
 }
 
 //email validation
@@ -82,7 +91,7 @@ elseif (isset($_POST['passbtn'])) {
         exit();
     }
 
-    }    
+    } 
 }
 ?>
 
@@ -161,38 +170,6 @@ elseif (isset($_POST['passbtn'])) {
                     -->
 
                     <?php
-                    //testing for retreiving pictures from the database
-
-// $conn_1 = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723")or die ("Connection Refused");
-// $stmtVal = array('tjon');
-// $fName = "/SSD2/image/$_SESSION[uname].png";
-// $pre = pg_prepare($conn_1, "SELECT", 'SELECT pic FROM pics WHERE uname = $1');
-
-// $rtn = pg_execute($conn_1, "SELECT", $stmtVal) or die(pg_last_error($conn_1));
-
-// $data = pg_fetch_assoc($rtn);
-
-
-// $decodePic = pg_unescape_bytea($data['pic']);
-//header('Content-type: image/jpeg');
-//echo base64_decode($decodePic);
-
-/*$img = fopen($fName, 'w') or die("cannot open image");
-fwrite($img, $decodePic) or die("cannot write image data");
-fclose($img);*/
-// $imgSize = imagecreatetruecolor(200, 200);
-// $img = imagepng($imgSize, PNG_NO_FILTER);
-
-// if ($img) {
-//     echo"<div align=center>
-// <img src=/SSD2/image/$_SESSION[uname].png/>
-// </div>";
-// }else{
-//     echo "IMAGE WASNT MADE!!!!";
-// }
-
-//pg_close($conn_1);
-//*/
 
                         //database connection
 $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723") 
@@ -218,7 +195,7 @@ pg_close($conn);
 <p href="/SSD2/blogPortal.php">Blog Portal</p>
 <div>
     <!-- user pic form-->
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="picform">
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="picform" enctype="multipart/form-data">
         <p>
             <label for="pic"> Upload Profile Picture: </label>
             <input type="file" name="pic" id="pic" value="<?php if(isset($_POST['pic'])); echo $_POST['pic']?>"/>
