@@ -1,5 +1,4 @@
 <!--
-newuser
 Just using new user from assignment 1 for this.
 adding password field
 also need to add it to the DB
@@ -13,7 +12,10 @@ if($_POST){
 	$_SESSION['pass'] = $_POST['pass'];
 	$_SESSION['email'] = $_POST['email'];
 		//Validation things 
+
+
 		$errors = array(); // array to hold errors
+
 		//username validation 
 		if(empty($_POST['uname'])){
 			$errors['uname001'] = "Username is required";
@@ -22,20 +24,26 @@ if($_POST){
 		if(!preg_match("/^[a-zA-Z]{1,25}$/", $_POST["uname"])){
 			$errors['uname002'] = "Only letters are allowed. Max 25 characters";
 		}
+
 	//Password validation goes here
 		if(empty($_POST['pass'])){//empty
 			$errors['pass001'] = "Password is required";
 		}
+
 		if(!preg_match("/^[[a-zA-Z\d\\!@#$%^&*()-_<>]{8,12}$/", $_POST["pass"])){//password requirements 
 			$errors['pass002'] = "Min 8, Max 12, numbers, letters, special chars";//not fully done
 		}
+
 		if(!($_POST["pass"] == $_POST["passCheck"])){//makes sure password was entered correctly
 			$errors['pass003'] = "Password do not match";
+
 		}
+
 		//email validation
 		if(empty($_POST['email'])){
 			$errors['email001'] = "Email is requred";
 		}
+
         //Email Formatting Validation
 		if(!preg_match("/^([A-Za-z0-9\.\-]{1,64})[@]([A-Za-z0-9\-]{1,188}\.)([A-Za-z\.]{1,9})$/", $_POST["email"])){
 			$errors['email002'] = "Valid email is required";
@@ -44,12 +52,13 @@ if($_POST){
         if(count($errors) == 0){
         	session_start();
         	$_SESSION['uname'] = $_POST['uname'];
-        	$_SESSION['pass'] = password_hash($_POST['pass'], PASSWORD_BYCRYPT);
+        	$_SESSION['pass'] = $_POST['pass'];
         	$_SESSION['email'] = $_POST['email'];
-         	header("Refresh: 7; Location: userSuccess.php");
-		 var_dump($_SESSION['pass']);
+         	header("Location: userSuccess.php");
+
            	exit();
         }
+
         }
     ?>
 
@@ -91,8 +100,7 @@ if($_POST){
         				<span class="icon-bar"></span>
         				<span class="icon-bar"></span>
         			</button>
-        			<a class="navbar-brand" href="/">Home</a>
-        			<a class="navbar-brand" href="/SSD1">SSD1</a>
+        			<a class="navbar-brand" href="/SSD2">Home</a>
         		</div>
         		<div id="navbar" class="navbar-collapse collapse">
         			<form class="navbar-form navbar-right" role="form">
@@ -128,7 +136,10 @@ if($_POST){
         					<!-- Username Validation -->
         					<span class="errors"> * <?php
 			if(isset($errors['uname001'])) echo $errors['uname001'];#empty
+
 			if(isset($errors['uname002'])) echo $errors['uname002'];#A-Za-z 1-25 length      
+
+
 			?></span>
 		</p> 
 
@@ -143,8 +154,11 @@ if($_POST){
 				<!-- Password Validation -->
 				<span class="errors"> * <?php
 			if(isset($errors['pass001'])) echo $errors['pass001'];#empty
+
 			if(isset($errors['pass002'])) echo $errors['pass002'];#should echo password requirements  
+
 			   if(isset($errors['pass003'])) echo $errors['pass003'];#makes sure that passwords match
+
 			?></span>
 		</p> 
 
@@ -156,6 +170,7 @@ if($_POST){
 			if(isset($errors['email001'])){
             	echo $errors['email001'];#empty
             }
+
             if(isset($errors['email002'])){
             	echo $errors['email002'];#invalid
             }
