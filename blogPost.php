@@ -5,6 +5,7 @@ if (!empty($_SESSION)) {//need to re do this. itll never be empty with whatever 
 	$title = $_SESSION['btitle'];
 	$data = $_SESSION['bdata'];
 
+	try{
 	$conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdinsert password=Jxem877&")or die ("Connection Refused");
 
 	$stmtVal = array("$owner", "$title", "$data");
@@ -15,7 +16,7 @@ if (!empty($_SESSION)) {//need to re do this. itll never be empty with whatever 
 		echo pg_last_error($conn);
 	}else{
 
-		header("Refresh: 10; URL=/SSD2/blogPortal.php");
+		header("Refresh: 5; URL=/SSD2/blogPortal.php");
 		echo "<h2>Your Blog Post Can now be seen from the front page.</h2>";
 		unset($_SESSION['btitle']);
 		unset($_SESSION['bdata']);
@@ -26,5 +27,7 @@ if (!empty($_SESSION)) {//need to re do this. itll never be empty with whatever 
 }else{
 	echo "no sessions";
 }
-
+catch (Exception $e) {
+    echo 'Caught exception: ',  $e->getMessage(), "\n";
+}
 ?>
