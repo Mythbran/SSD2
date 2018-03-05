@@ -11,7 +11,7 @@ if(!empty($_POST)){
     }
     elseif (isset($_POST['deletebtn'])) {
         $_SESSION['deleteid'] = $_POST['deleteid'];
-        header("URL=/SSD2/deleteBlog.php");
+        header("Location: deleteBlog.php");
 
     }
 }
@@ -95,7 +95,7 @@ if(!empty($_POST)){
                             $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723") 
                             or die ("connection refused");
 
-                            $stmtVal = array("tjon");
+                            $stmtVal = array("$SESSION[uname]");
 
                             $pre = pg_prepare($conn, "SELECT", 'SELECT bid, title FROM blogs WHERE owner = $1');
                             $rtn = pg_execute($conn, "SELECT", $stmtVal) or die(pg_last_error($conn));
