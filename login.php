@@ -57,13 +57,8 @@
       if(empty($userPass)){
         $errors['nouser'] = "Account was not found";
 
-      }if(password_verify($password, $userPass)){
-		
-		session_start();
-		$_SESSION['uname'] = $_POST['uname'];
-		header("Location: /SSD2/blogPortal.php");
-			
-		exit();      	
+      }elseif(password_verify($password, $userPass)){
+        //LOG    	
       }else{
         $errors['invalidcred'] = "Invalid credentials." . $_POST['uname'];
       }

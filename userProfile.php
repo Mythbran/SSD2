@@ -8,6 +8,7 @@ modifying empty validation to skip updating field
 -->
 
 <?php
+    unset($_SESSION['redirect']);
     session_start();
     if($_SESSION['userStatus'] == 1 || $_SESSION['userStatus'] == 2 ){
         //LOG USER HAS ACCESSED THEIR PROFILE 
@@ -24,6 +25,7 @@ modifying empty validation to skip updating field
     }
     else{
         $_SESSION['error'] = "Please login to view this page";
+        $_SESSION['redirect'] = "userProfile.php";
         header("Location: login.php");
         exit();
     }
@@ -33,6 +35,7 @@ if($_POST){
     $_SESSION['pass'] = $_POST['pass'];
     $_SESSION['email'] = $_POST['email'];
     $_SESSION['pic'] = $_POST['pic'];
+
     
         //Validation things 
 
