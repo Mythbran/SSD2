@@ -35,9 +35,12 @@ if(count($errors) == 0 ){
 
 
 $path = "/var/www/html/SSD2/userImages/";
-$uNamePic = "$_SESSION[uname].".$ext; 
+$uNamePic = "$_SESSION[uname]." .$ext; 
 $target = $path .$uNamePic;
-if(move_uploaded_file( $_FILES['pic']['tmp_name'], $target)){
+$raw = $_FILES['pic']['tmp_name'];
+$raw -> stripImage();
+
+if(move_uploaded_file( $raw['pic']['tmp_name'], $target)){
         header("Refresh: 5; Location: userProfile.php");
         echo "<h2>Profile Pic has been uploaded</h2>";
         unset($_FILES['pic']);
@@ -178,12 +181,10 @@ or die ("connection refused");
 $stmtVal = array("tjon");
 
 $pre = pg_prepare($conn, "SELECT", 'SELECT uname, email FROM users WHERE uname = $1');
-
 $rtn = pg_execute($conn, "SELECT", $stmtVal) or die("Database Error. Contact Your Administer");
-
 $data = pg_fetch_assoc($rtn);
 
-                      //displays username and email
+//displays username and email
 echo "<h4>Username: " . $data['uname'] . "</h4>";
 echo "<h4>Email: " . $data['email'] . "</h4>";
 
