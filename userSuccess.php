@@ -2,7 +2,6 @@
 a modified version of usedAdded
 displays the info of a newly added user
 redirects to index page
-gotta get started on access control............
 -->
 
 
@@ -73,10 +72,11 @@ gotta get started on access control............
             <!-- Example row of columns -->
             <div class="row">
                 <div class="col-md-4">
-                    <table>
+                    <table style="width=100%">
                         <?php
                         session_start();
                         $temp = $_SESSION['uname'];
+                        try{
                         $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdinsert password=Jxem877&") or die ("Connection Refused");
 
         //makes sure connection was successful
@@ -84,8 +84,9 @@ gotta get started on access control............
                             echo pg_last_error($conn);
 
                         } elseif(!empty($_SESSION)){
-
-                            $stmtVal = array("$_SESSION[uname]", "$_SESSION[pass]", "$_SESSION[email]", "FALSE", "FALSE" );
+                            $password = $_SESSION['pass'];
+                            $passHashed = password_hash($password, PASSWORD_BCRYPT);
+                            $stmtVal = array("$_SESSION[uname]", "$passHashed", "$_SESSION[email]", "FALSE", "FALSE" );
 
             //prepared statement & query string            
                             $result = pg_prepare($conn, "INSERT", 'INSERT INTO users (uname, pass, email, admin, active) VALUES ($1, $2, $3, $4, $5)');
@@ -100,7 +101,6 @@ gotta get started on access control............
                                 echo "<br>";
                                 echo"<tr>";
                                 echo "<th><h4> Username </h4></th>";
-                                echo "<th><h4> Password </h4></th>";
                                 echo "<th><h4> Email </h4></th>";
                                 echo "<th><h4> Admin </h4></th>";
                                 echo "<th><h4> Active </h4></th>";
@@ -108,7 +108,6 @@ gotta get started on access control............
 
                                 echo "<tr>";
                                 echo "<td><h5> $_SESSION[uname]</h5></td>";
-                                echo "<td><h5> $_SESSION[pass]</h5></td>";
                                 echo "<td><h5> $_SESSION[email]</h5></td>";
                                 echo "<th><h4> FALSE </h4></th>";
                                 echo "<th><h4> FALSE </h4></th>";
@@ -129,6 +128,9 @@ gotta get started on access control............
         }
 
             pg_close($conn);
+        }catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
         ?>
     </table>
 

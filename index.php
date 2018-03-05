@@ -59,7 +59,7 @@ session_start();
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
-        <h1>Main Blog Page</h1>
+        <h1>Team Igni Blogs</h1>
         <p>This is a live demo for Assignment 2 of Secure Software Development</p>
         <P>
            Created by Matthew D'Angelo and Tjon Trudge
@@ -75,7 +75,7 @@ session_start();
       </div>
     </div>
 
-    <div class="container">
+    <div class="container" align="left">
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-4">
@@ -115,10 +115,12 @@ session_start();
     </div>
 
 <div class="container" align="center">
+    <h2>Recent Blogs</h2>
+    <h3>Come Join The Community!!!</h3>
 <?php
 
             //selects blogs from the database
-
+try{
             $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723")or die ("Connection Refused");
 
 $pre = pg_prepare($conn, "SELECT", "SELECT owner, title, data FROM blogs");
@@ -137,6 +139,9 @@ while($data = pg_fetch_assoc($rtn)){
 }
 
 pg_close($conn);
+    catch (Exception $e) {
+    echo 'Caught exception: ',  $e->getMessage(), "\n";
+}
             ?>
 
           </div>

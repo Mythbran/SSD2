@@ -2,9 +2,8 @@
 modified version of list user
 selects from based on user name
 need to make a session variable to use to pull from DB
-going to try to do profile editing on this page
-going to have fields hidden until a link is clicked
-modifying empty validation to skip updating field
+trying to do everything on this pg again....
+we'll see how this goes.....
 -->
 
 <?php
@@ -13,13 +12,11 @@ modifying empty validation to skip updating field
     if($_SESSION['userStatus'] == 1 || $_SESSION['userStatus'] == 2 ){
         //LOG USER HAS ACCESSED THEIR PROFILE 
     }   
-
     elseif($_SESSION['userStatus'] == 3){
         $_SESSION['error'] = "Please wait until your account is active";
         header("Location: error.php");
         exit();
     }
-
     elseif($_SESSION['userStatus'] == 500){
         //ban ip 
     }
@@ -30,82 +27,136 @@ modifying empty validation to skip updating field
         exit();
     }
 
-if($_POST){
+if(!empty($_POST)){
+    session_start();
+    $_SESSION['uname'] = 'tjon';
+    $errors = array(); // array to hold errors
+    $fPath = pathinfo($_FILES['pic']['name']);
+    $ext = $fPath['extension']; 
 
+<<<<<<< HEAD
     $_SESSION['pass'] = $_POST['pass'];
     $_SESSION['email'] = $_POST['email'];
     $_SESSION['pic'] = $_POST['pic'];
 
     
         //Validation things 
+=======
+    //Picture Validation 
+   if (isset($_POST['picbtn'])) {
+>>>>>>> cc6972f3325fc3bd9935485ef992aedc2dd477e8
+
+       if(empty($_FILES['pic'])){
+        $errors['pic001'] = "Picture is required";
+    }
+
+    if ($_FILES['pic']['size'] > 3500000) {
+        $errors['pic002'] = "File Limit Is 3.5 MB";
+    } 
+
+    if(!($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif')){
+        $errors['pic003'] = "Please Upload An Image";
+    }
+    
+if(count($errors) == 0 ){
 
 
-        $errors = array(); // array to hold errors
+$path = "/var/www/html/SSD2/userImages/";
+$uNamePic = "$_SESSION[uname]." .$ext; 
+$target = $path .$uNamePic;
+$raw = $_FILES['pic']['tmp_name'];
+$raw -> stripImage();
 
-//Password validation goes here
+if(move_uploaded_file( $raw['pic']['tmp_name'], $target)){
+        header("Refresh: 5; Location: userProfile.php");
+        echo "<h2>Profile Pic has been uploaded</h2>";
+        unset($_FILES['pic']);
+         exit();
+
+    }else{
+        echo "<h2>file upload didnt work</h2>";
+    }
+
+}
+}
+
+//email validation
+elseif (!empty($_POST['emailbtn'])) {
+
+    if(empty($_POST['email'])){
+        $errors['email001'] = "Email is required";
+    }
+        //Email Formatting Validation
+    if(!preg_match("/^([A-Za-z0-9\.\-]{1,64})[@]([A-Za-z0-9\-]{1,188}\.)([A-Za-z\.]{1,9})$/", $_POST["email"])){
+        $errors['email002'] = "Valid email is required";
+    }
+
+    if(!($_POST['email'] == $_POST['emailCheck'])){//makes sure email was entered correctly
+        $errors['email003'] = "Emails Do Not Match";
+    }
+
+if(count($errors) == 0 ){
+    $_SESSION['email'] = $_POST['email'];
+        header("Location: editProfile.php");
+        exit();
+    }
+}
+
+//Password validation 
+elseif (isset($_POST['passbtn'])) {
+
         if(empty($_POST['pass'])){//empty
             $errors['pass001'] = "Password is required";
         }
-
-        if(!preg_match("/^[[a-zA-Z\d\\!@#$%^&*()-_<>]{8,12}$/", $_POST["pass"])){//password requirements 
+        if(!preg_match("/^[a-zA-Z\d\\!@#$%^&*()-_<>]{8,12}$/", $_POST["pass"])){//password requirements 
             $errors['pass002'] = "Min 8, Max 12, numbers, letters, special chars";//not fully done
         }
-
-        if(!($_POST["pass"] == $_POST["passCheck"])){//makes sure password was entered correctly
+        if(!($_POST['pass'] == $_POST['passCheck'])){//makes sure password was entered correctly
             $errors['pass003'] = "Password do not match";
-
         }
 
-        //email validation
-        if(empty($_POST['email'])){
-            $errors['email001'] = "Email is requred";
-        }
-
-        //Email Formatting Validation
-        if(!preg_match("/^([A-Za-z0-9\.\-]{1,64})[@]([A-Za-z0-9\-]{1,188}\.)([A-Za-z\.]{1,9})$/", $_POST["email"])){
-            $errors['email002'] = "Valid email is required";
-        }
-
-        if(count($errors) == 0){
-            header("Location: /editProfile.php");
-
-            exit();
-        }
+        if(count($errors) == 0 ){
+        $_SESSION['pass'] = password_hash($_POST['pass'], PASSWORD_DEFAULT);
+        header("Location: editProfile.php");
+        exit();
     }
-    ?>
 
-    <!doctype html>
-    <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-    <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-    <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-    <!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta https-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+    } 
+}
+?>
 
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <style>
-        body {
-            padding-top: 50px;
-            padding-bottom: 20px;
-        }
-        table, td, tr{
-            border: 1px solid black;
-            width:500px;
-        }
-        th, td {
-         padding: 15px;
-         text-align: left;
-     }
- </style>
- <link rel="stylesheet" href="css/bootstrap-theme.min.css">
- <link rel="stylesheet" href="css/main.css">
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta https-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 
- <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+    body {
+        padding-top: 50px;
+        padding-bottom: 20px;
+    }
+    table, td, tr{
+        border: 1px solid black;
+        width:500px;
+    }
+    th, td {
+     padding: 15px;
+     text-align: left;
+ }
+</style>
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="css/main.css">
+
+<script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 </head>
 <body>
         <!--[if lt IE 8]>
@@ -145,118 +196,81 @@ if($_POST){
 
                     <!--
                         Profile pic goes here
+
                     -->
-<!--
-                    <table>     
 
+                    <?php
 
-                        <tr>
-                         <th><h4> Username       </h4></th>
-                         <th><h4> Email          </h4></th>
-                         <th><h4> Address        </h4></th>
-                         <th><h4> City           </h4></th>
-                         <th><h4> Postal Code    </h4></th>
-                         <th><h4> Phone Number   </h4></th>
-                         <th><h4> Bio            </h4></th>
-                         </tr>          
+                        //database connection
+$conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723") 
+or die ("connection refused");
 
-                         <tr>      -->
-                            <?php
-                        /*
-                //debugging stuff???
-                        ini_set('display_errors', 'On');
-                        error_reporting(E_ALL);
+$stmtVal = array("tjon");
 
-                    //database connection
-                        $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=select") 
-                        or die ("connection refused");
+$pre = pg_prepare($conn, "SELECT", 'SELECT uname, email FROM users WHERE uname = $1');
+$rtn = pg_execute($conn, "SELECT", $stmtVal) or die("Database Error. Contact Your Administer");
+$data = pg_fetch_assoc($rtn);
 
-                        $stmtVal = 'tjon';
+//displays username and email
+echo "<h4>Username: " . $data['uname'] . "</h4>";
+echo "<h4>Email: " . $data['email'] . "</h4>";
 
-                    $pre = pg_prepare($conn, "SELECT", 'SELECT (uname, email, sname, snum, city, province, pcode, pnum, bio) FROM users WHERE uname = $1');//test variable
+pg_close($conn);   
 
-                    // $rtn = pg_execute($conn, "SELECT", $stmtVal) or die(echo "pg_last_error($conn)");
+?>
 
-                   
-                
-
-                     $rtn = pg_query($conn, 'SELECT (uname, email, sname, snum, city, province, pcode, pnum, bio) FROM users WHERE uname = tjon');//test variable
-                    
-                       $data = pg_fetch_assoc($rtn);
-
-
-                        /*
-                        echo "<td><h5>" . $data['uname'] .    "</h5></td>";
-                        echo "<td><h5>" . $data['email'] .    "</h5></td>";
-                        echo "<td><h5>" . $data['snum']  . " " . $data['sname'] . "</h5></td>";   
-                        echo "<td><h5>" . $data['city'] . ", " . $data['province'] . "</h5></td>";
-                        echo "<td><h5>" . $data['pcode'] .    "</h5></td>";
-                        echo "<td><h5>" . $data['pnum'] .     "</h5></td>";
-                        echo "<td><h5>" . $data['bio']   .    "</h5></td>";
-                      
-                        echo $data['uname'];
-                        echo $data['email'];
-                        echo $data['snum'];
-                        echo $data['sname'];
-                        echo $data['city'] . ", " . echo $data['province'];
-                        echo $data['pcode'];
-                        echo $data['pnum'];
-                        echo $data['bio'];
-                    
-                    
-
-                pg_close($conn);   
-                */                            
-                ?>
-          <!--  </tr>
-          </table> -->
-          <h3>Profile Options</h3>
-          <div>
-            <!-- user pic form-->
-            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="pform">
-                <p>
-                    <label for="pic"> Upload Profile Picture: </label>
-                    <input type="file" name="pic" id="pic" value="<?php if(isset($_POST['pic'])); echo $_POST['pic']?>"/>
-                </p>
-                <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
-                <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
-            </form>
-
-            <p>
-                <!-- email Form -->
-                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="pform">
-                    <h4>Change Email</h4>
-                    <label for="email"> Email: </label>
-                    <input type="text" placeholder="Email" name="email" id="email"value="<?php if(isset($_POST['email'])); echo $_POST['email']?>"/>
-                    <label for="email_1"> Re-Enter: </label>
-                    <input type="text" placeholder="Email" name="email_1" id="email_1"value=""/>
-                    <span class="errors"> * <?php
-                    if(isset($errors['email001'])){
-                echo $errors['email001'];#empty
-            }
-
-            if(isset($errors['email002'])){
-                echo $errors['email002'];#invalid
-            }
-
-            ?></span>
+<h3>Profile Options</h3>
+<p href="/SSD2/blogPortal.php">Blog Portal</p>
+<div>
+    <!-- user pic form-->
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="picform" enctype="multipart/form-data">
+        <p>
+            <label for="pic"> Upload Profile Picture: </label>
+            <input type="file" name="pic" id="pic" value="<?php if(isset($_POST['pic'])); echo $_POST['pic']?>"/>
         </p>
-        <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
+        <input class="btn btn-default" name="picbtn" type="submit" value="Submit &raquo;"/>
         <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
-    </form>
+        <span class="errors"> * <?php
+                               if(isset($errors['pic001'])) echo $errors['pic001'];#empty
+                               if(isset($errors['pic002'])) echo $errors['pic002'];
+                               if(isset($errors['pic003'])) echo $errors['pic003'];
+                               ?>
+                           </span>
+                       </form>
 
-    <p>
-        <h4>Change Password</h4>
-        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="pform">
-            <!-- Password Form --> 
+                       <p>
+                        <!-- email Form -->
+                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="emailform">
+                            <h4>Change Email</h4>
+                            <label for="email"> Email: </label>
+                            <input type="text" placeholder="Email" name="email" id="email" value="<?php if(isset($_POST['email'])); echo $_POST['email']?>"/><br>
 
-            <label for="pass">Password: </label>
-            <input type="password" placeholder="Password" onfocus="this.value=''" name="pass" id="pass" value="<?php if(isset($_POST['pass'])); echo $_POST['pass']; ?>"/>
-            <label for="passCheck">Re-enter Password: </label>
-            <input type="password" placeholder="Password" onfocus="this.value=''" name="passCheck" id="passCheck" value="<?php if(isset($_POST['passCheck'])); echo $_POST['passCheck']; ?>
-            "/>
-            <!-- Password Validation -->
-            <span class="errors"> * <?php
+                            <label for="email_1"> Re-Enter: </label>
+                            <input type="text" placeholder="Email" name="emailCheck" id="emailCheck" />
+                            <span class="errors"> * <?php
+                            if(isset($errors['email001'])) echo $errors['email001'];
+                            if(isset($errors['email002'])) echo $errors['email002'];
+                            if(isset($errors['email003'])) echo $errors['email003'];
+
+                            ?></span>
+                        </p>
+                        <input class="btn btn-default" name="emailbtn" type="submit" value="Submit &raquo;"/>
+                        <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
+                    </form>
+
+                    <p>
+                        <h4>Change Password</h4>
+                        <!-- Password Form --> 
+                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="passform">
+
+                            <label for="pass">Password: </label>
+                            <input type="password" placeholder="Password" name="pass" id="pass" value="<?php if(isset($_POST['pass'])); echo $_POST['pass']; ?>"/><br>
+
+                            <label for="passCheck">Re-enter Password: </label>
+                            <input type="password" placeholder="Password" name="passCheck" id="passCheck" />
+
+                            <!-- Password Validation -->
+                            <span class="errors"> * <?php
             if(isset($errors['pass001'])) echo $errors['pass001'];#empty
 
             if(isset($errors['pass002'])) echo $errors['pass002'];#should echo password requirements  
@@ -265,7 +279,7 @@ if($_POST){
 
                ?></span>
            </p>
-           <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
+           <input class="btn btn-default" name="passbtn" type="submit" value="Submit &raquo;"/>
            <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
        </form>
 
