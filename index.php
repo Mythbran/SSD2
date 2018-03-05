@@ -79,52 +79,67 @@ session_start();
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-4">
+          <h2>Login</h2>
+          <p><a class="btn btn-default" href="login.php" role="button">Login &raquo;</a></p>
+
+        </div>
+
+        <div class="row">
+        <div class="col-md-4">
+          <h2>Blogs</h2>
+          <p><a class="btn btn-default" href="blogPortal.php" role="button">Blogs &raquo;</a></p>
+
+        </div>
+
+        <div class="col-md-4">
           <h2>New User</h2>
           <p>Create a new user below(Going to move to user/pass up there ^)</p>
           <p><a class="btn btn-default" href="newuser.php" role="button">New User &raquo;</a></p>
-
         </div>
+
         <div class="col-md-4">
-          <h2>NO ACCESS CONTROL TESTING USERPROFILE</h2>
-          <p>Create a new user below(Going to move to user/pass up there ^)</p>
+          <h2>USERPROFILE</h2>
           <p><a class="btn btn-default" href="userProfile.php" role="button">User Profile &raquo;</a></p>
         </div>
+
         <div class="col-md-4">
           <h2>Apps</h2>
           <p>Below is a list of our program downloads</p>
           <p><a class="btn btn-default" href="gitpush.sh" role="button">Download gitpush &raquo;</a></p>
        </div>
 
-       <div class="col-md-4">
-          <h2>Blog Posts</h2>
-          <p>
-            <?php
-            ini_set('display_errors', 'On');
-error_reporting(E_ALL);
+
+            
+
+      </div>
+    </div>
+
+<div class="container" align="center">
+<?php
+
             //selects blogs from the database
 
             $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723")or die ("Connection Refused");
 
-$pre = pg_prepare($conn, "SELECT", 'SELECT (owner, title, data) FROM blogs');
+$pre = pg_prepare($conn, "SELECT", "SELECT owner, title, data FROM blogs");
 
-$rtn = pg_execute($conn, "SELECT") or die(pg_last_error($conn));
+$rtn = pg_execute($conn, "SELECT");
 
 while($data = pg_fetch_assoc($rtn)){
-  echo" <p>
+  echo" <span>
+        <p>
         <h2>$data[title]</h2><br>
         <h3>By: $data[owner]</h3><br>
         <h4>$data[data]</h4><br>
         </p>
+        </span>
   ";
 }
 
 pg_close($conn);
             ?>
-            
-          </p>
-        </div>
-      </div>
-    </div>
+
+          </div>
       <hr>
 
       <footer>
