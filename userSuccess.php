@@ -61,7 +61,7 @@ redirects to index page
 
           ";} 
 
-          else{
+          elseif($_SESSION['userStatus']==2){
           echo" <a class='btn btn-default' href='userProfile.php' role='button'>User Profile &raquo;</a>
           <a class='btn btn-default' href='blogPortal.php' role='button'>Blogs &raquo;</a>
             <a class='btn btn-default' href='logout.php' role='button'>Logout &raquo;</a>
