@@ -118,13 +118,15 @@ if($_POST){
             <div class="row">
                 <div class="col-md-8">
                     <!-- User Form --> 
-                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="uform">
+                    <!--<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="uform">-->
                     <?php
                     //database connection
-                    $db = pg_connect("host=localhost port=5432 dbname=ssd2 user=ssd2select password=Wier~723") or die ("Connection Refused");
-                    $result = pg_query($db, 'SELECT * FROM users');
+                     
+                    $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723")or die ("Connection Refused");
 
-                    while ($row = pg_fetch_assoc($result)) {
+                    $rtn = pg_query($conn, "SELECT * FROM users");
+
+                    while ($row = pg_fetch_assoc($rtn)) {
                         print "Username:      " . $row['uname'] . "<br> ";
                         print "Email:        " . $row['email'] . "<br> ";
                         print "Status       " . $row['userStatus'] . "<br>";
@@ -135,10 +137,10 @@ if($_POST){
                     <br>
                 </div>
         
-        <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
+        <!--<input class="btn btn-default" type="submit" value="Submit &raquo;"/>
         <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
         <a class="btn btn-default" href="/SSD1" role="button">Back &raquo;</a>
-    </form>
+    </form>-->
 
     <hr>
 
