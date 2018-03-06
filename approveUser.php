@@ -1,14 +1,23 @@
+<!--
+Just using new user from assignment 1 for this.
+adding password field
+also need to add it to the DB
+redirects to user Success
+-->
+<?php   
+if($_POST){
+    
+    session_start();
 
-<?php
-  session_start();
-
-  if($_SESSION['userStatus'] != 1){
+    if($_SESSION['userStatus'] != 1){ 
     $_SESSION['error'] = "Please login to view this page";
     header("Location: errors.php");
     exit();
-  }
+}
+
 ?>
-<!doctype html>
+
+ <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
@@ -64,17 +73,15 @@
 
           ";} 
 
-          elseif($_SESSION['userStatus'] == 2){
+          elseif($_SESSION['userStatus']==2){
           echo" <a class='btn btn-default' href='userProfile.php' role='button'>User Profile &raquo;</a>
           <a class='btn btn-default' href='blogPortal.php' role='button'>Blogs &raquo;</a>
-          
             <a class='btn btn-default' href='logout.php' role='button'>Logout &raquo;</a>
           
 
-          ";} 
-          else{
+          ";} else{
            echo" <a class='btn btn-default' href='logout.php' role='button'>Logout &raquo;</a>";
-          }
+          } 
           
 
         }else{
@@ -100,39 +107,49 @@
       </div>
     </nav>
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-      <div class="container">
-        <h1>Admin Panel</h1>
-      </div>
-    </div>
-
+        <!-- Main jumbotron for a primary marketing message or call to action -->
+        <div class="jumbotron">
+            <div class="container">
+                <h1>Approve New Users</h1>
+            </div>
+        </div>
         <div class="container">
             <!-- Example row of columns -->
             <div class="row">
-                <div class="col-md-4">
-                    <p><a class="btn btn-default" href="/SSD2/approveUser.php" role="button">Approve Users &raquo; </a></p>
+                <div class="col-md-8">
+                    <!-- User Form --> 
+                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="uform">
+                    <?php
+                    //database connection
+                    $db = pg_connect("host=localhost port=5432 dbname=ssd2 user=ssd2select password=Wier~723") or die ("Connection Refused");
+                    $result = pg_query($db, 'SELECT * FROM users');
 
-                    <p><a class="btn btn-default" href="/SSD2/deleteUser.php" role="button">Delete Users &raquo; </a></p>
-       </div>
-    </div>
+                    while ($row = pg_fetch_assoc($result)) {
+                        print "Username:      " . $row['uname'] . "<br> ";
+                        print "Email:        " . $row['email'] . "<br> ";
+                        print "Status       " . $row['userStatus'] . "<br>";
+                        print "<br>";
+                    }//while loop
+                    ?>
 
-    
-
-
-
+                    <br>
+                </div>
+        
+        <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
+        <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
+        <a class="btn btn-default" href="/SSD1" role="button">Back &raquo;</a>
+    </form>
 
     <hr>
 
-
-      <footer>
+    <footer>
         <p>&copy; D'AngeloTrudge 2018</p>
-      </footer>
-    </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+    </footer>
+</div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 
-        <script src="js/vendor/bootstrap.min.js"></script>
+<script src="js/vendor/bootstrap.min.js"></script>
 
-        <script src="js/main.js"></script>
-    </body>
+<script src="js/main.js"></script>
+</body>
 </html>
