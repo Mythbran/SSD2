@@ -150,6 +150,7 @@ if($_POST){
                         print "Username:      " . $row['uname'] . "<br> ";
                         print "Email:        " . $row['email'] . "<br> ";
                         print "Status : <input type='text' name='userStatus'id='userStatus' value='". $row['userstatus'] . "' /> <br>";
+                        print "<input type='hidden' name ='uname' value='".$row['uname'] . "' />";
                         print "<br>";
                     }//while loop
                     ?>
