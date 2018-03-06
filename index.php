@@ -40,7 +40,9 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">Home</a>
+          <a class="btn btn-default" href="/" role="button">Home &raquo;</a>
+          <a class="btn btn-default" href="/SSD2" role="button">SSD2 &raquo;</a>
+          <a class="btn btn-default" href="newuser.php" role="button">New User &raquo;</a>
         </div>
         <div id='navbar' class='navbar-collapse collapse'> 
             <form class='navbar-form navbar-right' role='form' method="post" action="/SSD2/login.php" id="uform" >
@@ -49,6 +51,7 @@
         if(!empty($_SESSION['uname'])){
           echo" <a class='btn btn-default' href='userProfile.php' role='button'>User Profile &raquo;</a>
             <a class='btn btn-default' href='logout.php' role='button'>Logout &raquo;</a>
+            <a class='btn btn-default' href='blogPortal.php' role='button'>Blogs &raquo;</a>
 
           ";
 
@@ -96,40 +99,14 @@
     </div>
 
     <div class="container" align="left">
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-md-4">
-          <h2>Login</h2>
-          <p><a class="btn btn-default" href="login.php" role="button">Login &raquo;</a></p>
+      <!-- Example row of columns -->     
 
-        </div>
-
-        <div class="row">
-        <div class="col-md-4">
-          <h2>Blogs</h2>
-          <p><a class="btn btn-default" href="blogPortal.php" role="button">Blogs &raquo;</a></p>
-
-        </div>
 
         <div class="col-md-4">
           <h2>New User</h2>
           <p>Create a new user below(Going to move to user/pass up there ^)</p>
           <p><a class="btn btn-default" href="newuser.php" role="button">New User &raquo;</a></p>
-        </div>
-
-        <div class="col-md-4">
-          <h2>USERPROFILE</h2>
-          <p><a class="btn btn-default" href="userProfile.php" role="button">User Profile &raquo;</a></p>
-        </div>
-
-        <div class="col-md-4">
-          <h2>Apps</h2>
-          <p>Below is a list of our program downloads</p>
-          <p><a class="btn btn-default" href="gitpush.sh" role="button">Download gitpush &raquo;</a></p>
-       </div>
-
-
-            
+        </div>            
 
       </div>
     </div>
