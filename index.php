@@ -67,7 +67,7 @@
 
           ";} 
           else{
-           echo" <a class='btn btn-default' href='logout.php' role='button'>Logout &raquo;</a>"
+           echo" <a class='btn btn-default' href='logout.php' role='button'>Logout &raquo;</a>";
           }
           
 
