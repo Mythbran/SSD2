@@ -107,7 +107,7 @@
       }
       $_SESSION['uname'] = $_POST['uname'];
 
-      header("Location:/ $_SESSION['redirect']");
+      header("Location: ". $_SESSION['redirect']);
 
       exit();
 		}
