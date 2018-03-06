@@ -1,16 +1,7 @@
 
 <?php
-    if(empty($_SESSION)){
-      echo "No user logged in"; 
-    }
-
-    elseif(!empty($_SESSION)){
-      
-      $_SESSION = array();
-      session_destroy();
-    else{
-
-    }
+  $_SESSION = array();
+  session_destroy();
 
   header("Location: index.php");
   exit();
