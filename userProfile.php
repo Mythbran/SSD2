@@ -9,6 +9,7 @@ we'll see how this goes.....
 <?php
     unset($_SESSION['redirect']);
     session_start();
+
     if($_SESSION['userStatus'] == 1 || $_SESSION['userStatus'] == 2 ){
         //LOG USER HAS ACCESSED THEIR PROFILE 
     }   
@@ -236,7 +237,7 @@ $data = pg_fetch_assoc($rtn);
 
 //displays username and email
 echo "<h4>Username: " . $data['uname'] . "</h4>";
-echo "<h4>Email: " . $data['email'] . "</h4>";
+echo "<h4>Email: " . $data['email'] . "</h4>" ;
 
 pg_close($conn);   
 
