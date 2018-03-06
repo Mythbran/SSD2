@@ -77,9 +77,11 @@
       $result = pg_query($conn, "SELECT * FROM users where uname = '$_POST[uname]' ");
 
       while($rows = pg_fetch_assoc($result)){
-        $_SESSION['userStatus'] = $rows['userstatus'];
+        $userStatus = $rows['userstatus'];
 
       }
+
+      $_SESSION['userStatus'] = $userStatus;
 
       $_SESSION['uname'] = $_POST['uname'];
 
