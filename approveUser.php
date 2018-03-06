@@ -152,9 +152,10 @@ if($_POST){
                     }//while loop
 
 
-                    echo "$uname"; 
-                    echo "$email"; 
-                    echo "<input type='text' name='userStatus' id='userStatus' value='$status'/>";
+                        print "Username:      " . $row['uname'] . "<br> ";
+                        print "Email:        " . $row['email'] . "<br> ";
+                        print "Status :   <input type='text' name='userStatus' id='userStatus' value='" . $row['userstatus'] . "' <br>";
+                        print "<br>";
 
 
                     ?>
