@@ -152,6 +152,9 @@ if($_POST){
                     }//while loop
 
 
+                    echo "$uname"; 
+                    echo "$email"; 
+                    echo "<input type='text' name='userStatus' id='userStatus' value='$status'/>";
 
 
                     ?>
