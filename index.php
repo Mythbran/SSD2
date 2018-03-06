@@ -115,12 +115,12 @@ session_start();
     </div>
 
 <div class="container" align="center">
-    <h3>Recent Blogs</h3>
-    <h2>Come Join The Community!!!</h2>
+    <h2>Recent Blogs</h2>
+    <h3>Come Join The Community!!!</h3>
 <?php
 
             //selects blogs from the database
-
+try{
             $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723")or die ("Connection Refused");
 
 $pre = pg_prepare($conn, "SELECT", "SELECT owner, title, data FROM blogs");
@@ -139,6 +139,9 @@ while($data = pg_fetch_assoc($rtn)){
 }
 
 pg_close($conn);
+    catch (Exception $e) {
+    echo 'Caught exception: ',  $e->getMessage(), "\n";
+}
             ?>
 
           </div>
