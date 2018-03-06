@@ -78,11 +78,11 @@
       $result = pg_query($conn, "SELECT * FROM users where uname = '$_POST[uname]' ");
 
       while($rows = pg_fetch_assoc($result)){
-        $userStatus = $rows['userstatus'];
+        $_SESSION['userStatus'] =  $rows['userstatus'];
 
       }
 
-      $_SESSION['userStatus'] = count($result);
+    
 
       $_SESSION['uname'] = $_POST['uname'];
 
