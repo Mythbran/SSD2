@@ -106,7 +106,7 @@
         <p>
           <?php
             
-            echo "Logged in as: ". $_SESSION['uname'] . " and you are a ". $_SESSION['userStatus']. " ";
+            echo "Logged in as: ". $_SESSION['uname'];
             
           ?>
 
