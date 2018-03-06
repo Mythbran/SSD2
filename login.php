@@ -52,6 +52,7 @@
       while($rows = pg_fetch_assoc($result)){
         $userPass = $rows['pass'];
       }
+      pg_close($conn);
 
       if(empty($userPass)){
         $errors['nouser'] = "Account was not found";
@@ -67,7 +68,7 @@
     }else {
       $errors['defaulError'] = "An unknown error has occured";
     }//end of else
-    pg_close($conn);
+    
  
     unset($_SESSION['pass']);      
 		//IF DOESN'T MATCH IN DATABSE 
@@ -81,12 +82,12 @@
 
       }
 
-      $_SESSION['userStatus'] = $userStatus;
+      $_SESSION['userStatus'] = count($result);
 
       $_SESSION['uname'] = $_POST['uname'];
 
       header("Location: ". $_SESSION['redirect']);
-
+      pg_close($conn);
       exit();
 		}
 	}
@@ -153,7 +154,9 @@
             <a class='btn btn-default' href='logout.php' role='button'>Logout &raquo;</a>
           
 
-          ";} 
+          ";} else{
+           echo" <a class='btn btn-default' href='logout.php' role='button'>Logout &raquo;</a>";
+          }
           
 
         }else{
