@@ -104,6 +104,8 @@
         //LOG THAT AN ERROR HAS OCCURED 
       }
       $_SESSION['uname'] = $_POST['uname'];
+      $userAdmin = "";
+      $userActive = "";
 
       header("Location: ". $_SESSION['redirect']);
 
