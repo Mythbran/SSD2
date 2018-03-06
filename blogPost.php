@@ -27,7 +27,7 @@ if (!empty($_SESSION)) {//need to re do this. itll never be empty with whatever 
 }else{
 	echo "no sessions";
 }
-catch (Exception $e) {
+}catch (Exception $e) {
     echo 'Caught exception: ',  $e->getMessage(), "\n";
 }
 ?>
