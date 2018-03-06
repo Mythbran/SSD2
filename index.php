@@ -41,6 +41,12 @@
           <a class="navbar-brand" href="/">Home</a>
         </div>
         <?php
+        if(!empty($_SESSION)){
+          echo" <a class='btn btn-default' href='userProfile.php' role='button'>User Profile &raquo;</a>
+
+          ";
+
+        }else{
           echo "<div id='navbar' class='navbar-collapse collapse'> 
           <form class='navbar-form navbar-right' role='form'>
            <div class='form-group'>
@@ -51,7 +57,9 @@
            </div>
             <button type='submit' class='btn btn-success'>Sign in</button>
           </form>
-        </div><!--/.navbar-collapse -->";
+        </div><!--/.navbar-collapse -->";}
+
+
 
         ?>
 
