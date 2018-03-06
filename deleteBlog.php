@@ -34,7 +34,7 @@ if (!empty($_SESSION)) {//need to re do this. itll never be empty with whatever 
 	if ($owner == $ownerCheck['owner']) {//deletes from database
 		if (isset($_POST['yesbtn'])) {
 			
-			$conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssddelete password=delete")or die ("Connection Refused");
+			$conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssddelete password=Qz0mv3*7")or die ("Connection Refused");
 			$result = pg_prepare($conn, "DELETE", 'DELETE FROM blogs WHERE bid = $1');
 			$rtn = pg_execute($conn, "DELETE", $stmtVal);
 			if (!$rtn) {
