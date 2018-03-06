@@ -149,7 +149,7 @@ if($_POST){
                     while ($row = pg_fetch_assoc($rtn)) {
                         print "Username:      " . $row['uname'] . "<br> ";
                         print "Email:        " . $row['email'] . "<br> ";
-                        print "Status : <input type='text' name='userstatus'id='userstatus' value='". $row['userStatus'] . "' /> <br>";
+                        print "Status : <input type='text' name='userStatus'id='userStatus' value='". $row['userstatus'] . "' /> <br>";
                         print "<br>";
                     }//while loop
                     ?>
