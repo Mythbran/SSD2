@@ -34,17 +34,15 @@ if(!empty($_POST)){
     $fPath = pathinfo($_FILES['pic']['name']);
     $ext = $fPath['extension']; 
 
-<<<<<<< HEAD
     $_SESSION['pass'] = $_POST['pass'];
     $_SESSION['email'] = $_POST['email'];
     $_SESSION['pic'] = $_POST['pic'];
 
     
         //Validation things 
-=======
+
     //Picture Validation 
    if (isset($_POST['picbtn'])) {
->>>>>>> cc6972f3325fc3bd9935485ef992aedc2dd477e8
 
        if(empty($_FILES['pic'])){
         $errors['pic001'] = "Picture is required";
