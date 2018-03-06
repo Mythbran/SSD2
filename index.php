@@ -42,7 +42,7 @@
           </button>
           <a class="navbar-brand" href="/">Home</a>
         </div>
-        <div id='navbar' class='navbar-collapse collapse'> <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="uform">
+        <div id='navbar' class='navbar-collapse collapse'> 
             <form class='navbar-form navbar-right' role='form' method="post" action="/SSD2/login.php" id="uform" >
            <div class='form-group'>
         <?php
