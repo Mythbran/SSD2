@@ -185,8 +185,7 @@ if($_POST){
 				<label for="pass">Password: </label>
 				<input type="password" placeholder="Password" onfocus="this.value=''" name="pass" id="pass" value="<?php if(isset($_POST['pass'])); echo $_POST['pass']; ?>"/><br>
 				<label for="passCheck">Re-enter Password: </label>
-				<input type="password" placeholder="Password" onfocus="this.value=''" name="passCheck" id="passCheck" value="<?php if(isset($_POST['passCheck'])); echo $_POST['passCheck']; ?>
-"/>
+				<input type="password" placeholder="Password" onfocus="this.value=''" name="passCheck" id="passCheck" value="<?php if(isset($_POST['passCheck'])); echo $_POST['passCheck']; ?>"/>
 				<!-- Password Validation -->
 				<span class="errors"> * <?php
 			if(isset($errors['pass001'])) echo $errors['pass001'];#empty
