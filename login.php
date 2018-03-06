@@ -106,18 +106,8 @@
         //LOG THAT AN ERROR HAS OCCURED 
       }
       $_SESSION['uname'] = $_POST['uname'];
-      switch($_SESSION['redirect']){
-        case "userProfile.php":
-          header("Location: /SSD2/userProfile.php");
-          break;
-         
 
-          default:
-            header("Location: /SSD2/blogPortal.php");
-            break;
-
-      }
-
+      header("Location:/ $_SESSION['redirect']")
 
       exit();
 		}

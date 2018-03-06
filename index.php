@@ -53,6 +53,7 @@
           ";
 
         }else{
+          $_SESSION['redirect'] = "index.php";
           echo "
           
               <input type='text' placeholder='Username' class='form-control' id ='uname' name='uname'>
@@ -61,7 +62,9 @@
                           
             <button type='submit' class='btn btn-success'>Sign in</button>
           
-        ";}
+        ";
+
+        }
 
 
 
