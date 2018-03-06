@@ -83,17 +83,17 @@
 
       }
 
-      if($userAdmin == TRUE && userActive == TRUE){
+      if($userAdmin == TRUE && $userActive == TRUE){
         $_SESSION['userStatus']= 1; 
       }
 
-      elseif($userAdmin == FALSE && userActive == TRUE){
+      elseif($userAdmin == FALSE && $userActive == TRUE){
         $_SESSION['userStatus']=2; 
       }
-      elseif($userAdmin == FALSE && userActive == FALSE){
+      elseif($userAdmin == FALSE && $userActive == FALSE){
         $_SESSION['userStatus']=3; 
       }
-      elseif($userAdmin == TRUE && userActive == FALSE){
+      elseif($userAdmin == TRUE && $userActive == FALSE){
         $_SESSION['userStatus']=500;
         //LOG THAT A BAD USER HAS BEEN ENTERED 
         exit();
