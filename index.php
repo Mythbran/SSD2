@@ -1,5 +1,7 @@
 
-
+<?php
+  session_start();
+?>
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
@@ -41,7 +43,7 @@
           <a class="navbar-brand" href="/">Home</a>
         </div>
         <?php
-        if(!empty($_SESSION)){
+        if(!empty($_SESSION['uname'])){
           echo" <a class='btn btn-default' href='userProfile.php' role='button'>User Profile &raquo;</a>
 
           ";
@@ -77,7 +79,7 @@
         </p>
         <p>
           <?php
-            session_start();
+            
             echo "Logged in user is ". $_SESSION['uname'];
             echo "And his email is ". $_SESSION['email'];
           ?>
