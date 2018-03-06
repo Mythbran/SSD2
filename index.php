@@ -120,19 +120,18 @@
 try{
             $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723")or die ("Connection Refused");
 
-$pre = pg_prepare($conn, "SELECT", "SELECT owner, title, data FROM blogs");
-
-$rtn = pg_execute($conn, "SELECT");
+            $rtn = pg_query($conn, "SELECT owner, title, data FROM blogs");
 
 while($data = pg_fetch_assoc($rtn)){
-  echo" <span>
-        <p>
-        <h2>$data[title]</h2><br>
-        <h3>By: $data[owner]</h3><br>
-        <h4>$data[data]</h4><br>
-        </p>
-        </span>
-  ";
+  echo" <span>";
+  echo"<p>";
+  echo"<h3>$data[title]</h3><br>";
+  echo"<h4>By: $data[owner]</h4><br>";
+  echo"<details><summary>View More/Hide</summary>
+  <h5>$data[data]</h5></details><br>";
+  echo"</p>";
+  echo"</span>";
+  
 }
 
 pg_close($conn);
