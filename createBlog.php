@@ -29,7 +29,6 @@
 
 
 if(!empty($_POST['submitbtn'])){
-  $_SESSION['uname'] = 'tjon';
   $_SESSION['btitle'] = $_POST['btitle'];
   $_SESSION['bdata'] = $_POST['bdata'];
 
