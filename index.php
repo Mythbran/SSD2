@@ -66,7 +66,7 @@
           
 
           ";} 
-          }
+          
 
         }else{
           $_SESSION['redirect'] = "index.php";
