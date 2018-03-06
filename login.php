@@ -6,7 +6,6 @@
 
 
 	if($_POST){
-    $password = $_POST['pass'];
     if($_POST['pass']){
     $passHashed = password_hash($password, PASSWORD_BCRYPT);
     $password = $_POST['pass'];

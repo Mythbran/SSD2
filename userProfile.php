@@ -185,7 +185,9 @@ elseif (isset($_POST['passbtn'])) {
             <a class='btn btn-default' href='logout.php' role='button'>Logout &raquo;</a>
           
 
-          ";} 
+          ";} else{
+           echo" <a class='btn btn-default' href='logout.php' role='button'>Logout &raquo;</a>"
+          } 
           
         }else{
           $_SESSION['redirect'] = "index.php";
