@@ -77,35 +77,11 @@
       $result = pg_query($conn, "SELECT * FROM users where uname = '$_POST[uname]' ");
 
       while($rows = pg_fetch_assoc($result)){
-        $userAdmin = $rows['admin'];
-        $userActive = $rows['active'];
+        $_SESSION['userStatus'] = $rows['userStatus'];
 
       }
 
-      if($userAdmin == TRUE && $userActive == TRUE){
-        $_SESSION['userStatus']= 1; 
-      }
-
-      elseif($userAdmin == FALSE && $userActive == TRUE){
-        $_SESSION['userStatus']=2; 
-      }
-      elseif($userAdmin == FALSE && $userActive == FALSE){
-        $_SESSION['userStatus']=3; 
-      }
-      elseif($userAdmin == TRUE && $userActive == FALSE){
-        $_SESSION['userStatus']=500;
-        //LOG THAT A BAD USER HAS BEEN ENTERED 
-        exit();
-      }
-      else{
-        $_SESSION = 501; 
-        unset($_SESSION['uname']);
-        exit();
-        //LOG THAT AN ERROR HAS OCCURED 
-      }
       $_SESSION['uname'] = $_POST['uname'];
-      $userAdmin = "";
-      $userActive = "";
 
       header("Location: ". $_SESSION['redirect']);
 

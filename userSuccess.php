@@ -114,10 +114,10 @@ redirects to index page
                         } elseif(!empty($_SESSION)){
                             $password = $_SESSION['pass'];
                             $passHashed = password_hash($password, PASSWORD_BCRYPT);
-                            $stmtVal = array("$_SESSION[uname]", "$passHashed", "$_SESSION[email]", "FALSE", "FALSE" );
+                            $stmtVal = array("$_SESSION[uname]", "$passHashed", "$_SESSION[email]", "3");
 
             //prepared statement & query string            
-                            $result = pg_prepare($conn, "INSERT", 'INSERT INTO users (uname, pass, email, admin, active) VALUES ($1, $2, $3, $4, $5)');
+                            $result = pg_prepare($conn, "INSERT", 'INSERT INTO users (uname, pass, email, userStatus) VALUES ($1, $2, $3, $4)');
 
                             $rtn = pg_execute($conn, "INSERT", $stmtVal);
 
@@ -130,15 +130,11 @@ redirects to index page
                                 echo"<tr>";
                                 echo "<th><h4> Username </h4></th>";
                                 echo "<th><h4> Email </h4></th>";
-                                echo "<th><h4> Admin </h4></th>";
-                                echo "<th><h4> Active </h4></th>";
                                 echo "</tr>";
 
                                 echo "<tr>";
                                 echo "<td><h5> $_SESSION[uname]</h5></td>";
                                 echo "<td><h5> $_SESSION[email]</h5></td>";
-                                echo "<th><h4> FALSE </h4></th>";
-                                echo "<th><h4> FALSE </h4></th>";
                                 echo "</tr>";
 
 
@@ -146,8 +142,6 @@ redirects to index page
             }//end of else
             unset($_SESSION['pass']);
             unset($_SESSION['email']);
-            $_SESSION['active'] = "FALSE";
-            $_SESSION['admin'] =  "FALSE";
 
         }
         else{
