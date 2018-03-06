@@ -59,7 +59,7 @@ session_start();
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
-        <h1>Main Blog Page</h1>
+        <h1>Team Igni Blogs</h1>
         <p>This is a live demo for Assignment 2 of Secure Software Development</p>
         <P>
            Created by Matthew D'Angelo and Tjon Trudge
