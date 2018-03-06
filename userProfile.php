@@ -170,7 +170,7 @@ elseif (isset($_POST['passbtn'])) {
            <div class='form-group'>
         <?php
         if(!empty($_SESSION['uname'])){
-          if($_SESSION['userStatus']==1){
+            if($_SESSION['userStatus']==1){
           echo" <a class='btn btn-default' href='userProfile.php' role='button'>User Profile &raquo;</a>
           <a class='btn btn-default' href='blogPortal.php' role='button'>Blogs &raquo;</a>
           <a class='btn btn-default' href='admin.php' role='button'>admin &raquo;</a>
@@ -179,16 +179,17 @@ elseif (isset($_POST['passbtn'])) {
 
           ";} 
 
-          else{
+          elseif($_SESSION['userStatus']==2){
           echo" <a class='btn btn-default' href='userProfile.php' role='button'>User Profile &raquo;</a>
           <a class='btn btn-default' href='blogPortal.php' role='button'>Blogs &raquo;</a>
             <a class='btn btn-default' href='logout.php' role='button'>Logout &raquo;</a>
           
 
           ";} else{
-           echo" <a class='btn btn-default' href='logout.php' role='button'>Logout &raquo;</a>"
+           echo" <a class='btn btn-default' href='logout.php' role='button'>Logout &raquo;</a>";
           } 
-          
+
+
         }else{
           $_SESSION['redirect'] = "index.php";
           echo "
