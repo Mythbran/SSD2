@@ -8,7 +8,7 @@
   elseif(!empty($_SESSION)){
     $user = $_SESSION['uname'];
 
-    if(session_destroy(); ){
+    if(session_destroy() ){
       $logout = "". $user. "Successfully logged out";
     }
     else{
