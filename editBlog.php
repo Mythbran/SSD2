@@ -21,12 +21,10 @@
         exit();
     }
 
-if (!empty($_SESSION)) {
+if (!empty($_SESSION['editid'])) {
   $editID = $_SESSION['editid'];
-  $owner = 'tjon';
 
   if(!empty($_POST['submitbtn'])){
-    $_SESSION['uname'] = 'tjon';
     $_SESSION['btitle'] = $_POST['btitle'];
     $_SESSION['bdata'] = $_POST['bdata'];
 
@@ -185,7 +183,7 @@ if (!empty($_SESSION)) {
 
                 }else{
                   header("Refresh: 5; URL=/SSD2/blogPortal.php");
-                  echo "You Don't Own Thing Blog!";
+                  echo "You Don't Own This Blog!";
                 }
 
                 pg_close($conn);
