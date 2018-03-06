@@ -155,7 +155,7 @@ if($_POST){
 
                     echo "$uname"; 
                     echo "$email"; 
-                    echo "<input type='text' name='userStatus' id='userStatus' value='$status'/>"
+                    echo "<input type='text' name='userStatus' id='userStatus' value='$status'/>";
 
 
                     ?>
