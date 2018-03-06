@@ -44,6 +44,7 @@
           </button>
           <a class="navbar-brand" href="/">Home</a>
         </div>
+        
         <div id="navbar" class="navbar-collapse collapse">
           <form class="navbar-form navbar-right" role="form">
             <div class="form-group">
