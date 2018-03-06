@@ -29,7 +29,6 @@ we'll see how this goes.....
 
 if(!empty($_POST)){
     session_start();
-    $_SESSION['uname'] = 'tjon';
     $errors = array(); // array to hold errors
     $fPath = pathinfo($_FILES['pic']['name']);
     $ext = $fPath['extension']; 
@@ -203,7 +202,7 @@ elseif (isset($_POST['passbtn'])) {
 $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723") 
 or die ("connection refused");
 
-$stmtVal = array("tjon");
+$stmtVal = array("$_SESSION[uname]");
 
 $pre = pg_prepare($conn, "SELECT", 'SELECT uname, email FROM users WHERE uname = $1');
 $rtn = pg_execute($conn, "SELECT", $stmtVal) or die("Database Error. Contact Your Administer");
