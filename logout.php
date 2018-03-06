@@ -1,7 +1,7 @@
 
 <?php
   header("Refresh:3; Location: index.php");
-
+  session_start();
 
 ?>
 <!doctype html>
