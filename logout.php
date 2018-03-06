@@ -1,29 +1,6 @@
 
 <?php
-  $errors = array();
-  if(empty($_SESSION)){
-    $error["nouser"] = "No user logged in"; 
-  }
-
-  elseif(!empty($_SESSION)){
-    $user = $_SESSION['uname'];
-
-    if(session_destroy() ){
-      $logout = "". $user. "Successfully logged out";
-    }
-    else{
-      $errors["default"] = "An unknown error has occured";
-    }
-
-  }else{
-    $errors["default"] = "An unknown error has occured";
-  }
-  
-
-
-
-  
-  $logoutArray = "". $_SESSION['uname'] . "Successfully logged out"; 
+  header("Refresh:3; Location: index.php");
 
 
 ?>
@@ -93,9 +70,24 @@
       <div class="row">
         <div class="col-md-5">
               <span class="errors"> <?php
-                if(isset($errors['nouser'])) echo $errors['nouser'];#No user logged in
-                if(isset($errors['default'])) echo $errors['default'];#unknown error
-                if(isset($logout)) echo $logout;#invalid credential
+                if(empty($_SESSION)){
+                  echo "No user logged in"; 
+                }
+
+                elseif(!empty($_SESSION)){
+                  $user = $_SESSION['uname'];
+
+                  if(session_destroy() ){
+                    echo "". $user. "Successfully logged out";
+                  }
+                  else{
+                    echo "An unknown error has occured";
+                  }
+
+                }else{
+                  echo "An unknown error has occured";
+                }
+
               ?></span>
 
 
