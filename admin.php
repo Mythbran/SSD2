@@ -167,9 +167,9 @@ if($_POST){
                         print "Username:      " . $row['uname'] . "<br> ";
                         print "Email:        " . $row['email'] . "<br> ";
                         print "Status :     " . $row['userstatus'] . "<br>";
-                        print "<a class='btn btn-default' href='approveUser.php?uname=" .$row['uname']. " >Approve &raquo;</a>";
+                        print "<a class='btn btn-default' href='approveUser.php?uname=" .$row['uname']. "' >Approve &raquo;</a>";
 
-                        print "<a class='btn btn-default' href='deleteUser.php?uname=" .$row['uname']. " >Delete &raquo;</a>";
+                        print "<a class='btn btn-default' href='deleteUser.php?uname=" .$row['uname']. "' >Delete &raquo;</a>";
 
                         print "<br>";
                     }//while loop
