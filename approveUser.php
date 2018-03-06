@@ -119,6 +119,10 @@ if($_POST){
             <div class="row">
                 <div class="col-md-8">
                     <!-- User Form --> 
+                    <p>User Status Meaning </p>
+                    <p>1 = Admin</p>
+                    <p>2 = User</p>
+                    <p>3 = New User</p>
                     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="uform">
                     <?php
                     //database connection
@@ -130,7 +134,7 @@ if($_POST){
                     while ($row = pg_fetch_assoc($rtn)) {
                         print "Username:      " . $row['uname'] . "<br> ";
                         print "Email:        " . $row['email'] . "<br> ";
-                        print "Status       " . $row['userStatus'] . "<br>";
+                        print "Status : <input type='text' name='userstatus'id='userstatus' value='<?php $row['userStatus'] ?>' <br>";
                         print "<br>";
                     }//while loop
                     ?>
