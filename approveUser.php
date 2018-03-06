@@ -144,7 +144,7 @@ if($_POST){
                      
                     $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723")or die ("Connection Refused");
 
-                    $rtn = pg_query($conn, "SELECT * FROM users where uid = $_GET['uname']");
+                    $rtn = pg_query($conn, "SELECT * FROM users where uname = $_GET['uname']");
 
                     while ($row = pg_fetch_assoc($rtn)) {
                         $uname = $row['uname'];

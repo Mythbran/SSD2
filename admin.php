@@ -24,7 +24,7 @@ also need to add it to the DB
 redirects to user Success
 -->
 <?php   
-if($_POST){
+
     
     session_start();
 
@@ -33,22 +33,6 @@ if($_POST){
     header("Location: errors.php");
     exit();
     }
-
-    if($_POST['userStatus'] == 1 || $_POST['userStatus'] == 2 || $_POST['userStatus'] == 3){
-        $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdupdate password=Qwtc8*08")or die ("Connection Refused");
-
-        $stmtVal =  array("$_POST[userStatus]","$_POST[uname] ");
-
-        $result = pg_prepare($conn, "UPDATE", "UPDATE users SET userstatus = $1 WHERE uname = $2");
-
-
-        $rtn = pg_execute($conn, "UPDATE", $stmtVal);
-
-
-    }else{
-        $errors = "Enter a correct user status value";
-    }
-}
 
 ?>
 
