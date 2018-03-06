@@ -40,7 +40,7 @@ if(!empty($_POST)){
 
     
         //Validation things 
-
+/*
     //Picture Validation 
    if (isset($_POST['picbtn'])) {
 
@@ -76,7 +76,7 @@ if(move_uploaded_file( $raw['pic']['tmp_name'], $target)){
     }
 
 }
-}
+}*/
 
 //email validation
 elseif (!empty($_POST['emailbtn'])) {
@@ -94,7 +94,7 @@ elseif (!empty($_POST['emailbtn'])) {
     }
 
 if(count($errors) == 0 ){
-    $_SESSION['email'] = $_POST['email'];
+    $_SESSION['editemail'] = $_POST['email'];
         header("Location: editProfile.php");
         exit();
     }
@@ -114,7 +114,7 @@ elseif (isset($_POST['passbtn'])) {
         }
 
         if(count($errors) == 0 ){
-        $_SESSION['pass'] = password_hash($_POST['pass'], PASSWORD_DEFAULT);
+        $_SESSION['editpass'] = $_POST['pass'];
         header("Location: editProfile.php");
         exit();
     }
@@ -249,21 +249,7 @@ pg_close($conn);
 <h3>Profile Options</h3>
 <p href="/SSD2/blogPortal.php">Blog Portal</p>
 <div>
-    <!-- user pic form-->
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="picform" enctype="multipart/form-data">
-        <p>
-            <label for="pic"> Upload Profile Picture: </label>
-            <input type="file" name="pic" id="pic" value="<?php if(isset($_POST['pic'])); echo $_POST['pic']?>"/>
-        </p>
-        <input class="btn btn-default" name="picbtn" type="submit" value="Submit &raquo;"/>
-        <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
-        <span class="errors"> * <?php
-                               if(isset($errors['pic001'])) echo $errors['pic001'];#empty
-                               if(isset($errors['pic002'])) echo $errors['pic002'];
-                               if(isset($errors['pic003'])) echo $errors['pic003'];
-                               ?>
-                           </span>
-                       </form>
+    
 
                        <p>
                         <!-- email Form -->
