@@ -152,9 +152,9 @@ if($_POST){
                     }//while loop
 
 
-                        print "Username:      " . $row['uname'] . "<br> ";
-                        print "Email:        " . $row['email'] . "<br> ";
-                        print "Status :   <input type='text' name='userStatus' id='userStatus' value='" . $row['userstatus'] . "' <br>";
+                        print "Username:      " . $uname . "<br> ";
+                        print "Email:        " . $email . "<br> ";
+                        print "Status :   <input type='text' name='userStatus' id='userStatus' value='" . $status . "' <br>";
                         print "<br>";
 
 
