@@ -1,6 +1,6 @@
 <?php
   session_start();
-  if(!empty($_SESSION)){
+  if(!empty($_SESSION['uname'])){
     header("Location: /SSD2/index.php");
   }
 
