@@ -139,7 +139,7 @@ while($data = pg_fetch_assoc($rtn)){
 }
 
 pg_close($conn);
-    catch (Exception $e) {
+} catch (Exception $e) {
     echo 'Caught exception: ',  $e->getMessage(), "\n";
 }
             ?>
