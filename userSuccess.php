@@ -117,7 +117,7 @@ redirects to index page
                             $stmtVal = array("$_SESSION[uname]", "$passHashed", "$_SESSION[email]", "3");
 
             //prepared statement & query string            
-                            $result = pg_prepare($conn, "INSERT", 'INSERT INTO users (uname, pass, email, userStatus) VALUES ($1, $2, $3, $4)');
+                            $result = pg_prepare($conn, "INSERT", 'INSERT INTO users (uname, pass, email, userstatus) VALUES ($1, $2, $3, $4)');
 
                             $rtn = pg_execute($conn, "INSERT", $stmtVal);
 
