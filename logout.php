@@ -8,8 +8,8 @@
       
       $_SESSION = array();
       session_destroy();
-    else(){
-      
+    else{
+
     }
 
   header("Location: index.php");
