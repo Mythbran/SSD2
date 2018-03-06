@@ -60,7 +60,7 @@
       }elseif(password_verify($password, $userPass)){
         //LOG    	
       }else{
-        $errors['invalidcred'] = "Invalid credentials." . $_POST['uname'];
+        $errors['invalidcred'] = "Invalid credentials.";
       }
 
 

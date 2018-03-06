@@ -45,6 +45,7 @@
         <?php
         if(!empty($_SESSION['uname'])){
           echo" <a class='btn btn-default' href='userProfile.php' role='button'>User Profile &raquo;</a>
+            <a class='btn btn-default' href='logout.php' role='button'>Logout &raquo;</a>
 
           ";
 
@@ -81,7 +82,7 @@
           <?php
             
             echo "Logged in user is ". $_SESSION['uname'];
-            echo "And his email is ". $_SESSION['email'];
+            
           ?>
 
         </p>
