@@ -1,5 +1,5 @@
 <?php
-  
+  session_start();
   if(!empty($_SESSION)){
     header("Location: /SSD2/index.php");
   }
@@ -74,8 +74,7 @@
 		//IF DOESN'T MATCH IN DATABSE 
 
 		if(count($errors) == 0){
-			session_start();
-
+			
       $result = pg_query($conn, "SELECT * FROM users where uname = '$_POST[uname]' ");
 
       while($rows = pg_fetch_assoc($result)){
@@ -151,18 +150,52 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">Home</a>
+          <a class="btn btn-default" href="/" role="button">Home &raquo;</a>
+          <a class="btn btn-default" href="/SSD2" role="button">SSD2 &raquo;</a>
+          <a class="btn btn-default" href="newuser.php" role="button">New User &raquo;</a>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right" role="form">
-            <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control">
-            </div>
-            <div class="form-group">
-              <input type="password" placeholder="Password" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">Sign in</button>
-          </form>
+        <div id='navbar' class='navbar-collapse collapse'> 
+            <form class='navbar-form navbar-right' role='form' method="post" action="/SSD2/login.php" id="uform" >
+           <div class='form-group'>
+        <?php
+        if(!empty($_SESSION['uname'])){
+          if($_SESSION['userStatus']==1){
+          echo" <a class='btn btn-default' href='userProfile.php' role='button'>User Profile &raquo;</a>
+          <a class='btn btn-default' href='blogPortal.php' role='button'>Blogs &raquo;</a>
+          <a class='btn btn-default' href='admin.php' role='button'>admin &raquo;</a>
+            <a class='btn btn-default' href='logout.php' role='button'>Logout &raquo;</a>
+          
+
+          ";} 
+
+          else{
+          echo" <a class='btn btn-default' href='userProfile.php' role='button'>User Profile &raquo;</a>
+          <a class='btn btn-default' href='blogPortal.php' role='button'>Blogs &raquo;</a>
+            <a class='btn btn-default' href='logout.php' role='button'>Logout &raquo;</a>
+          
+
+          ";} 
+          
+
+        }else{
+          $_SESSION['redirect'] = "index.php";
+          echo "
+          
+              <input type='text' placeholder='Username' class='form-control' id ='uname' name='uname'>
+             
+              <input type='password' placeholder='Password' class='form-control' id='pass' name ='pass'>
+                          
+            <button type='submit' class='btn btn-success'>Sign in</button>
+          
+        ";
+
+        }
+
+
+
+        ?>
+        </div>
+        </form>
         </div><!--/.navbar-collapse -->
       </div>
     </nav>
