@@ -90,24 +90,11 @@
         <p>
           <?php
             
-            echo "Logged in user is ". $_SESSION['uname'];
+            echo "Logged in as: ". $_SESSION['uname'];
             
           ?>
 
         </p>
-      </div>
-    </div>
-
-    <div class="container" align="left">
-      <!-- Example row of columns -->     
-
-
-        <div class="col-md-4">
-          <h2>New User</h2>
-          <p>Create a new user below(Going to move to user/pass up there ^)</p>
-          <p><a class="btn btn-default" href="newuser.php" role="button">New User &raquo;</a></p>
-        </div>            
-
       </div>
     </div>
 
