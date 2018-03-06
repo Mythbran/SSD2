@@ -106,11 +106,20 @@
         //LOG THAT AN ERROR HAS OCCURED 
       }
 
+      switch($_SESSION['redirect']){
+        case "userProfile.php":
+          header("Location: /SSD2/userProfile.php");
+          break;
+         
 
-			$_SESSION['uname'] = $_POST['uname'];
-			header("Location: /SSD2/blogPortal.php");
-			
-			exit();
+          default:
+            header("Location: /SSD2/blogPortal.php");
+            break;
+
+      }
+
+
+      exit();
 		}
 	}
 ?>
