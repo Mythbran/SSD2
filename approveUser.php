@@ -144,16 +144,23 @@ if($_POST){
                      
                     $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723")or die ("Connection Refused");
 
-                    $rtn = pg_query($conn, "SELECT * FROM users");
+                    $rtn = pg_query($conn, "SELECT * FROM users where uid = $_GET['uname']");
 
                     while ($row = pg_fetch_assoc($rtn)) {
-                        print "Username:      " . $row['uname'] . "<br> ";
-                        print "Email:        " . $row['email'] . "<br> ";
-                        print "Status : <input type='text' name='userStatus'id='userStatus' value='". $row['userstatus'] . "' /> <br>";
-                        print "<input type='hidden' name ='uname' value='".$row['uname'] . "' />";
-                        print "<br>";
+                        $uname = $row['uname'];
+                        $email = $row['email'];
+                        $status = $row['userstatus'];
                     }//while loop
+
+
+                    echo "$uname"; 
+                    echo "$email"; 
+                    echo "<input type='text' name='userStatus' id='userStatus' value='$status'/>"
+
+
                     ?>
+
+
 
                     <br>
                 </div>
