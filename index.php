@@ -40,17 +40,21 @@
           </button>
           <a class="navbar-brand" href="/">Home</a>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right" role="form">
-            <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control">
-            </div>
-            <div class="form-group">
-              <input type="password" placeholder="Password" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">Sign in</button>
-          </form>
-        </div><!--/.navbar-collapse -->
+        <?php
+          echo "<div id='navbar' class='navbar-collapse collapse'> "
+          echo "<form class='navbar-form navbar-right' role='form'>"
+          echo "  <div class='form-group'>"
+          echo "    <input type='text' placeholder='Username' class='form-control'>"
+          echo "   </div>"
+          echo "  <div class='form-group'>"
+          echo "    <input type='password' placeholder='Password' class='form-control'>"
+          echo "  </div>"
+          echo "  <button type='submit' class='btn btn-success'>Sign in</button>"
+          echo "</form>"
+        echo "</div><!--/.navbar-collapse -->"
+
+        ?>
+
       </div>
     </nav>
 
