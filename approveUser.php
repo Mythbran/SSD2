@@ -13,6 +13,7 @@ if($_POST){
     $_SESSION['error'] = "Please login to view this page";
     header("Location: errors.php");
     exit();
+    }
 }
 
 ?>
@@ -118,7 +119,7 @@ if($_POST){
             <div class="row">
                 <div class="col-md-8">
                     <!-- User Form --> 
-                    <!--<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="uform">-->
+                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="uform">
                     <?php
                     //database connection
                      
@@ -137,10 +138,10 @@ if($_POST){
                     <br>
                 </div>
         
-        <!--<input class="btn btn-default" type="submit" value="Submit &raquo;"/>
+        <input class="btn btn-default" type="submit" value="Submit &raquo;"/>
         <input class="btn btn-default" type="reset" value="Reset &raquo;"/>
         <a class="btn btn-default" href="/SSD1" role="button">Back &raquo;</a>
-    </form>-->
+    </form>
 
     <hr>
 
