@@ -55,11 +55,10 @@
         }else{
           echo "
           
-              <input type='text' placeholder='Username' class='form-control'>
+              <input type='text' placeholder='Username' class='form-control' id ='uname' name='uname'>
              
-              <input type='password' placeholder='Password' class='form-control'>
-           
-         
+              <input type='password' placeholder='Password' class='form-control' id='pass' name ='pass'>
+                          
             <button type='submit' class='btn btn-success'>Sign in</button>
           
         ";}
