@@ -140,6 +140,8 @@ if($_POST){
                     <p>3 = Inactive User</p>
                     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="uform">
                     <?php
+                    $status = "";
+                    $email = "";
                     //database connection
                      
                     $conn = pg_connect("host=127.0.0.1 port=5432 dbname=ssd2 user=ssdselect password=Wier~723")or die ("Connection Refused");
