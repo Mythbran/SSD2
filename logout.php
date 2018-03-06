@@ -76,7 +76,7 @@
 
                 elseif(!empty($_SESSION)){
                   $user = $_SESSION['uname'];
-
+                  $_SESSION = array();
                   if(session_destroy() ){
                     echo "". $user. "Successfully logged out";
                   }
